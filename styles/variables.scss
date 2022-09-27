@@ -1,0 +1,27 @@
+// font Monsterrat
+$Montserrat: 'Montserrat', sans-serif;
+
+// color variables
+$primaryBg: #cfd7d7;
+$secondaryColor: #5a7171;
+$fontGrey: #484848;
+$fontWhite: #ffffff;
+$fontBlack: #303030;
+
+// font-variation mixin
+@mixin font-variation($font-weight) {
+  font-variation-settings: 'wght' $font-weight;
+}
+
+// display flex mixin
+@mixin display-flex($justify-content, $align-items) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+}
+
+// icon-variation mixin
+@mixin icon-variation($fill: 0, $weight: 400, $gradient: 0, $size: 48) {
+  font-variation-settings: 'FILL' $fill, 'wght' $weight, 'GRAD' $gradient,
+    'opsz' $size;
+}

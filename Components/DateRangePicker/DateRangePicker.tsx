@@ -1,0 +1,204 @@
+import { useState, Fragment } from 'react';
+import pickerStyles from '../../styles/Components/DateRangePicker/DateRangePicker.module.scss';
+import {
+  daysArr,
+  getCurrentMonth,
+  getMonthDetails
+} from '../../Utils/DatePicker/helper';
+
+const DateRangePicker = ({
+  onChange,
+  placeholder
+}: {
+  onChange: (date: Date) => void;
+  placeholder: string;
+}) => {
+  const [dateState, setDateState] = useState({
+    show: false,
+    monthDetails: getMonthDetails(getCurrentMonth()),
+    currentMonth: getCurrentMonth(),
+    selectedDay: 0,
+    selectedDate: new Date(),
+    inpValue: placeholder
+  });
+
+  const onClickTouchShowCal = () => {
+    setDateState((prevState) => ({
+      ...prevState,
+      show: true
+    }));
+  };
+
+  const onClickTouchCloseCal = () => {
+    setDateState((prevState) => ({
+      ...prevState,
+      show: false
+    }));
+  };
+
+  const onClickTouchSelect = (day: string) => {
+    const parsedDay = parseInt(day);
+
+    const selectedDate = new Date(
+      dateState.monthDetails.year,
+      dateState.currentMonth,
+      parsedDay
+    );
+
+    setDateState((prevState) => ({
+      ...prevState,
+      selectedDay: parsedDay,
+      show: false,
+      selectedDate: selectedDate,
+      inpValue: selectedDate
+        .toLocaleDateString('pt-br')
+        .split('/')
+        .reverse()
+        .join('-')
+    }));
+    onChange && onChange(selectedDate);
+  };
+
+  return (
+    <Fragment>
+      <input
+        type="text"
+        onClick={(e) => {
+          e.preventDefault();
+          onClickTouchShowCal();
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          onClickTouchShowCal();
+        }}
+        value={dateState.inpValue}
+        placeholder="Select Date"
+        readOnly
+        className={pickerStyles.dateInput}
+      />
+      {dateState.show && (
+        <Fragment>
+          <div
+            className={pickerStyles.backdrop}
+            onClick={(e) => {
+              e.preventDefault();
+              onClickTouchCloseCal();
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              onClickTouchCloseCal();
+            }}
+          />
+          <div className={pickerStyles.calendar}>
+            <div className={pickerStyles.calendarTop}>
+              <button
+                disabled={dateState.currentMonth === 0}
+                onClick={() => {
+                  setDateState((prevDateState) => {
+                    return {
+                      ...prevDateState,
+                      currentMonth: prevDateState.currentMonth - 1,
+                      monthDetails: getMonthDetails(
+                        prevDateState.currentMonth - 1
+                      )
+                    };
+                  });
+                }}
+              >
+                <span className="material-symbols-outlined">
+                  arrow_back_ios
+                </span>
+              </button>
+              <span>
+                <h3>{dateState.monthDetails.year}</h3>
+                <p>{dateState.monthDetails.month}</p>
+              </span>
+              <button
+                disabled={dateState.currentMonth === 11}
+                onClick={() => {
+                  setDateState((prevDateState) => {
+                    return {
+                      ...prevDateState,
+                      currentMonth: prevDateState.currentMonth + 1,
+                      monthDetails: getMonthDetails(
+                        prevDateState.currentMonth + 1
+                      )
+                    };
+                  });
+                }}
+              >
+                <span
+                  className={`material-symbols-outlined ${pickerStyles.rightIcon}`}
+                >
+                  arrow_forward_ios
+                </span>
+              </button>
+            </div>
+            <div className={pickerStyles.calendarBody}>
+              {daysArr.map((day, index) => (
+                <small key={index}>{day}</small>
+              ))}
+              {dateState.monthDetails.splitArrObj.prevMonthDays.map(
+                (day, index) => {
+                  return (
+                    <div key={index}>
+                      <small
+                        className={`${pickerStyles.days} ${pickerStyles.disabled}`}
+                      >
+                        {day}
+                      </small>
+                    </div>
+                  );
+                }
+              )}
+              {dateState.monthDetails.splitArrObj.currentMonthDays.map(
+                (day, index) => {
+                  return (
+                    <div key={index}>
+                      <small
+                        className={`${
+                          getCurrentMonth() === dateState.currentMonth &&
+                          day === dateState.monthDetails.currentDay
+                            ? `${pickerStyles.days} ${pickerStyles.active} ${pickerStyles.today}`
+                            : `${pickerStyles.active} ${pickerStyles.days}`
+                        } ${
+                          dateState.selectedDay === day &&
+                          getCurrentMonth() === dateState.currentMonth
+                            ? pickerStyles.selected
+                            : undefined
+                        }`}
+                        onClick={(e) =>
+                          onClickTouchSelect(e.currentTarget.innerText)
+                        }
+                        onTouchEnd={(e) =>
+                          onClickTouchSelect(e.currentTarget.innerText)
+                        }
+                      >
+                        {day}
+                      </small>
+                    </div>
+                  );
+                }
+              )}
+              {dateState.monthDetails.splitArrObj.nextMonthDays.map(
+                (day, index) => {
+                  return (
+                    <div key={index}>
+                      <small
+                        className={`${pickerStyles.days} ${pickerStyles.disabled}`}
+                      >
+                        {day}
+                      </small>
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        </Fragment>
+      )}
+    </Fragment>
+  );
+};
+
+export default DateRangePicker;

@@ -1,0 +1,26 @@
+@use '../variables';
+
+.filterSection {
+  @include variables.display-flex(space-between, center);
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+
+  .contentSection {
+    width: 50%;
+    @include variables.display-flex(space-between, flex-start);
+    flex-wrap: wrap;
+    gap: 3vw;
+  }
+
+  .mapSection {
+    width: 20%;
+    height: 300px;
+    background-color: red;
+    position: sticky;
+    top: 1rem;
+  }
+}

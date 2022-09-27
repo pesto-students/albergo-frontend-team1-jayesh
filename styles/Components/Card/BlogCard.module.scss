@@ -1,0 +1,51 @@
+@use '../../variables';
+
+.card {
+  flex: 1 1 300px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    -ms-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    -o-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .imageContainer {
+    position: relative;
+    height: 30vh;
+    min-height: 35vh;
+    max-height: 40vh;
+
+    .likeBtn {
+      float: right;
+      color: variables.$fontWhite;
+
+      // .likeIcon {
+      // color: red;
+      // }
+    }
+  }
+
+  .cardContent {
+    padding: 1rem;
+    width: 100%;
+
+    h5 {
+      @include variables.font-variation(500);
+      letter-spacing: 1px;
+      margin: 0;
+    }
+  }
+}
