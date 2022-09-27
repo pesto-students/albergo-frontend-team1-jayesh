@@ -1,0 +1,124 @@
+@use '../variables';
+
+.container {
+  width: 100%;
+  height: 80vh;
+  max-height: auto;
+  min-height: 80vh;
+  padding: 1rem 0;
+
+  .innerContainer {
+    @include variables.display-flex(space-between, unset);
+    width: 100%;
+    height: 100%;
+
+    .content {
+      @include variables.display-flex(space-between, flex-start);
+      flex-direction: column;
+      flex: 0.7 1 70%;
+      height: 100%;
+      padding: 2rem;
+
+      .divider {
+        width: 10%;
+        border-width: 3px;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        -ms-border-radius: 10px;
+        -o-border-radius: 10px;
+        border-color: variables.$fontBlack;
+        background: variables.$fontBlack;
+      }
+
+      h2 {
+        @include variables.font-variation(600);
+        text-transform: capitalize;
+        letter-spacing: 0.5px;
+      }
+
+      p {
+        @include variables.font-variation(600);
+        font-size: 1.125rem;
+      }
+
+      .ctaContainer {
+        @include variables.display-flex(flex-start, center);
+        gap: 1rem;
+      }
+
+      .discoverMoreLink {
+        @include variables.font-variation(600);
+        letter-spacing: 0.5px;
+        padding: 1rem 1.5rem;
+        background: variables.$secondaryColor;
+        color: variables.$fontWhite;
+        border-radius: 2rem;
+        -webkit-border-radius: 2rem;
+        -moz-border-radius: 2rem;
+        -ms-border-radius: 2rem;
+        -o-border-radius: 2rem;
+      }
+    }
+
+    .imageContainer {
+      position: relative;
+      width: 30%;
+      min-width: 30%;
+      max-width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 2rem;
+      -webkit-border-radius: 2rem;
+      -moz-border-radius: 2rem;
+      -ms-border-radius: 2rem;
+      -o-border-radius: 2rem;
+    }
+  }
+}
+
+// Laptop, Desktops
+@media only screen and (max-width: 1024px) {
+  .container {
+    .innerContainer {
+      .content {
+        width: 50%;
+      }
+    }
+  }
+}
+
+// Laptop, Desktops
+@media only screen and (max-width: 900px) {
+  .container {
+    height: auto;
+    .innerContainer {
+      flex-direction: column-reverse;
+
+      .content,
+      .imageContainer {
+        width: 100%;
+      }
+
+      .content {
+        padding: 1rem;
+        gap: 0.5rem;
+
+        .discoverMoreLink {
+          padding: 0.5rem 0.75rem;
+        }
+      }
+
+      .imageContainer {
+        height: 40vh;
+        min-height: 30vh;
+        max-height: 50vh;
+        border-radius: 1rem;
+        -webkit-border-radius: 1rem;
+        -moz-border-radius: 1rem;
+        -ms-border-radius: 1rem;
+        -o-border-radius: 1rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@use '../variables';
+
+.filterSection {
+  @include variables.display-flex(space-between, center);
+  width: 100%;
+  padding: 1rem 0;
+  gap: 1rem;
+
+  .tabSection {
+    @include variables.display-flex(unset, center);
+    width: 100%;
+    gap: 2rem;
+
+    h5 {
+      margin: 0;
+      position: relative;
+      text-transform: capitalize;
+      cursor: pointer;
+    }
+  }
+
+  button {
+    @include variables.display-flex(space-between, center);
+    @include variables.font-variation(500);
+    padding: 0.4rem 1rem;
+    background: transparent;
+    border: 1px solid variables.$fontGrey;
+    font-family: inherit;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    -moz-border-radius: 2rem;
+    -ms-border-radius: 2rem;
+    -o-border-radius: 2rem;
+    gap: 1rem;
+    text-transform: capitalize;
+  }
+}
+
+.filtersContainer {
+  @include variables.display-flex(space-between, center);
+  width: 100%;
+}
+
+.cardContainer {
+  @include variables.display-flex(space-between, center);
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 1rem 0;
+}

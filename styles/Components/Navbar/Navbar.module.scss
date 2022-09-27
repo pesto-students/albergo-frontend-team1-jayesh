@@ -1,0 +1,134 @@
+@use '../../variables';
+
+.nav {
+  @include variables.display-flex(space-between, center);
+  width: 100vw;
+  max-width: 100%;
+  background: variables.$primaryBg;
+  padding: 1rem 3rem;
+  position: relative;
+  z-index: 1;
+
+  h2 {
+    @include variables.font-variation(600);
+    margin: 0;
+    letter-spacing: 1px;
+  }
+
+  ul {
+    @include variables.display-flex(space-between, center);
+    list-style: none;
+    gap: 1rem;
+
+    li {
+      a {
+        @include variables.font-variation(600);
+      }
+
+      .partnerBtn {
+        @include variables.font-variation(500);
+        letter-spacing: 1px;
+        background-color: variables.$secondaryColor;
+        color: variables.$fontWhite;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        -webkit-border-radius: 2rem;
+        -moz-border-radius: 2rem;
+        -ms-border-radius: 2rem;
+        -o-border-radius: 2rem;
+      }
+    }
+  }
+
+  button {
+    display: none;
+    place-items: center;
+    padding: 0.5rem;
+    border: 0.5px solid rgba(0, 0, 0, 0);
+    background: transparent;
+    border-radius: 3rem;
+    -webkit-border-radius: 3rem;
+    -moz-border-radius: 3rem;
+    -ms-border-radius: 3rem;
+    -o-border-radius: 3rem;
+    transition: 0.3s ease-in-out;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    -ms-transition: 0.3s ease-in-out;
+    -o-transition: 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      border: 0.5px solid rgba(0, 0, 0, 0.514);
+    }
+  }
+  .menu {
+    width: 100%;
+    position: absolute;
+    top: -1000%;
+    left: 0;
+    padding: 1rem;
+    border-radius: 0 0 2rem 2rem;
+    -webkit-border-radius: 0 0 2rem 2rem;
+    -moz-border-radius: 0 0 2rem 2rem;
+    -ms-border-radius: 0 0 2rem 2rem;
+    -o-border-radius: 0 0 2rem 2rem;
+    background: variables.$primaryBg;
+    transition: 0.3s ease-in-out;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    -ms-transition: 0.3s ease-in-out;
+    -o-transition: 0.3s ease-in-out;
+    opacity: 0;
+
+    &.active {
+      top: 100%;
+      opacity: 1;
+    }
+  }
+}
+
+// list media queries in order of largest to smallest
+
+// Extra Large Devices, Wide Screens
+@media (min-width: 1201px) {
+  .nav {
+    // padding: 1rem 5rem;
+  }
+}
+
+// Desktops and large screens
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .nav {
+    // padding: 1rem 4rem;
+  }
+}
+
+// Laptop, Desktops
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nav {
+    // padding: 1rem 3rem;
+  }
+}
+
+// ipads and tablets
+@media only screen and (max-width: 768px) {
+  .nav {
+    padding: 1rem;
+
+    ul {
+      display: none;
+    }
+
+    button {
+      display: grid;
+    }
+  }
+}
+
+// Mobiles
+@media (min-width: 320px) and (max-width: 480px) {
+  .nav {
+    // padding: 1rem 1rem;
+  }
+}

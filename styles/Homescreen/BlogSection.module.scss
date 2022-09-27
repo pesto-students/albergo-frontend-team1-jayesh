@@ -1,0 +1,80 @@
+@use '../variables';
+
+.container {
+  width: 100%;
+  padding: 1rem 0;
+
+  & > h3 {
+    @include variables.font-variation(600);
+    letter-spacing: 1px;
+    width: 20%;
+    margin-top: 0;
+  }
+
+  .divider {
+    width: 10%;
+    border-width: 3px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-color: variables.$fontBlack;
+    background: variables.$fontBlack;
+  }
+
+  .cardContainer {
+    @include variables.display-flex(space-between, unset);
+    width: 100%;
+    margin: 1rem 0;
+    padding: 1rem 0;
+    flex-wrap: wrap;
+    gap: 2rem 1rem;
+  }
+
+  .viewAllBlogLinkContainer {
+    @include variables.display-flex(center, center);
+    width: 100%;
+    padding: 1rem 0;
+
+    .viewLink {
+      @include variables.font-variation(500);
+      letter-spacing: 1px;
+      background-color: variables.$secondaryColor;
+      color: variables.$fontWhite;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      -webkit-border-radius: 2rem;
+      -moz-border-radius: 2rem;
+      -ms-border-radius: 2rem;
+      -o-border-radius: 2rem;
+    }
+  }
+}
+
+// Laptop, Desktops
+@media only screen and (max-width: 1024px) {
+  .container {
+    & > h3 {
+      width: 35%;
+    }
+  }
+}
+
+// ipads and tablets
+@media only screen and (max-width: 768px) {
+  .container {
+    & > h3 {
+      width: 45%;
+    }
+  }
+}
+
+// Mobiles
+@media only screen and (max-width: 480px) {
+  .container {
+    & > h3 {
+      width: auto;
+    }
+  }
+}
