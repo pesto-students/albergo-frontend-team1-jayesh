@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import bannerStyles from '../../../styles/Homescreen/Banner.module.scss';
+import { MaterialIcon } from '../../../Utils/Helper';
 import DateRangePicker from '../../DateRangePicker/DateRangePicker';
 
 const Banner = () => {
@@ -41,7 +42,7 @@ const Banner = () => {
           {/* <hr /> */}
           <input type="number" placeholder="Guests" />
           <button className={bannerStyles.searchBtn} type="submit">
-            <span className="material-symbols-outlined">search</span>
+            {MaterialIcon('search')}
           </button>
         </form>
       </div>
