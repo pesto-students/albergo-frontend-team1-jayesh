@@ -20,6 +20,7 @@
   }
 
   button {
+    @include variables.border-radius(2rem);
     @include variables.display-flex(space-between, center);
     @include variables.font-variation(500);
     padding: 0.4rem 1rem;
@@ -28,11 +29,6 @@
     font-family: inherit;
     font-size: 1rem;
     letter-spacing: 0.5px;
-    border-radius: 2rem;
-    -webkit-border-radius: 2rem;
-    -moz-border-radius: 2rem;
-    -ms-border-radius: 2rem;
-    -o-border-radius: 2rem;
     gap: 1rem;
     text-transform: capitalize;
   }

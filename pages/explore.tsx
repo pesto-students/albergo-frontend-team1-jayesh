@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import CardTypeOne from '../Components/Card/CardTypeOne';
 import Layout from '../Components/Layout/Layout';
 import exploreStyles from '../styles/Explore/explore.module.scss';
+import { MaterialIcon } from '../Utils/Helper';
 
 const Explore: NextPage = () => {
   const tabs = [
@@ -27,10 +28,10 @@ const Explore: NextPage = () => {
           ))}
         </div>
         <button>
-          <span className="material-symbols-outlined">tune</span>filter
+          {MaterialIcon('tune')}
         </button>
         <button>
-          <span className="material-symbols-outlined">sort</span>sort
+          {MaterialIcon('sort')}
         </button>
       </div>
       <div className={exploreStyles.filtersContainer}></div>
