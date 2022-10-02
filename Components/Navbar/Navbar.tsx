@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
 import navStyles from '../../styles/Components/Navbar/Navbar.module.scss';
+import { MaterialIcon } from '../../Utils/Helper';
 
 const Navbar = () => {
   const toggleNavMenu = () => {
@@ -40,9 +41,7 @@ const Navbar = () => {
             </Link>
           </li>
         </ul>
-        <button onClick={toggleNavMenu}>
-          <span className="material-symbols-outlined">menu</span>
-        </button>
+        <button onClick={toggleNavMenu}>{MaterialIcon('menu')}</button>
         <div className={navStyles.menu} id="menu" onClick={toggleNavMenu}>
           <h1>hello</h1>
           <h1>hello</h1>

@@ -1,4 +1,5 @@
 import newsletterStyles from '../../styles/Components/Newsletter/Newsletter.module.scss';
+import { MaterialIcon } from '../../Utils/Helper';
 
 const Newsletter = () => {
   return (
@@ -10,9 +11,7 @@ const Newsletter = () => {
         </div>
         <form>
           <input type="email" placeholder="john@doe.com" />
-          <button type="submit">
-            <span className="material-symbols-outlined">send</span>
-          </button>
+          <button type="submit">{MaterialIcon('send')}</button>
         </form>
       </div>
     </div>

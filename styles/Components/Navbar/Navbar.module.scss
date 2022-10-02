@@ -27,59 +27,39 @@
 
       .partnerBtn {
         @include variables.font-variation(500);
+        @include variables.border-radius(2rem);
         letter-spacing: 1px;
         background-color: variables.$secondaryColor;
         color: variables.$fontWhite;
         padding: 0.5rem 1rem;
-        border-radius: 2rem;
-        -webkit-border-radius: 2rem;
-        -moz-border-radius: 2rem;
-        -ms-border-radius: 2rem;
-        -o-border-radius: 2rem;
       }
     }
   }
 
   button {
+    @include variables.border-radius(3rem);
+    @include variables.transition(0.3s ease-in-out);
     display: none;
     place-items: center;
     padding: 0.5rem;
     border: 0.5px solid rgba(0, 0, 0, 0);
     background: transparent;
-    border-radius: 3rem;
-    -webkit-border-radius: 3rem;
-    -moz-border-radius: 3rem;
-    -ms-border-radius: 3rem;
-    -o-border-radius: 3rem;
-    transition: 0.3s ease-in-out;
-    -webkit-transition: 0.3s ease-in-out;
-    -moz-transition: 0.3s ease-in-out;
-    -ms-transition: 0.3s ease-in-out;
-    -o-transition: 0.3s ease-in-out;
     cursor: pointer;
-
     &:hover {
       border: 0.5px solid rgba(0, 0, 0, 0.514);
     }
   }
+
   .menu {
+    @include variables.border-radius(0 0 2rem 2rem);
+    @include variables.transition(0.3s ease-in-out);
     width: 100%;
     position: absolute;
     top: -1000%;
     left: 0;
     padding: 1rem;
-    border-radius: 0 0 2rem 2rem;
-    -webkit-border-radius: 0 0 2rem 2rem;
-    -moz-border-radius: 0 0 2rem 2rem;
-    -ms-border-radius: 0 0 2rem 2rem;
-    -o-border-radius: 0 0 2rem 2rem;
-    background: variables.$primaryBg;
-    transition: 0.3s ease-in-out;
-    -webkit-transition: 0.3s ease-in-out;
-    -moz-transition: 0.3s ease-in-out;
-    -ms-transition: 0.3s ease-in-out;
-    -o-transition: 0.3s ease-in-out;
     opacity: 0;
+    background: variables.$primaryBg;
 
     &.active {
       top: 100%;
