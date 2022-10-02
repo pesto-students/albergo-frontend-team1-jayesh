@@ -16,13 +16,9 @@
     width: 100%;
 
     .divider {
+      @include variables.border-radius(10px);
       width: 10%;
       border-width: 3px;
-      border-radius: 10px;
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      -ms-border-radius: 10px;
-      -o-border-radius: 10px;
       border-color: variables.$fontBlack;
       background: variables.$fontBlack;
     }

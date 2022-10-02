@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Fragment } from 'react';
 import cardStyles from '../../styles/Components/Card/CardTypeOne.module.scss';
+import { MaterialIcon } from '../../Utils/Helper';
 
 const CardTypeOne = ({ wide = false }: { wide?: boolean }) => {
   return (
@@ -14,9 +15,7 @@ const CardTypeOne = ({ wide = false }: { wide?: boolean }) => {
           objectFit="cover"
           alt="image"
         />
-        <button>
-          <span className="material-symbols-outlined">favorite</span>
-        </button>
+        <button>{MaterialIcon('favorite')}</button>
       </div>
       <div className={cardStyles.cardContent}>
         <h5>Al burj Hotel</h5>

@@ -1,0 +1,280 @@
+@use '../variables';
+
+.galleryContainer {
+  @include variables.display-flex(unset, unset);
+  width: 100%;
+  min-height: 40vh;
+  height: 50vh;
+  max-height: 60vh;
+  padding: 1rem;
+  gap: 1rem;
+
+  .gelleryHero {
+    @include variables.border-radius(1rem);
+    flex: 0.5 0.2;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .imagesContainer {
+    @include variables.display-flex(space-between, unset);
+    flex: 0.5 0.3;
+    height: 100%;
+    flex-wrap: wrap;
+    gap: 1rem;
+    overflow: hidden;
+
+    .image {
+      @include variables.border-radius(1rem);
+      flex: 1 0.5 47%;
+      position: relative;
+      overflow: hidden;
+    }
+  }
+}
+
+.mainContainer {
+  @include variables.display-flex(space-between, flex-start);
+  width: 100%;
+  gap: 2rem;
+
+  .content {
+    width: 70%;
+    margin-bottom: 30vh;
+
+    .titleSection {
+      @include variables.display-flex(space-between, center);
+      width: 100%;
+      padding: 1rem 0;
+      gap: 1rem;
+
+      .infoSection {
+        h3 {
+          margin: 0;
+          font-size: 1.5rem;
+          font-weight: 500;
+          text-transform: capitalize;
+        }
+      }
+
+      .btnSection {
+        @include variables.display-flex(unset, center);
+        gap: 1rem;
+
+        button {
+          display: grid;
+          place-items: center;
+          border: none;
+          background: transparent;
+          cursor: pointer;
+
+          span {
+            @include variables.icon-variation(1);
+            font-size: 1.75rem;
+          }
+        }
+      }
+    }
+
+    .featureSection {
+      @include variables.display-flex(unset, center);
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      .feature {
+        @include variables.border-radius(1rem);
+        @include variables.display-flex(center, center);
+        flex-direction: column;
+        width: 125px;
+        height: 125px;
+        background-color: rgba(variables.$fontGrey, 0.15);
+
+        span {
+          // @include variables.icon-variation(1);
+          font-size: 2rem;
+        }
+      }
+    }
+
+    .amenitiesSection {
+      .amenitiesContainer {
+        width: 50%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .amenity {
+          @include variables.display-flex(unset, flex-start);
+          gap: 1rem;
+
+          p {
+            @include variables.font-variation(600);
+            margin: 0;
+          }
+
+          span {
+            font-size: 1.75rem;
+          }
+        }
+      }
+
+      button {
+        @include variables.border-radius(10px);
+        @include variables.font-variation(600);
+        font-family: inherit;
+        border: 1px solid variables.$fontBlack;
+        background: transparent;
+        padding: 1rem 2rem;
+      }
+    }
+
+    .safetySection {
+      .safetyContainer {
+        width: 50%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .safety {
+          @include variables.display-flex(unset, flex-start);
+          gap: 1rem;
+
+          p {
+            @include variables.font-variation(600);
+            margin: 0;
+          }
+
+          span {
+            font-size: 1.75rem;
+          }
+        }
+      }
+    }
+
+    .reviewSection {
+      .reviewTypeContainer {
+        width: 50%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .reviewType {
+          @include variables.display-flex(unset, center);
+          gap: 0.5rem;
+
+          p {
+            @include variables.font-variation(600);
+            margin: 0;
+          }
+        }
+      }
+
+      .reviewCardContainer {
+        @include variables.display-flex(space-between, flex-start);
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        .reviewCard {
+          width: 45%;
+
+          .cardHeader {
+            @include variables.display-flex(unset, center);
+            margin-bottom: 1rem;
+            gap: 1rem;
+
+            .cardAvatar {
+              @include variables.border-radius(50%);
+              width: 50px;
+              height: 50px;
+              background: rgba(variables.$fontGrey, 0.5);
+            }
+
+            .cardDetails {
+              h5 {
+                @include variables.font-variation(500);
+                margin: 0;
+              }
+
+              p {
+                @include variables.font-variation(300);
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+
+      button {
+        @include variables.border-radius(10px);
+        @include variables.font-variation(600);
+        font-family: inherit;
+        border: 1px solid variables.$fontBlack;
+        background: transparent;
+        padding: 1rem 2rem;
+      }
+    }
+  }
+
+  .cardSection {
+    @include variables.box-shadow(0 0 10px rgba(0, 0, 0, 0.1));
+    width: 30%;
+    position: sticky;
+    top: 1rem;
+    padding: 1rem;
+
+    h5 {
+      @include variables.font-variation(600);
+      margin: 0;
+
+      span {
+        @include variables.font-variation(300);
+      }
+    }
+
+    hr {
+      @include variables.border-radius(1rem);
+      background: variables.$fontGrey;
+      height: 3px;
+      margin: 1rem 0 1.5rem;
+    }
+
+    p {
+      margin-bottom: 0.5rem;
+
+      &:last-of-type {
+        margin-bottom: 1rem;
+      }
+    }
+
+    button {
+      @include variables.border-radius(2rem);
+      @include variables.font-variation(500);
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: variables.$secondaryColor;
+      color: variables.$fontWhite;
+      font-family: inherit;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      border: none;
+    }
+
+    .contactSection {
+      @include variables.display-flex(space-between, center);
+      gap: 1rem;
+      padding: 1rem 0;
+
+      small {
+        @include variables.display-flex(unset, center);
+        gap: 0.5rem;
+      }
+    }
+  }
+}
