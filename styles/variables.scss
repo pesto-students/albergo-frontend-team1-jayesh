@@ -52,3 +52,12 @@ $fontBlack: #303030;
   -ms-transition: $transition;
   -o-transition: $transition;
 }
+
+// transform mixin
+@mixin transform($transform) {
+  transform: $transform;
+  -webkit-transform: $transform;
+  -moz-transform: $transform;
+  -ms-transform: $transform;
+  -o-transform: $transform;
+}

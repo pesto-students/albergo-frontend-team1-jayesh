@@ -5,6 +5,7 @@ import Navbar from '../Components/Navbar/Navbar';
 import Footer from '../Components/Footer/Footer';
 import Newsletter from '../Components/Newsletter/Newsletter';
 import Head from 'next/head';
+import AuthModal from '../Components/AuthModal/AuthModal';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       <Newsletter />
       <Footer />
+      <AuthModal />
     </Fragment>
   );
 }
