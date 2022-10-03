@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { Fragment } from 'react';
-import Layout from '../../Components/Layout/Layout';
-import hotelHomeStyles from '../../styles/Hotel/hotelHome.module.scss';
-import { MaterialIcon } from '../../Utils/Helper';
+import Layout from '../../../Components/Layout/Layout';
+import hotelHomeStyles from '../../../styles/Hotel/hotelHome.module.scss';
+import { MaterialIcon } from '../../../Utils/Helper';
 
 const HotelSlugHome = () => {
   const rupee = <span>&#8377;</span>;

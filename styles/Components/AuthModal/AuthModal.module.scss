@@ -1,0 +1,144 @@
+@use '../../variables';
+
+.backdrop {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+
+  .modalContainer {
+    @include variables.border-radius(1rem);
+    @include variables.transform(translate(-50%, -50%));
+    width: 30%;
+    max-width: 90%;
+    min-width: 30%;
+    padding: 1.5rem;
+    background-color: variables.$fontWhite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    .modalHeader {
+      @include variables.display-flex(space-between, center);
+
+      h5 {
+        margin: 0;
+      }
+
+      button {
+        @include variables.border-radius(50%);
+        @include variables.transition(0.3s ease-in-out);
+        display: grid;
+        place-items: center;
+        background: transparent;
+        border: 1px solid transparent;
+        padding: 0.5rem;
+        cursor: pointer;
+
+        &:hover {
+          border-color: variables.$fontBlack;
+          background-color: rgba(variables.$fontGrey, 0.2);
+        }
+
+        span {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    hr {
+      margin: 1rem 0;
+    }
+
+    form {
+      .inputContainer {
+        @include variables.border-radius(3rem);
+        @include variables.display-flex(unset, unset);
+        width: 100%;
+        flex-direction: column;
+        padding: 0.25rem 0.5rem 0.25rem 2rem;
+        border: 1px solid rgba(variables.$fontGrey, 0.9);
+        margin: 1.25rem 0;
+
+        label {
+          font-size: 0.75rem;
+          color: rgba(variables.$fontGrey, 0.9);
+          text-transform: capitalize;
+        }
+
+        input {
+          @include variables.font-variation(500);
+          width: 95%;
+          border: none;
+          outline: none;
+          padding: 0;
+          font-size: 1.15rem;
+          color: variables.$fontBlack;
+          font-family: inherit;
+          letter-spacing: 0.5px;
+
+          &::placeholder {
+            color: variables.$fontBlack;
+          }
+        }
+      }
+
+      .options {
+        @include variables.display-flex(space-between, center);
+        margin: 1rem 0;
+
+        button {
+          @include variables.border-radius(2rem);
+          @include variables.font-variation(600);
+          background: variables.$secondaryColor;
+          padding: 0.75rem 2rem;
+          outline: none;
+          border: none;
+          font-family: inherit;
+          font-size: 0.85rem;
+          text-transform: capitalize;
+          color: variables.$fontWhite;
+        }
+      }
+
+      .dividerWithText {
+        @include variables.display-flex(unset, center);
+        margin: 1rem 0;
+        gap: 0.5rem;
+
+        hr {
+          margin: 0;
+          flex: 1;
+        }
+      }
+
+      .altAuthBtnContainer {
+        @include variables.display-flex(space-between, center);
+
+        button {
+          @include variables.display-flex(unset, center);
+          @include variables.border-radius(2rem);
+          @include variables.font-variation(600);
+          gap: 0.5rem;
+          background: variables.$secondaryColor;
+          padding: 0.75rem 1rem;
+          outline: none;
+          border: none;
+          font-family: inherit;
+          font-size: 0.85rem;
+          text-transform: capitalize;
+          color: variables.$fontWhite;
+
+          .icon {
+            position: relative;
+            display: grid;
+            place-items: center;
+          }
+        }
+      }
+    }
+  }
+}
