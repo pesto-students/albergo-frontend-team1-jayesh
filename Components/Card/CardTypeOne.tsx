@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Fragment } from 'react';
 import cardStyles from '../../styles/Components/Card/CardTypeOne.module.scss';
 import { MaterialIcon } from '../../Utils/Helper';
@@ -18,7 +19,11 @@ const CardTypeOne = ({ wide = false }: { wide?: boolean }) => {
         <button>{MaterialIcon('favorite')}</button>
       </div>
       <div className={cardStyles.cardContent}>
-        <h5>Al burj Hotel</h5>
+        <Link href={'/hotel/a/register'}>
+          <a>
+            <h5>Al burj Hotel</h5>
+          </a>
+        </Link>
         <p>100 Smart Street, LA, USA</p>
         {wide ? (
           <Fragment>
