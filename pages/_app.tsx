@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       <Newsletter />
       <Footer />
-      <AuthModal />
+      {/* <AuthModal /> */}
     </Fragment>
   );
 }
