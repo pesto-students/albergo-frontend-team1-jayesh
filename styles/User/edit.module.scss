@@ -1,0 +1,27 @@
+@use '../variables';
+
+.container {
+  @include variables.display-flex(space-between, flex-start);
+  width: 100%;
+  gap: 3rem;
+  padding: 1rem 0;
+
+  .content {
+    width: 80%;
+
+    h3 {
+      margin: 0 0 0.25rem;
+    }
+
+    small {
+      margin: 0 0 1rem;
+    }
+
+    hr {
+      margin: 1rem 0;
+      @include variables.border-radius(0.5rem);
+      background: rgba(variables.$fontGrey, 0.5);
+      border-color: rgba(variables.$fontGrey, 0.5);
+    }
+  }
+}
