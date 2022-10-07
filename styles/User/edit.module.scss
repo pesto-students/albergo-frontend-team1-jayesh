@@ -23,5 +23,69 @@
       background: rgba(variables.$fontGrey, 0.5);
       border-color: rgba(variables.$fontGrey, 0.5);
     }
+
+    form {
+      .inputContainer {
+        @include variables.display-flex(space-between, flex-start);
+        flex-wrap: wrap;
+        gap: 1rem 2rem;
+        margin: 0 0 1rem;
+
+        .formGroup {
+          width: 45%;
+
+          label {
+            @include variables.font-variation(600);
+            display: block;
+            font-family: inherit;
+            font-size: 1rem;
+          }
+
+          input {
+            @include variables.border-radius(0.25rem);
+            width: 100%;
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            border: 1px solid rgba(variables.$fontGrey, 0.5);
+            outline: none;
+          }
+        }
+      }
+
+      .btnContainer {
+        @include variables.display-flex(flex-end, center);
+        gap: 2rem;
+
+        button {
+          @include variables.display-flex(unset, center);
+          @include variables.transition(0.3s ease-in-out);
+          @include variables.border-radius(2rem);
+          @include variables.display-flex(space-between, center);
+          @include variables.font-variation(500);
+          gap: 0.15rem;
+          padding: 0.85rem 1.5rem;
+          background: transparent;
+          border: 1px solid transparent;
+          font-family: inherit;
+          font-size: 0.85rem;
+          text-transform: capitalize;
+          cursor: pointer;
+          letter-spacing: 0.5px;
+
+          &[type='submit'] {
+            &:hover {
+              color: variables.$fontWhite;
+              background: variables.$secondaryColor;
+            }
+          }
+
+          &[type='reset'] {
+            &:hover {
+              border-color: variables.$secondaryColor;
+            }
+          }
+        }
+      }
+    }
   }
 }
