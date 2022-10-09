@@ -1,11 +1,8 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { useAuthModal } from '../../context/providers/AuthModal.provider';
 import navStyles from '../../styles/Components/Navbar/Navbar.module.scss';
 
 const Navbar = () => {
-  const { toggle } = useAuthModal();
-
   const toggleNavMenu = () => {
     const menu = document.getElementById('menu');
     menu?.classList.toggle(navStyles.active);
@@ -38,13 +35,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <button
-              onClick={() => {
-                toggle();
-              }}
-            >
-              Login
-            </button>
+            <button>Login</button>
           </li>
         </ul>
         <button className={navStyles.navBtn} onClick={toggleNavMenu}>
