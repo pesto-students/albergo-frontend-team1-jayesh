@@ -23,6 +23,9 @@
 }
 
 .calendar {
+  @include variables.border-radius(0.75rem);
+  @include variables.box-shadow(0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.1));
+
   padding: 0.5rem 1rem;
   position: absolute;
   bottom: 1rem;
@@ -37,39 +40,25 @@
   -moz-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   -o-transform: translateX(-50%);
-  border-radius: 0.75rem;
-  -webkit-border-radius: 0.75rem;
-  -moz-border-radius: 0.75rem;
-  -ms-border-radius: 0.75rem;
-  -o-border-radius: 0.75rem;
   border: 0.5px solid variables.$fontGrey;
-  box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
 
   .calendarTop {
     @include variables.display-flex(space-between, center);
     gap: 0.5rem;
 
     button {
+      @include variables.border-radius(3rem);
+      @include variables.transition(0.3s ease-in-out);
       font-family: inherit;
       background: none;
       border: 1px solid transparent;
       outline: none;
       cursor: pointer;
       font-size: 1.5rem;
-      border-radius: 3rem;
-      -webkit-border-radius: 3rem;
-      -moz-border-radius: 3rem;
-      -ms-border-radius: 3rem;
-      -o-border-radius: 3rem;
       position: relative;
       overflow: hidden;
       width: 2.5rem;
       height: 2.5rem;
-      transition: 0.3s ease-in-out;
-      -webkit-transition: 0.3s ease-in-out;
-      -moz-transition: 0.3s ease-in-out;
-      -ms-transition: 0.3s ease-in-out;
-      -o-transition: 0.3s ease-in-out;
 
       &:hover {
         background: rgba(0, 0, 0, 0.1);
@@ -119,13 +108,9 @@
     .days {
       &.active {
         @include variables.font-variation(600);
+        @include variables.transition(0.2s ease-in-out);
         color: variables.$fontBlack;
         cursor: pointer;
-        transition: 0.2s ease-in-out;
-        -webkit-transition: 0.2s ease-in-out;
-        -moz-transition: 0.2s ease-in-out;
-        -ms-transition: 0.2s ease-in-out;
-        -o-transition: 0.2s ease-in-out;
 
         &:hover {
           background: rgba(0, 0, 0, 0.1);
