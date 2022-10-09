@@ -6,16 +6,8 @@ import SectionPartnerTypeOne from '../Components/Home/Sections/SectionPartnerTyp
 import SectionPartnerTypeTwo from '../Components/Home/Sections/SectionPartnerTypeTwo';
 import SectionTypeOne from '../Components/Home/Sections/SectionTypeOne';
 import Layout from '../Components/Layout/Layout';
-// import { useAppDispatch, useAppSelector } from '../redux/hooks';
-// import { toggleAuthModal } from '../redux/slices/authModal.slice';
 
 const Home: NextPage = () => {
-  // const dispatch = useAppDispatch();
-  // const authModalState = useAppSelector((state) => state.authModal.isOpen);
-  // console.log(authModalState);
-  // dispatch(toggleAuthModal());
-  // console.log(authModalState);
-
   return (
     <Fragment>
       {/* <Banner /> */}
