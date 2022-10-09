@@ -3,8 +3,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Layout from '../Components/Layout/Layout';
 import loginStyles from '../styles/Login/login.module.scss';
+import { loginForm } from '../Utils/auth/login';
 
 const Login = () => {
+  const [formState, setFormState] = useState({
+    email: '',
+    password: ''
+  });
+
   const [currentCard, setCurrentCard] = useState(0);
   const cardArr = [
     {
@@ -85,14 +91,41 @@ const Login = () => {
             </Link>
           </p>
 
-          <form>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              loginForm(formState);
+            }}
+          >
             <div className={loginStyles.formGroup}>
               <label htmlFor="email">Email</label>
-              <input type="email" name="email" id="email" />
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={formState.email}
+                onChange={(e) => {
+                  setFormState((prevFormState) => ({
+                    ...prevFormState,
+                    email: e.target.value
+                  }));
+                }}
+              />
             </div>
             <div className={loginStyles.formGroup}>
               <label htmlFor="password">Password</label>
-              <input type="password" name="password" id="password" />
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value={formState.password}
+                onChange={(e) => {
+                  setFormState((prevFormState) => ({
+                    ...prevFormState,
+                    password: e.target.value
+                  }));
+                }}
+              />
             </div>
             <button type="submit">Login</button>
             <div className={loginStyles.dividerWithText}>
