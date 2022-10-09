@@ -5,6 +5,7 @@ import {
   getCurrentMonth,
   getMonthDetails
 } from '../../Utils/DatePicker/helper';
+import { MaterialIcon } from '../../Utils/Helper';
 
 const DateRangePicker = ({
   onChange,
@@ -105,9 +106,7 @@ const DateRangePicker = ({
                   });
                 }}
               >
-                <span className="material-symbols-outlined">
-                  arrow_back_ios
-                </span>
+                {MaterialIcon('arrow_back_ios')}
               </button>
               <span>
                 <h3>{dateState.monthDetails.year}</h3>

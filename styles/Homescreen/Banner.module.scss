@@ -57,6 +57,7 @@
       .tabActive {
         position: relative;
         &::after {
+          @include variables.border-radius(3px);
           content: '';
           position: absolute;
           bottom: -0.5rem;
@@ -64,25 +65,16 @@
           width: 70%;
           height: 3px;
           background: variables.$fontWhite;
-          border-radius: 3px;
-          -webkit-border-radius: 3px;
-          -moz-border-radius: 3px;
-          -ms-border-radius: 3px;
-          -o-border-radius: 3px;
         }
       }
     }
 
     form {
+      @include variables.border-radius(5rem);
       @include variables.display-flex(space-between, baseline);
       background: variables.$fontWhite;
       width: 100%;
       padding: 0.25rem 0.25rem 0.25rem 2rem;
-      border-radius: 5rem;
-      -webkit-border-radius: 5rem;
-      -moz-border-radius: 5rem;
-      -ms-border-radius: 5rem;
-      -o-border-radius: 5rem;
 
       input {
         font-size: 1.25rem;
@@ -103,17 +95,13 @@
       }
 
       .searchBtn {
+        @include variables.border-radius(3rem);
         border: none;
         background: variables.$secondaryColor;
         color: variables.$fontWhite;
         display: grid;
         place-items: center;
         padding: 0.5rem;
-        border-radius: 3rem;
-        -webkit-border-radius: 3rem;
-        -moz-border-radius: 3rem;
-        -ms-border-radius: 3rem;
-        -o-border-radius: 3rem;
         cursor: pointer;
       }
     }
