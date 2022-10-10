@@ -3,8 +3,15 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Layout from '../Components/Layout/Layout';
 import signupStyles from '../styles/Signup/signup.module.scss';
+import signupForm from '../Utils/auth/signup';
 
 const Signup = () => {
+  const [formState, setFormState] = useState({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
   const [currentCard, setCurrentCard] = useState(0);
   const cardArr = [
     {
@@ -85,14 +92,41 @@ const Signup = () => {
             </Link>
           </p>
 
-          <form>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              signupForm(formState);
+            }}
+          >
             <div className={signupStyles.formGroup}>
               <label htmlFor="email">Email</label>
-              <input type="email" name="email" id="email" />
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={formState.email}
+                onChange={(e) =>
+                  setFormState((prevFormState) => ({
+                    ...prevFormState,
+                    email: e.target.value
+                  }))
+                }
+              />
             </div>
             <div className={signupStyles.formGroup}>
               <label htmlFor="password">Password</label>
-              <input type="password" name="password" id="password" />
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value={formState.password}
+                onChange={(e) =>
+                  setFormState((prevFormState) => ({
+                    ...prevFormState,
+                    password: e.target.value
+                  }))
+                }
+              />
             </div>
             <div className={signupStyles.formGroup}>
               <label htmlFor="confirmPassword">Confirm Password</label>
@@ -100,6 +134,13 @@ const Signup = () => {
                 type="password"
                 name="confirmPassword"
                 id="confirmPassword"
+                value={formState.confirmPassword}
+                onChange={(e) =>
+                  setFormState((prevFormState) => ({
+                    ...prevFormState,
+                    confirmPassword: e.target.value
+                  }))
+                }
               />
             </div>
             <button type="submit">Signup</button>
