@@ -36,9 +36,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="">
-              <a>Login</a>
-            </Link>
+            <button>Login</button>
           </li>
         </ul>
         <button onClick={toggleNavMenu}>{MaterialIcon('menu')}</button>
