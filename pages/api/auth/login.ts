@@ -36,12 +36,7 @@ export default function handler(
       },
       body: raw
     })
-      .then((response) => {
-        if (response.status !== 200) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((response) => {
         res.status(200).json({ data: response });
         resolve();

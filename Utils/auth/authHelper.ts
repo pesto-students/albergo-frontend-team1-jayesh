@@ -1,3 +1,7 @@
+const getAPIURL = () => {
+  return process.env.API_URL;
+};
+
 const isValidEmail = (email: string) => {
   const regex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -13,4 +17,8 @@ const checkPassword = (password: string, confirmPassword: string) => {
   return password === confirmPassword;
 };
 
-export { isValidEmail, isValidPassword, checkPassword };
+const parseJWT = (token: string) => {
+  return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+};
+
+export { isValidEmail, isValidPassword, checkPassword, parseJWT };
