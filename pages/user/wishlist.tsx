@@ -33,3 +33,5 @@ const Wishlist = () => {
     </Layout>
   );
 };
+
+export default Wishlist
