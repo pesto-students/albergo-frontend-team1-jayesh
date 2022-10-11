@@ -1,4 +1,4 @@
-import { isValidEmail, isValidPassword } from './authHelper';
+import { isValidEmail, isValidPassword, parseJWT } from './authHelper';
 
 interface ILoginFormObj {
   email: string;
@@ -19,6 +19,13 @@ const loginPost = async (formObj: ILoginFormObj) => {
     })
   })
     .then((res) => res.json())
+    .then((res) => {
+      if (res?.data?.status === 'fail') console.log(res?.data?.message);
+      if (res?.data?.status === 'success') {
+        const token = res?.data?.token;
+      }
+      return res;
+    })
     .catch((err) => {
       // error handling
       console.log('error', err);
@@ -39,8 +46,7 @@ const loginForm = async (formObj: ILoginFormObj) => {
     console.error({ error: 'Invalid email or password' });
   }
 
-  const response = await loginPost(formObj);
-  console.log(response);
+  await loginPost(formObj);
 };
 
 export { loginForm };
