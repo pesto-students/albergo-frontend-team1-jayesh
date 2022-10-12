@@ -17,7 +17,11 @@
       padding: 0.5rem;
       min-width: 50%;
       outline: none;
-      border: 1px solid variables.$fontGrey;
+      border: 1px solid rgba($color: variables.$fontGrey, $alpha: 0.5);
+
+      &:focus {
+        border: 1px solid variables.$fontBlack;
+      }
     }
   }
 

@@ -1,38 +1,29 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRef } from 'react';
 import LoginContainer from '../Components/Login/loginContainer';
 import loginStyles from '../styles/Login/login.module.scss';
 import { loginForm } from '../Utils/auth/login';
 
 const Login = () => {
-  const [formState, setFormState] = useState({
-    email: '',
-    password: ''
-  });
+  const emailInput = useRef<HTMLInputElement>(null);
+  const passwordInput = useRef<HTMLInputElement>(null);
 
   return (
     <LoginContainer title="login">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          loginForm(formState);
+          if (emailInput.current && passwordInput.current)
+            loginForm({
+              email: emailInput.current.value,
+              password: passwordInput.current.value
+            });
         }}
         className={loginStyles.form}
       >
         <div className={loginStyles.formGroup}>
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={formState.email}
-            onChange={(e) => {
-              setFormState((prevFormState) => ({
-                ...prevFormState,
-                email: e.target.value
-              }));
-            }}
-          />
+          <input type="email" name="email" id="email" ref={emailInput} />
         </div>
         <div className={loginStyles.formGroup}>
           <label htmlFor="password">Password</label>
@@ -40,13 +31,7 @@ const Login = () => {
             type="password"
             name="password"
             id="password"
-            value={formState.password}
-            onChange={(e) => {
-              setFormState((prevFormState) => ({
-                ...prevFormState,
-                password: e.target.value
-              }));
-            }}
+            ref={passwordInput}
           />
         </div>
         <button type="submit">Login</button>
