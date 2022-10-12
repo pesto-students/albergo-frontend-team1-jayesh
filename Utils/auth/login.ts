@@ -23,6 +23,7 @@ const loginPost = async (formObj: ILoginFormObj) => {
       if (res?.data?.status === 'fail') console.log(res?.data?.message);
       if (res?.data?.status === 'success') {
         const token = res?.data?.token;
+        console.log(parseJWT(token));
       }
       return res;
     })
@@ -47,6 +48,7 @@ const loginForm = async (formObj: ILoginFormObj) => {
   }
 
   await loginPost(formObj);
+  return;
 };
 
 export { loginForm };
