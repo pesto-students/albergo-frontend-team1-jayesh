@@ -1,50 +1,54 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { API_URL } from '../../../Utils/auth/authHelper';
 
-type Data = {
+interface IResponseData {
   message?: string;
-  error?: string;
-};
+  data?: unknown;
+  error?: unknown;
+}
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<IResponseData>
 ) {
-  // only accept POST requests
+  //   only allow POST requests
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method Not Allowed' });
-    return;
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  // get the email and password from the request body
+  //   get the email and password from the request body
   const { email, password } = req.body;
 
-  // check if the email and password are valid
+  //   check if email and password are valid
   if (!email || !password) {
-    return res.status(400).json({ error: 'Invalid email or password' });
+    return res.status(400).json({ message: 'Invalid email or password' });
   }
 
   return new Promise<void>(async (resolve) => {
-    await fetch('http://localhost:8080/api/users/login', {
+    const raw = JSON.stringify({
+      email,
+      password
+    });
+
+    await fetch(`${API_URL}/users/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        email,
-        password
-      })
+      body: raw
     })
       .then((response) => {
-        if (response.ok) {
-          res.status(200).json({ message: 'Success' });
-        } else {
-          res.status(400).json({ error: 'Invalid email or password' });
+        if (response.status !== 200) {
+          throw new Error(response.statusText);
         }
+        return response.json();
+      })
+      .then((response) => {
+        res.status(200).json({ data: response });
         resolve();
       })
       .catch((error) => {
-        res.status(500).json({ error: error.message });
+        res.status(200).json({ error: error.message });
         resolve();
       });
   });
