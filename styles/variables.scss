@@ -8,6 +8,16 @@ $fontGrey: #484848;
 $fontWhite: #ffffff;
 $fontBlack: #303030;
 
+// Toast variables
+$toastErrorColor: #f8d7da;
+$toastErrorBg: #ee3648;
+$toastSuccessColor: #d4edda;
+$toastSuccessBg: #155724;
+$toastWarningColor: #fff3cd;
+$toastWarningBg: #856404;
+$toastInfoColor: #d1ecf1;
+$toastInfoBg: #0c5460;
+
 // font-variation mixin
 @mixin font-variation($font-weight) {
   font-variation-settings: 'wght' $font-weight;

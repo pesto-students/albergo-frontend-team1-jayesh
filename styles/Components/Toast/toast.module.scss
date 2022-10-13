@@ -1,0 +1,54 @@
+@use '../../variables';
+
+.container {
+  @include variables.transform(translateX(-50%));
+  @include variables.border-radius(0.2rem);
+  @include variables.display-flex(center, center);
+  @include variables.transition(all 0.5s ease-in-out);
+  position: fixed;
+  bottom: 5rem;
+  left: 50%;
+  padding: 0.5rem 1rem;
+  gap: 2rem;
+
+  &.success {
+    background: variables.$toastSuccessBg;
+    color: variables.$toastSuccessColor;
+  }
+
+  &.warning {
+    background: variables.$toastWarningBg;
+    color: variables.$toastWarningColor;
+  }
+
+  &.error {
+    background: variables.$toastErrorBg;
+    color: variables.$toastErrorColor;
+  }
+
+  &.info {
+    background: variables.$toastInfoBg;
+    color: variables.$toastInfoColor;
+  }
+
+  &.hide {
+    @include variables.transform(translate(-50%, 100vh));
+  }
+
+  p {
+    @include variables.font-variation(500);
+    margin: 0;
+    letter-spacing: 0.2px;
+    font-size: 0.86rem;
+  }
+
+  button {
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0.3rem;
+  }
+}

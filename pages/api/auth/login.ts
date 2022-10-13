@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { API_URL } from '../../../Utils/auth/authHelper';
 
 interface IResponseData {
   message?: string;
@@ -29,19 +30,14 @@ export default function handler(
       password
     });
 
-    await fetch('http://localhost:8080/api/users/login', {
+    await fetch(`${API_URL}/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: raw
     })
-      .then((response) => {
-        if (response.status !== 200) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((response) => {
         res.status(200).json({ data: response });
         resolve();

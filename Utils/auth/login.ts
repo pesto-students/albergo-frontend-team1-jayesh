@@ -1,19 +1,9 @@
+import { isValidEmail, isValidPassword, parseJWT } from './authHelper';
+
 interface ILoginFormObj {
   email: string;
   password: string;
 }
-
-const isValidEmail = (email: string) => {
-  const regex =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return regex.test(String(email).toLowerCase());
-};
-
-const isValidPassword = (password: string) => {
-  //   const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-  return password.trim().length > 0 ? true : false;
-  //   return re.test(String(password));
-};
 
 const loginPost = async (formObj: ILoginFormObj) => {
   const { email, password } = formObj;
@@ -29,6 +19,14 @@ const loginPost = async (formObj: ILoginFormObj) => {
     })
   })
     .then((res) => res.json())
+    .then((res) => {
+      if (res?.data?.status === 'fail') console.log(res?.data?.message);
+      if (res?.data?.status === 'success') {
+        const token = res?.data?.token;
+        console.log(parseJWT(token));
+      }
+      return res;
+    })
     .catch((err) => {
       // error handling
       console.log('error', err);
@@ -46,11 +44,11 @@ const loginForm = async (formObj: ILoginFormObj) => {
     !isValidEmail(email) ||
     !isValidPassword(password)
   ) {
-    throw new Error('Invalid email or password');
+    console.error({ error: 'Invalid email or password' });
   }
 
-  const response = await loginPost(formObj);
-  console.log(response);
+  await loginPost(formObj);
+  return;
 };
 
 export { loginForm };
