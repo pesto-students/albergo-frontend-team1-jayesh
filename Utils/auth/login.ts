@@ -5,7 +5,7 @@ interface ILoginFormObj {
   password: string;
 }
 
-const loginPost = async (formObj: ILoginFormObj) => {
+const loginMiddleware = async (formObj: ILoginFormObj) => {
   const { email, password } = formObj;
 
   const response = await fetch('/api/auth/login', {
@@ -47,7 +47,7 @@ const loginForm = async (formObj: ILoginFormObj) => {
     console.error({ error: 'Invalid email or password' });
   }
 
-  await loginPost(formObj);
+  await loginMiddleware(formObj);
   return;
 };
 

@@ -6,7 +6,7 @@ interface IAuthSignup {
   confirmPassword: string;
 }
 
-const signupPost = async (formObj: IAuthSignup) => {
+const signupMiddleware = async (formObj: IAuthSignup) => {
   const { email, password } = formObj;
 
   const response = await fetch('/api/auth/signup', {
@@ -43,8 +43,45 @@ const signupForm = async (formObj: IAuthSignup) => {
     console.error({ error: 'Invalid email or password' });
   }
 
-  const response = await signupPost(formObj);
+  const response = await signupMiddleware(formObj);
   console.log(response);
 };
 
-export { signupForm };
+interface IPartnerSignup {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
+
+const partnerSignupMiddleware = async (formObj: IPartnerSignup) => {
+  const response = await fetch('/api/auth/partner/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formObj)
+  })
+    .then((response) => response.json())
+    .catch((err) => {
+      // error handling
+      console.log('error', err);
+    });
+
+  console.log(response);
+  return response;
+};
+
+const partnerSignupForm = async (formObj: IPartnerSignup) => {
+  const response = await partnerSignupMiddleware(formObj);
+  console.log(response);
+};
+
+export { signupForm, partnerSignupForm };
