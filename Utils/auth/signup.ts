@@ -48,15 +48,15 @@ const signupForm = async (formObj: IAuthSignup) => {
 };
 
 interface IPartnerSignup {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  phone: string;
-  address: string;
-  city: string;
-  state: string;
-  country: string;
+  hotelName: string;
+  hotelEmail: string;
+  hotelPassword: string;
+  hotelConfirmPassword: string;
+  hotelPhone: string;
+  hotelAddress: string;
+  hotelCity: string;
+  hotelState: string;
+  hotelCountry: string;
   latitude: number;
   longitude: number;
 }
