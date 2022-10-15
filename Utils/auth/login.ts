@@ -1,14 +1,25 @@
-import { isValidEmail, isValidPassword, parseJWT } from './authHelper';
+import { Dispatch, SetStateAction } from 'react';
+import { IToast } from '../../Components/Toast/Toast';
+import store from '../../redux/store';
+import { setUserEncryptedToken } from '../../redux/user/user.slice';
+import {
+  // isValidEmail,
+  // isValidPassword,
+  setTokenCookie
+} from './authHelper';
 
 interface ILoginFormObj {
   email: string;
   password: string;
 }
 
-const loginMiddleware = async (formObj: ILoginFormObj) => {
+const loginMiddleware = async (
+  formObj: ILoginFormObj,
+  setToastState: Dispatch<SetStateAction<IToast>>
+) => {
   const { email, password } = formObj;
 
-  const response = await fetch('/api/auth/login', {
+  await fetch('/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -20,34 +31,54 @@ const loginMiddleware = async (formObj: ILoginFormObj) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (res?.data?.status === 'fail') console.log(res?.data?.message);
+      if (res.error) throw new Error(res.error);
+
+      if (res?.data?.status === 'fail') {
+        setToastState({
+          message: res.data.message,
+          type: 'error',
+          visible: true
+        });
+      }
+
       if (res?.data?.status === 'success') {
         const token = res?.data?.token;
-        console.log(parseJWT(token));
+        setTokenCookie(token);
+        store.dispatch(setUserEncryptedToken(token));
+        setToastState({
+          message: 'Login successful',
+          type: 'success',
+          visible: true
+        });
       }
-      return res;
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       // error handling
-      console.log('error', err);
+      setToastState({
+        message: err.message,
+        type: 'error',
+        visible: true
+      });
     });
-  return response;
+  return;
 };
 
-const loginForm = async (formObj: ILoginFormObj) => {
-  const { email, password } = formObj;
+const loginForm = async (
+  formObj: ILoginFormObj,
+  setToastState: Dispatch<SetStateAction<IToast>>
+) => {
+  // const { email, password } = formObj;
 
-  // check if email and password are valid
-  if (
-    !email ||
-    !password ||
-    !isValidEmail(email) ||
-    !isValidPassword(password)
-  ) {
-    console.error({ error: 'Invalid email or password' });
-  }
+  // if (!isValidEmail(email) || !isValidPassword(password)) {
+  //   setToastState({
+  //     message: 'Invalid email or password',
+  //     type: 'error',
+  //     visible: true
+  //   });
+  //   return;
+  // }
 
-  await loginMiddleware(formObj);
+  await loginMiddleware(formObj, setToastState);
   return;
 };
 
