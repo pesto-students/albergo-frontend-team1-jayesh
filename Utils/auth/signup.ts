@@ -17,7 +17,7 @@ interface IAuthSignup {
   confirmPassword: string;
 }
 
-const signupPost = async (
+const signupMiddleware = async (
   formObj: IAuthSignup,
   setToastState: Dispatch<SetStateAction<IToast>>
 ) => {
@@ -91,7 +91,44 @@ const signupForm = async (
   //   return;
   // }
 
-  await signupPost(formObj, setToastState);
+  await signupMiddleware(formObj, setToastState);
 };
 
-export { signupForm };
+interface IPartnerSignup {
+  hotelName: string;
+  hotelEmail: string;
+  hotelPassword: string;
+  hotelConfirmPassword: string;
+  hotelPhone: string;
+  hotelAddress: string;
+  hotelCity: string;
+  hotelState: string;
+  hotelCountry: string;
+  latitude: number;
+  longitude: number;
+}
+
+const partnerSignupMiddleware = async (formObj: IPartnerSignup) => {
+  const response = await fetch('/api/auth/partner/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formObj)
+  })
+    .then((response) => response.json())
+    .catch((err) => {
+      // error handling
+      console.log('error', err);
+    });
+
+  console.log(response);
+  return response;
+};
+
+const partnerSignupForm = async (formObj: IPartnerSignup) => {
+  const response = await partnerSignupMiddleware(formObj);
+  console.log(response);
+};
+
+export { signupForm, partnerSignupForm };

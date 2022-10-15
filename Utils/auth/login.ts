@@ -13,7 +13,7 @@ interface ILoginFormObj {
   password: string;
 }
 
-const loginPost = async (
+const loginMiddleware = async (
   formObj: ILoginFormObj,
   setToastState: Dispatch<SetStateAction<IToast>>
 ) => {
@@ -78,7 +78,7 @@ const loginForm = async (
   //   return;
   // }
 
-  await loginPost(formObj, setToastState);
+  await loginMiddleware(formObj, setToastState);
   return;
 };
 
