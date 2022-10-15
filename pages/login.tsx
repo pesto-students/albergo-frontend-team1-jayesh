@@ -10,9 +10,9 @@ const Login = () => {
   const passwordInput = useRef<HTMLInputElement>(null);
 
   const [toastState, setToastState] = useState<IToast>({
-    message: 'Hello Some error',
-    type: 'warning',
-    visible: true
+    message: '',
+    type: 'info',
+    visible: false
   });
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,7 +20,7 @@ const Login = () => {
     const email = emailInput.current?.value;
     const password = passwordInput.current?.value;
     if (email && password) {
-      loginForm({ email, password });
+      loginForm({ email, password }, setToastState);
     }
   };
 
