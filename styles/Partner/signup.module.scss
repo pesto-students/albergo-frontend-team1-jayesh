@@ -1,0 +1,90 @@
+@use '../variables';
+
+.container {
+  @include variables.display-flex(unset, flex-start);
+  gap: 1rem;
+  height: 100vh;
+  min-height: 100vh;
+
+  .heroSection {
+    @include variables.border-radius(1rem);
+    width: 60%;
+    height: 100%;
+    background: #141414;
+    position: relative;
+    overflow: hidden;
+
+    h1 {
+      position: absolute;
+    }
+  }
+
+  .formContainer {
+    width: 40%;
+    height: 100%;
+
+    .form {
+      width: 100%;
+
+      form {
+        width: 75%;
+
+        .formGroup {
+          margin: 1rem 0;
+
+          label {
+            display: block;
+            font-size: 0.85rem;
+          }
+
+          input,
+          textarea {
+            @include variables.border-radius(0.2rem);
+            width: 100%;
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            outline: none;
+            border: 1px solid rgba($color: variables.$fontGrey, $alpha: 0.5);
+
+            &:focus {
+              border: 1px solid variables.$fontBlack;
+            }
+          }
+
+          textarea {
+            resize: vertical;
+          }
+        }
+
+        .btnGroup {
+          @include variables.display-flex(space-between, center);
+          width: 100%;
+          margin-top: 1rem 0;
+
+          button {
+            @include variables.display-flex(unset, center);
+            gap: 0.25rem;
+            @include variables.border-radius(3rem);
+            @include variables.font-variation(500);
+            background: inherit;
+            padding: 0.5rem 1.25rem;
+            font-family: inherit;
+            border: none;
+            background: variables.$secondaryColor;
+            color: variables.$fontWhite;
+            letter-spacing: 1px;
+            cursor: pointer;
+
+            span {
+              font-size: 0.75rem;
+            }
+          }
+
+          .hiddenBtn {
+            visibility: hidden;
+          }
+        }
+      }
+    }
+  }
+}
