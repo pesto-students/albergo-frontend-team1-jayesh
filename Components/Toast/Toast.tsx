@@ -61,8 +61,6 @@ const Toast = ({
     }
   };
 
-  console.log(toastState.type, getClassName());
-
   return (
     <div
       className={`${toastStyles.container} ${getClassName()} ${

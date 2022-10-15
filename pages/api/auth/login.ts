@@ -42,8 +42,8 @@ export default function handler(
         res.status(200).json({ data: response });
         resolve();
       })
-      .catch((error) => {
-        res.status(200).json({ error: error.message });
+      .catch(() => {
+        res.status(200).json({ error: 'Please try again later' });
         resolve();
       });
   });
