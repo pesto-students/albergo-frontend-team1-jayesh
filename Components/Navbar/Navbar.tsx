@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
+import { useAppSelector } from '../../redux/hooks';
 import navStyles from '../../styles/Components/Navbar/Navbar.module.scss';
 import { parseJWT } from '../../Utils/auth/authHelper';
-import { ITokenProp, MaterialIcon } from '../../Utils/Helper';
+import { MaterialIcon } from '../../Utils/Helper';
 
-const Navbar = ({ token }: ITokenProp) => {
-  const userToken = token ? parseJWT(token) : null;
+const Navbar = () => {
+  const userToken = parseJWT(
+    useAppSelector((state) => state.user.userEncryptedToken)
+  );
 
   const centralLinks = [
     {
