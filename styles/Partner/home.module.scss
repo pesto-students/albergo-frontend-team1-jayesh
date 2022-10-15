@@ -3,7 +3,7 @@
 .heroSection {
   width: 100vw;
   max-width: 100%;
-  height: 70vh;
+  height: 80vh;
   position: relative;
 
   .heroText {
@@ -11,7 +11,7 @@
     @include variables.border-radius(1rem);
     @include variables.box-shadow(0 4px 30px rgba(0, 0, 0, 0.1));
     position: absolute;
-    top: 35%;
+    top: 45%;
     left: 10%;
     background: rgba(29, 29, 29, 0.7);
     backdrop-filter: blur(10px);
@@ -20,7 +20,8 @@
     color: variables.$fontWhite;
 
     h2 {
-      @include variables.font-variation(600);
+      @include variables.font-variation(500);
+      letter-spacing: 0.5px;
       margin: 1.5rem 0;
     }
   }
