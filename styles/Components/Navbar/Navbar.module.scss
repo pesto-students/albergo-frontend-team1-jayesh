@@ -18,11 +18,37 @@
   ul {
     @include variables.display-flex(space-between, center);
     list-style: none;
-    gap: 1rem;
+    gap: 2rem;
 
     li {
       a {
+        @include variables.display-flex(unset, center);
         @include variables.font-variation(600);
+        gap: 0.25rem;
+        position: relative;
+        text-transform: capitalize;
+
+        &::after {
+          @include variables.transform(scaleX(0));
+          @include variables.transition(transform 0.3s ease-in-out);
+          content: '';
+          position: absolute;
+          bottom: -0.25rem;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: variables.$secondaryColor;
+          transform-origin: left;
+        }
+
+        &:hover::after {
+          @include variables.transform(scaleX(1));
+        }
+
+        span {
+          // @include variables.font-variation(400);
+          font-size: 1.2rem;
+        }
       }
 
       .partnerBtn {
@@ -32,83 +58,56 @@
         background-color: variables.$secondaryColor;
         color: variables.$fontWhite;
         padding: 0.5rem 1rem;
+
+        &::after {
+          display: none;
+        }
       }
     }
   }
-
-  button {
-    @include variables.border-radius(3rem);
-    @include variables.transition(0.3s ease-in-out);
-    display: none;
-    place-items: center;
-    padding: 0.5rem;
-    border: 0.5px solid rgba(0, 0, 0, 0);
-    background: transparent;
-    cursor: pointer;
-    &:hover {
-      border: 0.5px solid rgba(0, 0, 0, 0.514);
-    }
-  }
-
-  .menu {
-    @include variables.border-radius(0 0 2rem 2rem);
-    @include variables.transition(0.3s ease-in-out);
-    width: 100%;
-    position: absolute;
-    top: -1000%;
-    left: 0;
-    padding: 1rem;
-    opacity: 0;
-    background: variables.$primaryBg;
-
-    &.active {
-      top: 100%;
-      opacity: 1;
-    }
-  }
 }
 
-// list media queries in order of largest to smallest
+// // list media queries in order of largest to smallest
 
-// Extra Large Devices, Wide Screens
-@media (min-width: 1201px) {
-  .nav {
-    // padding: 1rem 5rem;
-  }
-}
+// // Extra Large Devices, Wide Screens
+// @media (min-width: 1201px) {
+//   .nav {
+//     // padding: 1rem 5rem;
+//   }
+// }
 
-// Desktops and large screens
-@media (min-width: 1025px) and (max-width: 1200px) {
-  .nav {
-    // padding: 1rem 4rem;
-  }
-}
+// // Desktops and large screens
+// @media (min-width: 1025px) and (max-width: 1200px) {
+//   .nav {
+//     // padding: 1rem 4rem;
+//   }
+// }
 
-// Laptop, Desktops
-@media (min-width: 769px) and (max-width: 1024px) {
-  .nav {
-    // padding: 1rem 3rem;
-  }
-}
+// // Laptop, Desktops
+// @media (min-width: 769px) and (max-width: 1024px) {
+//   .nav {
+//     // padding: 1rem 3rem;
+//   }
+// }
 
-// ipads and tablets
-@media only screen and (max-width: 768px) {
-  .nav {
-    padding: 1rem;
+// // ipads and tablets
+// @media only screen and (max-width: 768px) {
+//   .nav {
+//     padding: 1rem;
 
-    ul {
-      display: none;
-    }
+//     ul {
+//       display: none;
+//     }
 
-    .navBtn {
-      display: grid;
-    }
-  }
-}
+//     .navBtn {
+//       display: grid;
+//     }
+//   }
+// }
 
-// Mobiles
-@media (min-width: 320px) and (max-width: 480px) {
-  .nav {
-    // padding: 1rem 1rem;
-  }
-}
+// // Mobiles
+// @media (min-width: 320px) and (max-width: 480px) {
+//   .nav {
+//     // padding: 1rem 1rem;
+//   }
+// }
