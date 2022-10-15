@@ -1,12 +1,46 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
 import navStyles from '../../styles/Components/Navbar/Navbar.module.scss';
-import { MaterialIcon } from '../../Utils/Helper';
+import { parseJWT } from '../../Utils/auth/authHelper';
+import { ITokenProp, MaterialIcon } from '../../Utils/Helper';
 
-const Navbar = () => {
-  const toggleNavMenu = () => {
-    const menu = document.getElementById('menu');
-    menu?.classList.toggle(navStyles.active);
+const Navbar = ({ token }: ITokenProp) => {
+  const userToken = token ? parseJWT(token) : null;
+
+  const centralLinks = [
+    {
+      name: 'Search',
+      icon: 'search',
+      link: '/search'
+    },
+    {
+      name: 'explore',
+      icon: 'explore',
+      link: '/explore'
+    }
+  ];
+
+  const AuthLinks = (user: { name: string }) => {
+    return (
+      <Fragment>
+        <li>
+          <Link href={'/user/favourite'}>
+            <a>
+              {MaterialIcon('favorite')}
+              Favourites
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href={'/user'}>
+            <a>
+              {MaterialIcon('person')}
+              {user.name}
+            </a>
+          </Link>
+        </li>
+      </Fragment>
+    );
   };
 
   return (
@@ -17,35 +51,39 @@ const Navbar = () => {
             <h2>Albergo</h2>
           </a>
         </Link>
-        <ul className={navStyles.navLinks}>
-          <li>
-            <Link href="/search">
-              <a>Find a hotel</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/blogs">
-              <a>Stories</a>
-            </Link>
-          </li>
+        <ul>
+          {centralLinks.map((link, index) => (
+            <li key={index}>
+              <Link href={link.link}>
+                <a>
+                  {MaterialIcon(link.icon)}
+                  {link.name}
+                </a>
+              </Link>
+            </li>
+          ))}
         </ul>
-        <ul className={navStyles.actionsContainer}>
-          <li>
-            <Link href="/becomePartner">
-              <a className={navStyles.partnerBtn}>Become a partner</a>
-            </Link>
-          </li>
-          <li>
-            <button>Login</button>
-          </li>
+        <ul>
+          {userToken ? (
+            AuthLinks(userToken)
+          ) : (
+            <Fragment>
+              <li>
+                <Link href="/partner">
+                  <a className={navStyles.partnerBtn}>Become a partner</a>
+                </Link>
+              </li>
+              <li>
+                <Link href={'/login'}>
+                  <a>
+                    {MaterialIcon('login')}
+                    login
+                  </a>
+                </Link>
+              </li>
+            </Fragment>
+          )}
         </ul>
-        <button onClick={toggleNavMenu}>{MaterialIcon('menu')}</button>
-        <div className={navStyles.menu} id="menu" onClick={toggleNavMenu}>
-          <h1>hello</h1>
-          <h1>hello</h1>
-          <h1>hello</h1>
-          <h1>hello</h1>
-        </div>
       </nav>
     </Fragment>
   );
