@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '../store';
 
 export interface IUser {
-  userEncryptedToken: string;
+  userEncryptedToken: string | null;
 }
 
 const initialState: IUser = {
-  userEncryptedToken: ''
+  userEncryptedToken: null
 };
 
 export const userSlice = createSlice({
@@ -17,7 +17,7 @@ export const userSlice = createSlice({
       state.userEncryptedToken = action.payload;
     },
     removeEncryptedToken: (state) => {
-      state.userEncryptedToken = '';
+      state.userEncryptedToken = null;
     }
   }
 });
