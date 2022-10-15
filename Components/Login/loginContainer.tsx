@@ -8,7 +8,7 @@ const LoginContainer = ({
   title,
   children
 }: {
-  title: 'login' | 'signup';
+  title: 'login' | 'signup' | 'Partner Login';
   children: ReactNode;
 }) => {
   const [currentCard, setCurrentCard] = useState(0);

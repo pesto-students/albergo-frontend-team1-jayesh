@@ -82,4 +82,27 @@ const loginForm = async (
   return;
 };
 
-export { loginForm };
+const partnerLoginMiddleware = async (formObj: ILoginFormObj) => {
+  const response = await fetch('/api/auth/partner/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formObj)
+  })
+    .then((response) => response.json())
+    .catch((err) => {
+      // error handling
+      console.log('error', err);
+    });
+
+  console.log(response);
+  return response;
+};
+
+const partnerLoginForm = async (formObj: ILoginFormObj) => {
+  const response = await partnerLoginMiddleware(formObj);
+  console.log(response);
+};
+
+export { loginForm, partnerLoginForm };

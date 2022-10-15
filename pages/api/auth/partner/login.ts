@@ -27,7 +27,7 @@ export default function handler(
   return new Promise<void>(async (resolve) => {
     const raw = JSON.stringify(req.body);
 
-    await fetch(`${API_URL}/partner/signup`, {
+    await fetch(`${API_URL}/partner/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
