@@ -6,8 +6,6 @@
   max-width: 100%;
   background: variables.$primaryBg;
   padding: 1rem 3rem;
-  position: relative;
-  z-index: 1;
 
   h2 {
     @include variables.font-variation(600);

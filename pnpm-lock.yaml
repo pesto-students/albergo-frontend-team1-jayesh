@@ -29,7 +29,7 @@ dependencies:
   nookies: 2.5.2
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
-  react-redux: 8.0.4_6hrpdt74nuubt2lijsfizev3cu
+  react-redux: 8.0.4_3scyx54fe4cnnff6navzqxutae
   sass: 1.55.0
 
 devDependencies:
@@ -274,7 +274,7 @@ packages:
     dependencies:
       immer: 9.0.15
       react: 18.2.0
-      react-redux: 8.0.4_6hrpdt74nuubt2lijsfizev3cu
+      react-redux: 8.0.4_3scyx54fe4cnnff6navzqxutae
       redux: 4.2.0
       redux-thunk: 2.4.1_redux@4.2.0
       reselect: 4.1.6
@@ -1978,7 +1978,7 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: false
 
-  /react-redux/8.0.4_6hrpdt74nuubt2lijsfizev3cu:
+  /react-redux/8.0.4_3scyx54fe4cnnff6navzqxutae:
     resolution: {integrity: sha512-yMfQ7mX6bWuicz2fids6cR1YT59VTuT8MKyyE310wJQlINKENCeT1UcPdEiX6znI5tF8zXyJ/VYvDgeGuaaNwQ==}
     peerDependencies:
       '@types/react': ^16.8 || ^17.0 || ^18.0
@@ -2008,6 +2008,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-is: 18.2.0
+      redux: 4.2.0
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 

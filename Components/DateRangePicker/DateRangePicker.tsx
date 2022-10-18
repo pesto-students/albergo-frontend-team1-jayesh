@@ -20,7 +20,7 @@ const DateRangePicker = ({
     currentMonth: getCurrentMonth(),
     selectedDay: 0,
     selectedDate: new Date(),
-    inpValue: placeholder
+    inpValue: new Date().toDateString()
   });
 
   const onClickTouchShowCal = () => {
@@ -51,32 +51,33 @@ const DateRangePicker = ({
       selectedDay: parsedDay,
       show: false,
       selectedDate: selectedDate,
-      inpValue: selectedDate
-        .toLocaleDateString('pt-br')
-        .split('/')
-        .reverse()
-        .join('-')
+      inpValue: selectedDate.toDateString()
     }));
-    onChange && onChange(selectedDate);
+    onChange(selectedDate);
   };
 
   return (
     <Fragment>
-      <input
-        type="text"
-        onClick={(e) => {
-          e.preventDefault();
-          onClickTouchShowCal();
-        }}
-        onTouchEnd={(e) => {
-          e.preventDefault();
-          onClickTouchShowCal();
-        }}
-        value={dateState.inpValue}
-        placeholder="Select Date"
-        readOnly
-        className={pickerStyles.dateInput}
-      />
+      <div className={pickerStyles.inpContainer}>
+        <label htmlFor="checkIn">Check In</label>
+        <input
+          type="text"
+          onClick={(e) => {
+            e.preventDefault();
+            onClickTouchShowCal();
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            onClickTouchShowCal();
+          }}
+          value={dateState.inpValue}
+          placeholder={placeholder}
+          readOnly
+          className={pickerStyles.dateInput}
+          name="checkIn"
+          id="checkIn"
+        />
+      </div>
       {dateState.show && (
         <Fragment>
           <div

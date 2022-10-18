@@ -10,7 +10,7 @@ import Layout from '../Components/Layout/Layout';
 const Home: NextPage = () => {
   return (
     <Fragment>
-      {/* <Banner /> */}
+      <Banner />
       <Layout>
         <SectionTypeOne title="Latest on the Hotel listing" viewMoreLink />
         <SectionTypeOne title="Nearby Listed Properties" showOnMapLink />
