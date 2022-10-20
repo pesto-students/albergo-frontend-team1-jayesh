@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import CardTypeOne from '../Components/Card/CardTypeOne';
 import Layout from '../Components/Layout/Layout';
-import exploreStyles from '../styles/Explore/explore.module.scss';
+import styles from '../styles/Explore/explore.module.scss';
 import { MaterialIcon } from '../Utils/Helper';
 
 const Explore: NextPage = () => {
@@ -16,26 +16,19 @@ const Explore: NextPage = () => {
 
   return (
     <Layout>
-      <div className={exploreStyles.filterSection}>
-        <div className={exploreStyles.tabSection}>
+      <div className={styles.filterSection}>
+        <div className={styles.tabSection}>
           {tabs.map((tab, index) => (
-            <h5
-              key={index}
-              className={index === 0 ? exploreStyles.active : undefined}
-            >
+            <h5 key={index} className={index === 0 ? styles.active : undefined}>
               {tab}
             </h5>
           ))}
         </div>
-        <button>
-          {MaterialIcon('tune')}
-        </button>
-        <button>
-          {MaterialIcon('sort')}
-        </button>
+        <button>{MaterialIcon('tune')}</button>
+        <button>{MaterialIcon('sort')}</button>
       </div>
-      <div className={exploreStyles.filtersContainer}></div>
-      <div className={exploreStyles.cardContainer}>
+      <div className={styles.filtersContainer}></div>
+      <div className={styles.cardContainer}>
         {Array(10)
           .fill(0)
           .map((_, index) => (

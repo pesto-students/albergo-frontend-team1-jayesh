@@ -1,13 +1,13 @@
-@use '../../variables';
+@use '../../variables' as *;
 
 .card {
-  @include variables.border-radius(10px);
-  @include variables.box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.2));
-  @include variables.transition(all 0.3s ease-in-out);
+  @include border-radius(10px);
+  @include box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.2));
+  @include transition(all 0.3s ease-in-out);
   flex: 1 1 300px;
 
   &:hover {
-    @include variables.box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.5));
+    @include box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.5));
   }
 
   .imageContainer {
@@ -18,7 +18,7 @@
 
     .likeBtn {
       float: right;
-      color: variables.$fontWhite;
+      color: $fontWhite;
 
       // .likeIcon {
       // color: red;
@@ -31,7 +31,7 @@
     width: 100%;
 
     h5 {
-      @include variables.font-variation(500);
+      @include font-variation(500);
       letter-spacing: 1px;
       margin: 0;
     }

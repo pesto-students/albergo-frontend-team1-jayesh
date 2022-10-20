@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { useAppSelector } from '../../redux/hooks';
-import navStyles from '../../styles/Components/Navbar/Navbar.module.scss';
+import styles from '../../styles/Components/Navbar/Navbar.module.scss';
 import { parseJWT } from '../../Utils/auth/authHelper';
 import { MaterialIcon } from '../../Utils/Helper';
 
@@ -48,7 +48,7 @@ const Navbar = () => {
 
   return (
     <Fragment>
-      <nav className={navStyles.nav}>
+      <nav className={styles.nav}>
         <Link href="/">
           <a>
             <h2>Albergo</h2>
@@ -73,7 +73,7 @@ const Navbar = () => {
             <Fragment>
               <li>
                 <Link href="/partner">
-                  <a className={navStyles.partnerBtn}>Become a partner</a>
+                  <a className={styles.partnerBtn}>Become a partner</a>
                 </Link>
               </li>
               <li>

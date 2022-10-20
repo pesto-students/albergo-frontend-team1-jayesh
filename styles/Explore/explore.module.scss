@@ -1,13 +1,13 @@
-@use '../variables';
+@use '../variables' as *;
 
 .filterSection {
-  @include variables.display-flex(space-between, center);
+  @include display-flex(space-between, center);
   width: 100%;
   padding: 1rem 0;
   gap: 1rem;
 
   .tabSection {
-    @include variables.display-flex(unset, center);
+    @include display-flex(unset, center);
     width: 100%;
     gap: 2rem;
 
@@ -20,12 +20,12 @@
   }
 
   button {
-    @include variables.border-radius(2rem);
-    @include variables.display-flex(space-between, center);
-    @include variables.font-variation(500);
+    @include border-radius(2rem);
+    @include display-flex(space-between, center);
+    @include font-variation(500);
     padding: 0.4rem 1rem;
     background: transparent;
-    border: 1px solid variables.$fontGrey;
+    border: 1px solid $fontGrey;
     font-family: inherit;
     font-size: 1rem;
     letter-spacing: 0.5px;
@@ -35,12 +35,12 @@
 }
 
 .filtersContainer {
-  @include variables.display-flex(space-between, center);
+  @include display-flex(space-between, center);
   width: 100%;
 }
 
 .cardContainer {
-  @include variables.display-flex(space-between, center);
+  @include display-flex(space-between, center);
   width: 100%;
   flex-wrap: wrap;
   gap: 2rem;
