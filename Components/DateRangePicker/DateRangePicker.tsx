@@ -1,5 +1,5 @@
 import { useState, Fragment } from 'react';
-import pickerStyles from '../../styles/Components/DateRangePicker/DateRangePicker.module.scss';
+import styles from '../../styles/Components/DateRangePicker/DateRangePicker.module.scss';
 import {
   daysArr,
   getCurrentMonth,
@@ -75,12 +75,12 @@ const DateRangePicker = ({
         value={dateState.inpValue}
         placeholder="Select Date"
         readOnly
-        className={pickerStyles.dateInput}
+        className={styles.dateInput}
       />
       {dateState.show && (
         <Fragment>
           <div
-            className={pickerStyles.backdrop}
+            className={styles.backdrop}
             onClick={(e) => {
               e.preventDefault();
               onClickTouchCloseCal();
@@ -90,8 +90,8 @@ const DateRangePicker = ({
               onClickTouchCloseCal();
             }}
           />
-          <div className={pickerStyles.calendar}>
-            <div className={pickerStyles.calendarTop}>
+          <div className={styles.calendar}>
+            <div className={styles.calendarTop}>
               <button
                 disabled={dateState.currentMonth === 0}
                 onClick={() => {
@@ -127,13 +127,13 @@ const DateRangePicker = ({
                 }}
               >
                 <span
-                  className={`material-symbols-outlined ${pickerStyles.rightIcon}`}
+                  className={`material-symbols-outlined ${styles.rightIcon}`}
                 >
                   arrow_forward_ios
                 </span>
               </button>
             </div>
-            <div className={pickerStyles.calendarBody}>
+            <div className={styles.calendarBody}>
               {daysArr.map((day, index) => (
                 <small key={index}>{day}</small>
               ))}
@@ -141,9 +141,7 @@ const DateRangePicker = ({
                 (day, index) => {
                   return (
                     <div key={index}>
-                      <small
-                        className={`${pickerStyles.days} ${pickerStyles.disabled}`}
-                      >
+                      <small className={`${styles.days} ${styles.disabled}`}>
                         {day}
                       </small>
                     </div>
@@ -158,12 +156,12 @@ const DateRangePicker = ({
                         className={`${
                           getCurrentMonth() === dateState.currentMonth &&
                           day === dateState.monthDetails.currentDay
-                            ? `${pickerStyles.days} ${pickerStyles.active} ${pickerStyles.today}`
-                            : `${pickerStyles.active} ${pickerStyles.days}`
+                            ? `${styles.days} ${styles.active} ${styles.today}`
+                            : `${styles.active} ${styles.days}`
                         } ${
                           dateState.selectedDay === day &&
                           getCurrentMonth() === dateState.currentMonth
-                            ? pickerStyles.selected
+                            ? styles.selected
                             : undefined
                         }`}
                         onClick={(e) =>
@@ -183,9 +181,7 @@ const DateRangePicker = ({
                 (day, index) => {
                   return (
                     <div key={index}>
-                      <small
-                        className={`${pickerStyles.days} ${pickerStyles.disabled}`}
-                      >
+                      <small className={`${styles.days} ${styles.disabled}`}>
                         {day}
                       </small>
                     </div>
