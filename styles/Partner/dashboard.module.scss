@@ -30,39 +30,6 @@
     }
   }
 
-  .roomsContainer {
-    @include variables.display-flex(unset, flex-start);
-    overflow-x: scroll;
-    padding-bottom: 1rem;
-    gap: 1rem;
-
-    // cross browser scrollbar
-    &::-webkit-scrollbar {
-      height: 0.5rem;
-    }
-
-    &::-webkit-scrollbar-track {
-      @include variables.border-radius(0.5rem);
-      background: rgba(variables.$fontGrey, 0.1);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      @include variables.border-radius(0.5rem);
-      background: rgba(variables.$fontGrey, 0.5);
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: rgba(variables.$fontGrey, 0.7);
-    }
-
-    .roomCard {
-      @include variables.border-radius(0.75rem);
-      flex: 0 0 200px;
-      border: 0.5px solid rgba(variables.$fontGrey, 0.5);
-      padding: 1rem;
-    }
-  }
-
   .descContainer {
     @include variables.border-radius(0.75rem);
     width: 100%;
@@ -173,6 +140,97 @@
     }
   }
 
+  .photosContainer {
+    @include variables.display-flex(unset, center);
+    gap: 1rem;
+    overflow-x: scroll;
+    padding-bottom: 1rem;
+
+    // cross browser scrollbar
+    &::-webkit-scrollbar {
+      height: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      @include variables.border-radius(0.5rem);
+      background: rgba(variables.$fontGrey, 0.1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @include variables.border-radius(0.5rem);
+      background: rgba(variables.$fontGrey, 0.5);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(variables.$fontGrey, 0.7);
+    }
+
+    .photoCard {
+      @include variables.border-radius(0.75rem);
+      flex: 0 0 250px;
+      aspect-ratio: 1/0.75;
+      position: relative;
+      overflow: hidden;
+
+      button {
+        @include variables.border-radius(50%);
+        @include variables.transition(0.3s ease-in-out);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        outline: none;
+        padding: 0.5rem;
+        display: grid;
+        place-items: center;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+
+        &:hover {
+          background: #2e2e2e;
+          color: variables.$fontWhite;
+        }
+
+        span {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+
+  .roomsContainer {
+    @include variables.display-flex(unset, flex-start);
+    overflow-x: scroll;
+    padding-bottom: 1rem;
+    gap: 1rem;
+
+    // cross browser scrollbar
+    &::-webkit-scrollbar {
+      height: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      @include variables.border-radius(0.5rem);
+      background: rgba(variables.$fontGrey, 0.1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @include variables.border-radius(0.5rem);
+      background: rgba(variables.$fontGrey, 0.5);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(variables.$fontGrey, 0.7);
+    }
+
+    .roomCard {
+      @include variables.border-radius(0.75rem);
+      flex: 0 0 200px;
+      border: 0.5px solid rgba(variables.$fontGrey, 0.5);
+      padding: 1rem;
+    }
+  }
+
   .bookingsTable {
     @include variables.border-radius(1rem);
     width: 100%;
@@ -197,7 +255,7 @@
     tbody {
       tr {
         &:not(:last-of-type) {
-          border-bottom: 0.5px solid rgba(variables.$fontGrey, 0.25);
+          box-shadow: 0 1px 0 rgba(variables.$fontGrey, 0.25);
         }
 
         td {
