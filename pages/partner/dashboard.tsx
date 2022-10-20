@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Layout from '../../Components/Layout/Layout';
 import dashboardStyles from '../../styles/Partner/dashboard.module.scss';
 import { MaterialIcon } from '../../Utils/Helper';
@@ -10,30 +11,6 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className={dashboardStyles.main}>
-        <div className={dashboardStyles.sectionHeader}>
-          <h5>Available rooms</h5>
-          <div className={dashboardStyles.btnOptions}>
-            <button>Edit Rooms</button>
-            <button>View all</button>
-          </div>
-        </div>
-        <div className={dashboardStyles.roomsContainer}>
-          {Array(15)
-            .fill(0)
-            .map((_, index) => (
-              <div className={dashboardStyles.roomCard} key={index}>
-                <div className={dashboardStyles.roomImage}></div>
-                <div className={dashboardStyles.roomDetails}>
-                  <p>Room Name</p>
-                  <small>Room Description</small>
-                  <div className={dashboardStyles.roomPrice}>
-                    <small>Price</small>
-                    <small>Discount</small>
-                  </div>
-                </div>
-              </div>
-            ))}
-        </div>
         <div className={dashboardStyles.sectionHeader}>
           <h5>Hotel Description</h5>
           <div className={dashboardStyles.btnOptions}>
@@ -110,6 +87,54 @@ const Dashboard = () => {
               <h5>6:00 PM</h5>
             </div>
           </div>
+        </div>
+        <div className={dashboardStyles.sectionHeader}>
+          <h5>Hotel Photos</h5>
+          <div className={dashboardStyles.btnOptions}>
+            <button>Edit</button>
+          </div>
+        </div>
+        <div className={dashboardStyles.photosContainer}>
+          {Array(15)
+            .fill(0)
+            .map((_, i) => (
+              <div className={dashboardStyles.photoCard} key={i}>
+                <Image
+                  src={
+                    'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
+                  }
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition="center"
+                  alt="hotel"
+                />
+                <button>{MaterialIcon('delete')}</button>
+              </div>
+            ))}
+        </div>
+        <div className={dashboardStyles.sectionHeader}>
+          <h5>Available rooms</h5>
+          <div className={dashboardStyles.btnOptions}>
+            <button>Edit Rooms</button>
+            <button>View all</button>
+          </div>
+        </div>
+        <div className={dashboardStyles.roomsContainer}>
+          {Array(15)
+            .fill(0)
+            .map((_, index) => (
+              <div className={dashboardStyles.roomCard} key={index}>
+                <div className={dashboardStyles.roomImage}></div>
+                <div className={dashboardStyles.roomDetails}>
+                  <p>Room Name</p>
+                  <small>Room Description</small>
+                  <div className={dashboardStyles.roomPrice}>
+                    <small>Price</small>
+                    <small>Discount</small>
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
         <div className={dashboardStyles.sectionHeader}>
           <h5>Bookings</h5>
