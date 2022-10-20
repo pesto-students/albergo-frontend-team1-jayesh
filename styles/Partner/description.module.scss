@@ -1,27 +1,113 @@
 @use '../variables';
 
 .formContainer {
+  @include variables.border-radius(0.5rem);
+  // @include variables.display-flex(space-between, flex-start);
   width: 100%;
+  margin: 2rem 0;
+  // flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  border: 0.5px solid rgba(variables.$fontGrey, 0.6);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 
-  .inpNameContainer {
+  .inpNameContainer,
+  .smallInpContainer {
     @include variables.display-flex(unset, center);
 
     label {
       @include variables.font-variation(600);
-      font-size: 3rem;
+      width: max-content;
     }
 
     input {
       @include variables.border-radius(0.5rem);
       @include variables.font-variation(300);
-      font-size: 3rem;
       outline: none;
       padding: 0.5rem;
       border: none;
-      flex: 1;
 
       &:focus {
         border: 0.5px solid rgba(variables.$fontGrey, 0.6);
+      }
+    }
+  }
+
+  .inpNameContainer {
+    // flex: 1 1 100%;
+    grid-column: 1 / 3;
+
+    label,
+    input {
+      font-size: 2rem;
+    }
+  }
+
+  .smallInpContainer {
+    // flex: 0 0 30%;
+
+    label,
+    input {
+      font-size: 1rem;
+    }
+  }
+
+  .checkboxInpContainer {
+    @include variables.display-flex(unset, center);
+    gap: 1.5rem;
+
+    h5 {
+      margin: 0;
+    }
+
+    .switch {
+      width: 3rem;
+
+      input {
+        display: none;
+      }
+
+      label {
+        @include variables.display-flex(unset, center);
+        @include variables.border-radius(1.5rem);
+        @include variables.transition(0.3s ease-in-out);
+        width: 100%;
+        height: 20px;
+        box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #ffffff;
+        position: relative;
+        cursor: pointer;
+        background: red;
+
+        &::after {
+          @include variables.transition(0.3s ease-in-out);
+          @include variables.border-radius(50%);
+          content: '';
+          position: absolute;
+          left: -10%;
+          height: 110%;
+          aspect-ratio: 1/1;
+          background: linear-gradient(
+            330deg,
+            #5b0eeb 0%,
+            #6d5dfc 50%,
+            #8abdff 100%
+          );
+        }
+      }
+
+      & input:checked {
+        & ~ label {
+          background: green;
+
+          &::before {
+            opacity: 1;
+          }
+          &::after {
+            left: 70%;
+          }
+        }
       }
     }
   }
