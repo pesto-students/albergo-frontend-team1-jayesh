@@ -42,7 +42,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  user-select: none;
+
+  &::selection {
+    background: #2e2e2e;
+    color: #fff;
+  }
 }
 
 html {
