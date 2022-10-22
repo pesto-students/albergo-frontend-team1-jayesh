@@ -106,7 +106,7 @@ const DateRangePicker = ({
                   });
                 }}
               >
-                {MaterialIcon('arrow_back_ios')}
+                <MaterialIcon iconName="arrow_back_ios" />
               </button>
               <span>
                 <h3>{dateState.monthDetails.year}</h3>

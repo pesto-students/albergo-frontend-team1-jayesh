@@ -16,7 +16,9 @@ const CardTypeOne = ({ wide = false }: { wide?: boolean }) => {
           objectFit="cover"
           alt="image"
         />
-        <button>{MaterialIcon('favorite')}</button>
+        <button>
+          <MaterialIcon iconName="favorite" />
+        </button>
       </div>
       <div className={styles.cardContent}>
         <Link href={'/hotel/a/register'}>

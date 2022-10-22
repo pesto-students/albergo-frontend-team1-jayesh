@@ -148,14 +148,18 @@ const HotelSlugHome = () => {
                 <p>100 Smart Street, LA, USA</p>
               </div>
               <div className={styles.btnSection}>
-                <button>{MaterialIcon('favorite')}</button>
-                <button>{MaterialIcon('share')}</button>
+                <button>
+                  <MaterialIcon iconName="favorite" />
+                </button>
+                <button>
+                  <MaterialIcon iconName="share" />
+                </button>
               </div>
             </div>
             <div className={styles.featureSection}>
               {arrObj.map((obj, index) => (
                 <div className={styles.feature} key={index}>
-                  {MaterialIcon(obj.iconName)}
+                  <MaterialIcon iconName={obj.iconName} />
                   <small>{obj.label}</small>
                 </div>
               ))}
@@ -178,7 +182,7 @@ const HotelSlugHome = () => {
               <div className={styles.amenitiesContainer}>
                 {amenitiesArr.map((amenity, index) => (
                   <div className={styles.amenity} key={index}>
-                    {MaterialIcon(amenity.iconName)}
+                    <MaterialIcon iconName={amenity.iconName} />
                     <p>{amenity.label}</p>
                   </div>
                 ))}
@@ -190,7 +194,7 @@ const HotelSlugHome = () => {
               <div className={styles.safetyContainer}>
                 {safetyChecks.map((checks, index) => (
                   <div className={styles.safety} key={index}>
-                    {MaterialIcon('assignment_turned_in')}
+                    <MaterialIcon iconName="assignment_turned_in" />
                     <p>{checks}</p>
                   </div>
                 ))}
@@ -199,7 +203,9 @@ const HotelSlugHome = () => {
             <div className={styles.locationSection}></div>
             {/* <div className={hotelHomeStyles.nearbySection}></div> */}
             <div className={styles.reviewSection}>
-              <h5>Reviews {MaterialIcon('star')} 5.0</h5>
+              <h5>
+                Reviews <MaterialIcon iconName="star" /> 5.0
+              </h5>
               <div className={styles.reviewTypeContainer}>
                 {reviewObjArr.map((reviewObj, index) => (
                   <div className={styles.reviewType} key={index}>
@@ -243,11 +249,11 @@ const HotelSlugHome = () => {
             <button>Reserve Now</button>
             <div className={styles.contactSection}>
               <small>
-                {MaterialIcon('apartment')}
+                <MaterialIcon iconName="apartment" />
                 Property inquiry
               </small>
               <small>
-                {MaterialIcon('call')}
+                <MaterialIcon iconName="call" />
                 contact host
               </small>
             </div>

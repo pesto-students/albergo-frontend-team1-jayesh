@@ -24,8 +24,12 @@ const Explore: NextPage = () => {
             </h5>
           ))}
         </div>
-        <button>{MaterialIcon('tune')}</button>
-        <button>{MaterialIcon('sort')}</button>
+        <button>
+          <MaterialIcon iconName="tune" />
+        </button>
+        <button>
+          <MaterialIcon iconName="sort" />
+        </button>
       </div>
       <div className={styles.filtersContainer}></div>
       <div className={styles.cardContainer}>
