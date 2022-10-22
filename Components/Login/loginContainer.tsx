@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ReactNode, useEffect, useState } from 'react';
 import Layout from '../Layout/Layout';
 import styles from '../../styles/Components/LoginContainer/LoginContainer.module.scss';
+import { MaterialIcon } from '../../Utils/Helper';
 
 const LoginContainer = ({
   title,
@@ -82,8 +83,8 @@ const LoginContainer = ({
         <div className={styles.formContainer}>
           <h2>{title}</h2>
           <p>
-            Have an account{' '}
-            <span className="material-symbols-outlined">arrow_right_alt</span>{' '}
+            Have an account
+            <MaterialIcon iconName="arrow_right_alt" />
             <Link href={title === 'login' ? '/signup' : '/login'}>
               <a>{title === 'login' ? 'signup' : 'login'}</a>
             </Link>

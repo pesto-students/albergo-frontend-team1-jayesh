@@ -11,7 +11,9 @@ const Newsletter = () => {
         </div>
         <form>
           <input type="email" placeholder="john@doe.com" />
-          <button type="submit">{MaterialIcon('send')}</button>
+          <button type="submit">
+            <MaterialIcon iconName="send" />
+          </button>
         </form>
       </div>
     </div>

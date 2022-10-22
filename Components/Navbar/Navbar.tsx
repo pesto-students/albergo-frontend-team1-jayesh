@@ -29,7 +29,7 @@ const Navbar = () => {
         <li>
           <Link href={'/user/favourite'}>
             <a>
-              {MaterialIcon('favorite')}
+              <MaterialIcon iconName="favorite" />
               Favourites
             </a>
           </Link>
@@ -37,7 +37,7 @@ const Navbar = () => {
         <li>
           <Link href={'/user'}>
             <a>
-              {MaterialIcon('person')}
+              <MaterialIcon iconName="person" />
               {user.name}
             </a>
           </Link>
@@ -59,7 +59,7 @@ const Navbar = () => {
             <li key={index}>
               <Link href={link.link}>
                 <a>
-                  {MaterialIcon(link.icon)}
+                  <MaterialIcon iconName={link.icon} />
                   {link.name}
                 </a>
               </Link>
@@ -79,7 +79,7 @@ const Navbar = () => {
               <li>
                 <Link href={'/login'}>
                   <a>
-                    {MaterialIcon('login')}
+                    <MaterialIcon iconName="login" />
                     login
                   </a>
                 </Link>

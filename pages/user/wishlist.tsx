@@ -21,7 +21,9 @@ const Wishlist = () => {
                     alt="hotel-image"
                   />
                 </div>
-                <button>{MaterialIcon('close')}</button>
+                <button>
+                  <MaterialIcon iconName="close" />
+                </button>
                 <div className={styles.cardContent}>
                   <h5>Al burj hotel</h5>
                   <p>100, krishna nagar, Delhi</p>

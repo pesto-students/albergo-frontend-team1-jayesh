@@ -67,10 +67,10 @@ const Toast = ({
         toastState.visible ? undefined : styles.hide
       }`}
     >
-      {MaterialIcon(getIcon())}
+      <MaterialIcon iconName={getIcon()} />
       <p>{toastState.message}</p>
       <button onClick={() => toastState.visible && resetToast()}>
-        {MaterialIcon('close')}
+        <MaterialIcon iconName="close" />
       </button>
     </div>
   );

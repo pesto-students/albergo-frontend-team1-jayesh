@@ -40,7 +40,7 @@ const Banner = () => {
           {/* <hr /> */}
           <input type="number" placeholder="Guests" />
           <button className={styles.searchBtn} type="submit">
-            {MaterialIcon('search')}
+            <MaterialIcon iconName="search" />
           </button>
         </form>
       </div>

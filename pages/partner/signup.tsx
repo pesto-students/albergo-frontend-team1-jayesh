@@ -179,7 +179,7 @@ const Signup = () => {
                   onClick={() => setFormTab(0)}
                   className={formTab === 0 ? styles.hiddenBtn : undefined}
                 >
-                  {MaterialIcon('arrow_back')}
+                  <MaterialIcon iconName="arrow_back" />
                   Previous
                 </button>
                 <button
@@ -187,7 +187,7 @@ const Signup = () => {
                   className={formTab === 1 ? styles.hiddenBtn : undefined}
                 >
                   Next
-                  {MaterialIcon('arrow_forward')}
+                  <MaterialIcon iconName="arrow_forward" />
                 </button>
                 {formTab === 1 && <button>Submit</button>}
               </div>
