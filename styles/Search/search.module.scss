@@ -22,5 +22,25 @@
     aspect-ratio: 1/1;
     position: sticky;
     top: 1rem;
+
+    .markerLabel {
+      @include display-flex(center, center);
+      @include border-radius(15px);
+      gap: 0.25rem;
+      background-color: $fontWhite;
+      color: $fontBlack;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid $fontBlack;
+
+      small {
+        letter-spacing: 0.1rem;
+      }
+
+      .iconContainer {
+        position: relative;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
   }
 }

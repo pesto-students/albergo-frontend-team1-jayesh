@@ -10,6 +10,7 @@ import ReactMapGL, {
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from '../styles/Search/search.module.scss';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 const ExploreHome: NextPage = () => {
   const [viewportState, setViewportState] = useState({
@@ -56,8 +57,18 @@ const ExploreHome: NextPage = () => {
             <GeolocateControl showAccuracyCircle />
             <AttributionControl customAttribution="Albergo" />
             <NavigationControl />
-            <Marker longitude={-100} latitude={40} anchor="top" color="#5a7171">
-              <small>Hello</small>
+            <Marker longitude={-100} latitude={40} anchor="top">
+              <div className={styles.markerLabel}>
+                <div className={styles.iconContainer}>
+                  <Image
+                    src="/assets/icons/apartment_FILL1_wght400_GRAD0_opsz40.svg"
+                    alt="albergo"
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+                <small>Albergo</small>
+              </div>
             </Marker>
           </ReactMapGL>
         </div>
