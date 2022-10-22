@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import Layout from '../../../Components/Layout/Layout';
-import registerStyles from '../../../styles/Hotel/book.module.scss';
+import styles from '../../../styles/Hotel/book.module.scss';
 
 const HotelSlugBook = () => {
   return (
     <Layout>
-      <div className={registerStyles.container}>
-        <div className={registerStyles.content}>
-          <div className={registerStyles.header}>
+      <div className={styles.container}>
+        <div className={styles.content}>
+          <div className={styles.header}>
             <Link href="/hotel/a">
               <a>
                 <h3>Al burg Hotel</h3>
@@ -15,7 +15,7 @@ const HotelSlugBook = () => {
             </Link>
           </div>
         </div>
-        <div className={registerStyles.sideContent}></div>
+        <div className={styles.sideContent}></div>
       </div>
     </Layout>
   );

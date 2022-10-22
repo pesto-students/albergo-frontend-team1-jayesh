@@ -2,7 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode, useEffect, useState } from 'react';
 import Layout from '../Layout/Layout';
-import loginCompStyles from '../../styles/Components/LoginContainer/LoginComp.module.scss';
+import styles from '../../styles/Components/LoginContainer/LoginContainer.module.scss';
+import { MaterialIcon } from '../../Utils/Helper';
 
 const LoginContainer = ({
   title,
@@ -47,16 +48,16 @@ const LoginContainer = ({
 
   return (
     <Layout>
-      <div className={loginCompStyles.container}>
-        <div className={loginCompStyles.heroSection}>
+      <div className={styles.container}>
+        <div className={styles.heroSection}>
           <h5>Join us</h5>
-          <div className={loginCompStyles.content}>
+          <div className={styles.content}>
             <h1>Start your journey with us.</h1>
             <h5>Discover the world&apos;s marvel and enlightment.</h5>
           </div>
-          <div className={loginCompStyles.cardContainer}>
-            <div className={loginCompStyles.card}>
-              <div className={loginCompStyles.avatarContainer}>
+          <div className={styles.cardContainer}>
+            <div className={styles.card}>
+              <div className={styles.avatarContainer}>
                 <Image
                   src={cardArr[currentCard].cardAvatar}
                   alt="avatar"
@@ -64,28 +65,26 @@ const LoginContainer = ({
                   objectFit="cover"
                 />
               </div>
-              <div className={loginCompStyles.cardContent}>
+              <div className={styles.cardContent}>
                 <h5>{cardArr[currentCard].cardName}</h5>
                 <p>{cardArr[currentCard].cardContent}</p>
               </div>
             </div>
-            <div className={loginCompStyles.dotContainer}>
+            <div className={styles.dotContainer}>
               {cardArr.map((_, index) => (
                 <span
                   key={index}
-                  className={
-                    index === currentCard ? loginCompStyles.active : undefined
-                  }
+                  className={index === currentCard ? styles.active : undefined}
                 />
               ))}
             </div>
           </div>
         </div>
-        <div className={loginCompStyles.formContainer}>
+        <div className={styles.formContainer}>
           <h2>{title}</h2>
           <p>
-            Have an account{' '}
-            <span className="material-symbols-outlined">arrow_right_alt</span>{' '}
+            Have an account
+            <MaterialIcon iconName="arrow_right_alt" />
             <Link href={title === 'login' ? '/signup' : '/login'}>
               <a>{title === 'login' ? 'signup' : 'login'}</a>
             </Link>

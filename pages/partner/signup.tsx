@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Layout from '../../Components/Layout/Layout';
-import signUpStyles from '../../styles/Partner/signup.module.scss';
+import styles from '../../styles/Partner/signup.module.scss';
 import { partnerSignupForm } from '../../Utils/auth/signup';
 import { MaterialIcon } from '../../Utils/Helper';
 
@@ -85,15 +85,15 @@ const Signup = () => {
   const TabOne = () => {
     return (
       <Fragment>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="name">Hotel Name</label>
           <input type="text" name="name" id="name" ref={hotelNameInp} />
         </div>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="email">Hotel Email</label>
           <input type="email" name="email" id="email" ref={hotelEmailInp} />
         </div>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -102,7 +102,7 @@ const Signup = () => {
             ref={hotelPasswordInp}
           />
         </div>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input
             type="password"
@@ -118,23 +118,23 @@ const Signup = () => {
   const TabTwo = () => {
     return (
       <Fragment>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="phone">Phone</label>
           <input type="tel" name="phone" id="phone" ref={hotelPhoneInp} />
         </div>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="address">Address</label>
           <textarea name="address" id="address" ref={hotelAddressInp} />
         </div>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="city">City</label>
           <input type="text" name="city" id="city" ref={hotelCityInp} />
         </div>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="state">State</label>
           <input type="text" name="state" id="state" ref={hotelStateInp} />
         </div>
-        <div className={signUpStyles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="country">Country</label>
           <input
             type="text"
@@ -160,8 +160,8 @@ const Signup = () => {
 
   return (
     <Layout>
-      <div className={signUpStyles.container}>
-        <div className={signUpStyles.heroSection}>
+      <div className={styles.container}>
+        <div className={styles.heroSection}>
           <Image
             src="https://images.unsplash.com/photo-1665731372684-1efcb1307d5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
             layout="fill"
@@ -169,25 +169,25 @@ const Signup = () => {
             alt="hero image"
           />
         </div>
-        <div className={signUpStyles.formContainer}>
-          <div className={signUpStyles.form}>
+        <div className={styles.formContainer}>
+          <div className={styles.form}>
             <h1>Partner Signup</h1>
             <form onSubmit={formSubmitHandler}>
               {renderTabs()}
-              <div className={signUpStyles.btnGroup}>
+              <div className={styles.btnGroup}>
                 <button
                   onClick={() => setFormTab(0)}
-                  className={formTab === 0 ? signUpStyles.hiddenBtn : undefined}
+                  className={formTab === 0 ? styles.hiddenBtn : undefined}
                 >
-                  {MaterialIcon('arrow_back')}
+                  <MaterialIcon iconName="arrow_back" />
                   Previous
                 </button>
                 <button
                   onClick={() => setFormTab(1)}
-                  className={formTab === 1 ? signUpStyles.hiddenBtn : undefined}
+                  className={formTab === 1 ? styles.hiddenBtn : undefined}
                 >
                   Next
-                  {MaterialIcon('arrow_forward')}
+                  <MaterialIcon iconName="arrow_forward" />
                 </button>
                 {formTab === 1 && <button>Submit</button>}
               </div>

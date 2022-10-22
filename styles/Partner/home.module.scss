@@ -1,4 +1,4 @@
-@use '../variables';
+@use '../variables' as *;
 
 .heroSection {
   width: 100vw;
@@ -8,8 +8,8 @@
 
   .heroText {
     width: 70%;
-    @include variables.border-radius(1rem);
-    @include variables.box-shadow(0 4px 30px rgba(0, 0, 0, 0.1));
+    @include border-radius(1rem);
+    @include box-shadow(0 4px 30px rgba(0, 0, 0, 0.1));
     position: absolute;
     top: 45%;
     left: 10%;
@@ -17,10 +17,10 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 1rem;
-    color: variables.$fontWhite;
+    color: $fontWhite;
 
     h2 {
-      @include variables.font-variation(500);
+      @include font-variation(500);
       letter-spacing: 0.5px;
       margin: 1.5rem 0;
     }
@@ -28,7 +28,7 @@
 }
 
 .content {
-  @include variables.display-flex(space-between, flex-start);
+  @include display-flex(space-between, flex-start);
   height: 80vh;
   gap: 3rem;
   padding: 2rem 0;
@@ -36,7 +36,7 @@
   .imgContainer {
     height: 100%;
     width: 50%;
-    @include variables.border-radius(1.5rem);
+    @include border-radius(1.5rem);
     position: relative;
     overflow: hidden;
   }
@@ -44,7 +44,7 @@
   .textContainer {
     width: 50%;
     h2 {
-      @include variables.font-variation(600);
+      @include font-variation(600);
     }
   }
 }

@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 import BlogSection from '../../Components/Home/Sections/BlogSection';
 import Layout from '../../Components/Layout/Layout';
-import homeStyles from '../../styles/Partner/home.module.scss';
+import styles from '../../styles/Partner/home.module.scss';
 
 const HotelPartnerHome = () => {
   return (
     <Fragment>
-      <div className={homeStyles.heroSection}>
+      <div className={styles.heroSection}>
         <Image
           src="https://images.unsplash.com/photo-1664521081309-57c84a924012?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
           layout="fill"
@@ -16,7 +16,7 @@ const HotelPartnerHome = () => {
           alt="hero image"
           priority
         />
-        <div className={homeStyles.heroText}>
+        <div className={styles.heroText}>
           <h2>Become a partner with us</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
@@ -31,8 +31,8 @@ const HotelPartnerHome = () => {
         </div>
       </div>
       <Layout>
-        <div className={homeStyles.content}>
-          <div className={homeStyles.imgContainer}>
+        <div className={styles.content}>
+          <div className={styles.imgContainer}>
             <Image
               src="https://images.unsplash.com/photo-1664592451215-60c2c472afbb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80"
               layout="fill"
@@ -40,7 +40,7 @@ const HotelPartnerHome = () => {
               alt="image"
             />
           </div>
-          <div className={homeStyles.textContainer}>
+          <div className={styles.textContainer}>
             <h2>Why Partner with us?</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed

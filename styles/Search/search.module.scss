@@ -1,7 +1,7 @@
-@use '../variables';
+@use '../variables' as *;
 
 .filterSection {
-  @include variables.display-flex(space-between, center);
+  @include display-flex(space-between, center);
 }
 
 .container {
@@ -11,7 +11,7 @@
 
   .contentSection {
     width: 60%;
-    @include variables.display-flex(space-between, flex-start);
+    @include display-flex(space-between, flex-start);
     flex-wrap: wrap;
     gap: 3vw;
   }

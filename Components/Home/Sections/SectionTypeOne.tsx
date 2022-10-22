@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import sectionStyles from '../../../styles/Homescreen/SectionTypeOne.module.scss';
+import styles from '../../../styles/Homescreen/SectionTypeOne.module.scss';
 import CardTypeOne from '../../Card/CardTypeOne';
 
 const SectionTypeOne = ({
@@ -17,22 +17,22 @@ const SectionTypeOne = ({
   numberOfCards?: number;
 }) => {
   return (
-    <div className={sectionStyles.container}>
+    <div className={styles.container}>
       <h3>{title}</h3>
-      <div className={sectionStyles.subTop}>
-        <hr className={sectionStyles.divider} />
+      <div className={styles.subTop}>
+        <hr className={styles.divider} />
         {viewMoreLink && (
           <Link href="">
-            <a className={sectionStyles.moreLink}>View more</a>
+            <a className={styles.moreLink}>View more</a>
           </Link>
         )}
         {showOnMapLink && (
           <Link href="">
-            <a className={sectionStyles.moreLink}>Show on map</a>
+            <a className={styles.moreLink}>Show on map</a>
           </Link>
         )}
       </div>
-      <div className={sectionStyles.cardContainer}>
+      <div className={styles.cardContainer}>
         {Array(numberOfCards)
           .fill(0)
           .map((_, index) => (

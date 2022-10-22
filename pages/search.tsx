@@ -8,7 +8,7 @@ import ReactMapGL, {
   NavigationControl
 } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import searchStyles from '../styles/Search/search.module.scss';
+import styles from '../styles/Search/search.module.scss';
 import { useEffect, useState } from 'react';
 
 const ExploreHome: NextPage = () => {
@@ -33,16 +33,16 @@ const ExploreHome: NextPage = () => {
 
   return (
     <Layout>
-      <div className={searchStyles.filterSection}></div>
-      <div className={searchStyles.container}>
-        <div className={searchStyles.contentSection}>
+      <div className={styles.filterSection}></div>
+      <div className={styles.container}>
+        <div className={styles.contentSection}>
           {Array(10)
             .fill(0)
             .map((_, index) => (
               <CardTypeOne key={index} />
             ))}
         </div>
-        <div className={searchStyles.mapSection}>
+        <div className={styles.mapSection}>
           <ReactMapGL
             style={{ width: '100%', height: '100%' }}
             mapStyle="mapbox://styles/shobhit24/ckopb9huq8vwt18qvw4gxh271"

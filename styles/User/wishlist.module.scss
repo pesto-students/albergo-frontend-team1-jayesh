@@ -1,18 +1,16 @@
-@use '../variables';
+@use '../variables' as *;
 
 .container {
   margin: 5vh 0;
 
   .cardContainer {
+    @include display-flex(space-between, flex-start);
     margin: 5vh 0;
-    display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
     gap: 2rem 1rem;
 
     .card {
-      @include variables.border-radius(1.5rem);
+      @include border-radius(1.5rem);
       position: relative;
       width: 325px;
       height: 45vh;
@@ -25,8 +23,8 @@
       }
 
       button {
-        @include variables.border-radius(50%);
-        @include variables.transition(0.3s ease-in-out);
+        @include border-radius(50%);
+        @include transition(0.3s ease-in-out);
         // center
         display: grid;
         place-items: center;
@@ -42,7 +40,7 @@
         }
 
         span {
-          @include variables.icon-variation(0, 700, 200, 48);
+          @include icon-variation(0, 700, 200, 48);
           font-size: 1.5rem;
         }
       }
@@ -53,7 +51,7 @@
         bottom: 0;
         padding: 1rem;
         background: rgba(0, 0, 0, 0.655);
-        color: variables.$fontWhite;
+        color: $fontWhite;
 
         h5 {
           margin-top: 0;
