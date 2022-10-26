@@ -1,0 +1,85 @@
+@use '../variables' as *;
+
+.container {
+  width: 100%;
+
+  .header {
+    @include display-flex(unset, center);
+    gap: 2rem;
+    margin-bottom: 2rem;
+
+    .profilePic {
+      @include border-radius(50%);
+      width: 75px;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .info {
+      h4 {
+        @include font-variation(600);
+        margin: 0 0 0.5rem;
+      }
+
+      p {
+        @include font-variation(600);
+        margin: 0;
+        color: rgba($color: $fontGrey, $alpha: 0.9);
+
+        span {
+          color: black;
+        }
+      }
+    }
+  }
+
+  .detailsContainer {
+    @include border-radius(1rem);
+    padding: 1rem;
+    border: 1px solid rgba($color: $fontGrey, $alpha: 0.2);
+
+    .detailsHeader {
+      h4 {
+        @include font-variation(600);
+        margin: 0 0 0.5rem;
+      }
+
+      p {
+        span {
+          @include font-variation(600);
+          letter-spacing: 1px;
+        }
+      }
+    }
+
+    .details {
+      @include display-flex(space-between, flex-start);
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+
+      .detailsItem {
+        flex: 1 1 200px;
+      }
+
+      p {
+        @include display-flex(unset, center);
+        gap: 0.5rem;
+
+        &:first-of-type {
+          margin: 0;
+          color: rgba($color: $fontGrey, $alpha: 0.9);
+        }
+
+        &:last-of-type {
+          @include font-variation(600);
+          color: $fontBlack;
+        }
+
+        a {
+          color: rgba($color: $fontGrey, $alpha: 0.75);
+        }
+      }
+    }
+  }
+}

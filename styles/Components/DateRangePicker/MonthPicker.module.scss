@@ -1,0 +1,55 @@
+@use '../../variables' as *;
+
+.container {
+  @include border-radius(0.5rem);
+  position: relative;
+  padding: 0.5rem;
+  background-color: rgba($primaryBg, 0.75);
+
+  ul {
+    @include border-radius(0 0 0.25rem 0.25rem);
+    width: 100%;
+    height: 15vh;
+    overflow-y: scroll;
+    position: absolute;
+    left: 0;
+    background: rgba($color: $fontWhite, $alpha: 0.7);
+    backdrop-filter: blur(10px);
+    list-style: none;
+    border: 0.5px solid rgba($primaryBg, 0.5);
+    border-top: none;
+
+    // cross browser scrollbar
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      @include border-radius(0.5rem);
+      background: rgba($fontGrey, 0.1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @include border-radius(0.5rem);
+      background: rgba($fontGrey, 0.5);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba($fontGrey, 0.7);
+    }
+
+    li {
+      @include transition(0.3s ease-in-out);
+      @include font-variation(600);
+      cursor: pointer;
+      padding: 0.25rem 1rem;
+      color: rgba($fontGrey, 0.75);
+
+      &.active,
+      &:hover {
+        color: $fontBlack;
+        background: rgba($primaryBg, 0.75);
+      }
+    }
+  }
+}

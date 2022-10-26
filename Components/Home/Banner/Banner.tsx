@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styles from '../../../styles/Homescreen/Banner.module.scss';
 import { MaterialIcon } from '../../../Utils/Helper';
-import DateRangePicker from '../../DateRangePicker/DateRangePicker';
+import { DateRangePicker } from '../../DateRangePicker/DateRangePicker';
 
 const Banner = () => {
   const catergoryObj = {
