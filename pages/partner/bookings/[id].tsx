@@ -2,11 +2,9 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
 import Layout from '../../../Components/Layout/Layout';
 import styles from '../../../styles/Partner/bookingId.module.scss';
-import { MaterialIcon } from '../../../Utils/Helper';
+import { MaterialIcon, Rupee } from '../../../Utils/Helper';
 
 const BookingId = () => {
-  const rupee = <span>&#8377;</span>;
-
   return (
     <Layout>
       <div className={styles.container}>
@@ -89,7 +87,13 @@ const BookingId = () => {
             </div>
             <div className={styles.detailsItem}>
               <p>Booking Amount</p>
-              <p>{rupee} 1000</p>
+              <p>
+                <Rupee /> 1000
+              </p>
+            </div>
+            <div className={styles.detailsItem}>
+              <p>Payment Method</p>
+              <p>paypal</p>
             </div>
           </div>
         </div>

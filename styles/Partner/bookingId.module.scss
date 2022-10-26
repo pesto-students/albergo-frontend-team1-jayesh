@@ -6,7 +6,7 @@
   .header {
     @include display-flex(unset, center);
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     .profilePic {
       @include border-radius(50%);
@@ -36,10 +36,13 @@
 
   .detailsContainer {
     @include border-radius(1rem);
-    padding: 1rem;
     border: 1px solid rgba($color: $fontGrey, $alpha: 0.2);
+    overflow: hidden;
 
     .detailsHeader {
+      @include box-shadow(0 0 0.5rem rgba($color: $fontGrey, $alpha: 0.2));
+      padding: 1rem;
+
       h4 {
         @include font-variation(600);
         margin: 0 0 0.5rem;
@@ -56,15 +59,17 @@
     .details {
       @include display-flex(space-between, flex-start);
       flex-wrap: wrap;
-      gap: 0.5rem 1rem;
+      gap: 1rem;
+      padding: 2rem 1rem;
 
       .detailsItem {
-        flex: 1 1 200px;
+        width: max(30%, 200px);
       }
 
       p {
         @include display-flex(unset, center);
         gap: 0.5rem;
+        text-transform: capitalize;
 
         &:first-of-type {
           margin: 0;
