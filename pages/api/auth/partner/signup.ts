@@ -16,18 +16,10 @@ export default function handler(
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  //   //   get the email and password from the request body
-  //   const { email, password } = req.body;
-
-  //   //   check if email and password are valid
-  //   if (!email || !password) {
-  //     return res.status(400).json({ message: 'Invalid email or password' });
-  //   }
-
   return new Promise<void>(async (resolve) => {
     const raw = JSON.stringify(req.body);
 
-    await fetch(`${API_URL}/users/signup`, {
+    await fetch(`${API_URL}/partner/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

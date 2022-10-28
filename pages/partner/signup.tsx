@@ -1,27 +1,29 @@
 import Image from 'next/image';
-import { Fragment, useEffect, useRef, useState } from 'react';
-import Layout from '../../Components/Layout/Layout';
+import { FormEvent, useEffect, useState } from 'react';
+import Toast, { IToast } from '../../Components/Toast/Toast';
 import styles from '../../styles/Partner/signup.module.scss';
 import { partnerSignupForm } from '../../Utils/auth/signup';
-import { MaterialIcon } from '../../Utils/Helper';
 
 const Signup = () => {
-  const [formTab, setFormTab] = useState(0);
+  const [formInp, setFormInp] = useState({
+    hotelName: '',
+    hotelEmail: '',
+    hotelPassword: '',
+    hotelConfirmPassword: '',
+    hotelPhone: '',
+    hotelAddress: '',
+    hotelZip: ''
+  });
 
-  const hotelNameInp = useRef<HTMLInputElement>(null);
-  const hotelEmailInp = useRef<HTMLInputElement>(null);
-  const hotelPasswordInp = useRef<HTMLInputElement>(null);
-  const hotelConfirmPasswordInp = useRef<HTMLInputElement>(null);
-  const hotelPhoneInp = useRef<HTMLInputElement>(null);
-  const hotelAddressInp = useRef<HTMLTextAreaElement>(null);
-  const hotelCityInp = useRef<HTMLInputElement>(null);
-  const hotelStateInp = useRef<HTMLInputElement>(null);
-  const hotelCountryInp = useRef<HTMLInputElement>(null);
-
-  // location state
   const [locationState, setLocationState] = useState({
     lat: 0,
-    lng: 0
+    lon: 0
+  });
+
+  const [signupToast, setSignupToast] = useState<IToast>({
+    message: '',
+    type: 'info',
+    visible: false
   });
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const Signup = () => {
       function (position) {
         setLocationState({
           lat: position.coords.latitude,
-          lng: position.coords.longitude
+          lon: position.coords.longitude
         });
       },
       function (error) {
@@ -37,165 +39,185 @@ const Signup = () => {
       },
       {
         enableHighAccuracy: true,
-        timeout: 5000,
         maximumAge: 0
       }
     );
   }, []);
 
-  const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const hotelName = hotelNameInp.current?.value;
-    const hotelEmail = hotelEmailInp.current?.value;
-    const hotelPassword = hotelPasswordInp.current?.value;
-    const hotelConfirmPassword = hotelConfirmPasswordInp.current?.value;
-    const hotelPhone = hotelPhoneInp.current?.value;
-    const hotelAddress = hotelAddressInp.current?.value;
-    const hotelCity = hotelCityInp.current?.value;
-    const hotelState = hotelStateInp.current?.value;
-    const hotelCountry = hotelCountryInp.current?.value;
-
+  const disableBtn = () => {
     if (
-      hotelName &&
-      hotelEmail &&
-      hotelPassword &&
-      hotelConfirmPassword &&
-      hotelPhone &&
-      hotelAddress &&
-      hotelCity &&
-      hotelState &&
-      hotelCountry
+      formInp.hotelName &&
+      formInp.hotelEmail &&
+      formInp.hotelPassword &&
+      formInp.hotelConfirmPassword &&
+      formInp.hotelPhone &&
+      formInp.hotelAddress &&
+      formInp.hotelZip
     ) {
-      partnerSignupForm({
-        hotelName,
-        hotelEmail,
-        hotelPassword,
-        hotelConfirmPassword,
-        hotelPhone,
-        hotelAddress,
-        hotelCity,
-        hotelState,
-        hotelCountry,
-        latitude: locationState.lat,
-        longitude: locationState.lng
-      });
+      return false;
+    } else {
+      return true;
     }
   };
 
-  const TabOne = () => {
-    return (
-      <Fragment>
-        <div className={styles.formGroup}>
-          <label htmlFor="name">Hotel Name</label>
-          <input type="text" name="name" id="name" ref={hotelNameInp} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="email">Hotel Email</label>
-          <input type="email" name="email" id="email" ref={hotelEmailInp} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            ref={hotelPasswordInp}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            ref={hotelConfirmPasswordInp}
-          />
-        </div>
-      </Fragment>
+  const formSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    partnerSignupForm(
+      {
+        name: formInp.hotelName,
+        hotelEmail: formInp.hotelEmail,
+        hotelPassword: formInp.hotelPassword,
+        hotelConfirmPassword: formInp.hotelConfirmPassword,
+        hotelPhone: formInp.hotelPhone,
+        hotelAddress: formInp.hotelAddress,
+        hotelZip: formInp.hotelZip,
+        latitude: locationState?.lat,
+        longitude: locationState?.lon
+      },
+      setSignupToast
     );
-  };
-
-  const TabTwo = () => {
-    return (
-      <Fragment>
-        <div className={styles.formGroup}>
-          <label htmlFor="phone">Phone</label>
-          <input type="tel" name="phone" id="phone" ref={hotelPhoneInp} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="address">Address</label>
-          <textarea name="address" id="address" ref={hotelAddressInp} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="city">City</label>
-          <input type="text" name="city" id="city" ref={hotelCityInp} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="state">State</label>
-          <input type="text" name="state" id="state" ref={hotelStateInp} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="country">Country</label>
-          <input
-            type="text"
-            name="country"
-            id="country"
-            ref={hotelCountryInp}
-          />
-        </div>
-      </Fragment>
-    );
-  };
-
-  const renderTabs = () => {
-    switch (formTab) {
-      case 0:
-        return TabOne();
-      case 1:
-        return TabTwo();
-      default:
-        return TabOne();
-    }
   };
 
   return (
-    <Layout>
-      <div className={styles.container}>
-        <div className={styles.heroSection}>
-          <Image
-            src="https://images.unsplash.com/photo-1665731372684-1efcb1307d5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-            layout="fill"
-            objectFit="cover"
-            alt="hero image"
-          />
-        </div>
-        <div className={styles.formContainer}>
-          <div className={styles.form}>
-            <h1>Partner Signup</h1>
-            <form onSubmit={formSubmitHandler}>
-              {renderTabs()}
-              <div className={styles.btnGroup}>
-                <button
-                  onClick={() => setFormTab(0)}
-                  className={formTab === 0 ? styles.hiddenBtn : undefined}
-                >
-                  <MaterialIcon iconName="arrow_back" />
-                  Previous
-                </button>
-                <button
-                  onClick={() => setFormTab(1)}
-                  className={formTab === 1 ? styles.hiddenBtn : undefined}
-                >
-                  Next
-                  <MaterialIcon iconName="arrow_forward" />
-                </button>
-                {formTab === 1 && <button>Submit</button>}
-              </div>
-            </form>
+    <div className={styles.container}>
+      <div className={styles.formContainer}>
+        <h4>Partner Signup</h4>
+        <p>Please allow location permission</p>
+        <use></use>
+        <form onSubmit={formSubmit}>
+          <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={formInp.hotelName}
+              onChange={(e) =>
+                setFormInp((prevFormInp) => ({
+                  ...prevFormInp,
+                  hotelName: e.target.value
+                }))
+              }
+              placeholder="Hotel Name"
+              required
+            />
           </div>
-        </div>
+          <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formInp.hotelEmail}
+              onChange={(e) =>
+                setFormInp((prevFormInp) => ({
+                  ...prevFormInp,
+                  hotelEmail: e.target.value
+                }))
+              }
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={formInp.hotelPassword}
+              onChange={(e) =>
+                setFormInp((prevFormInp) => ({
+                  ...prevFormInp,
+                  hotelPassword: e.target.value
+                }))
+              }
+              placeholder="Password"
+              required
+              min={8}
+              max={16}
+            />
+          </div>
+          <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+            <input
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              value={formInp.hotelConfirmPassword}
+              onChange={(e) =>
+                setFormInp((prevFormInp) => ({
+                  ...prevFormInp,
+                  hotelConfirmPassword: e.target.value
+                }))
+              }
+              placeholder="Confirm Password"
+              required
+            />
+          </div>
+          <div className={`${styles.formGroup} ${styles.halfWidth}`}>
+            <input
+              type="tel"
+              name="phone"
+              id="phone"
+              value={formInp.hotelPhone}
+              onChange={(e) =>
+                setFormInp((prevFormInp) => ({
+                  ...prevFormInp,
+                  hotelPhone: e.target.value
+                }))
+              }
+              placeholder="Phone"
+              required
+            />
+          </div>
+          <div className={`${styles.formGroup} ${styles.halfWidth}`}>
+            <input
+              type="text"
+              name="zip"
+              id="zip"
+              value={formInp.hotelZip}
+              onChange={(e) =>
+                setFormInp((prevFormInp) => ({
+                  ...prevFormInp,
+                  hotelZip: e.target.value
+                }))
+              }
+              placeholder="Zip"
+              required
+            />
+          </div>
+          <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+            <textarea
+              name="address"
+              id="address"
+              value={formInp.hotelAddress}
+              onChange={(e) =>
+                setFormInp((prevFormInp) => ({
+                  ...prevFormInp,
+                  hotelAddress: e.target.value
+                }))
+              }
+              placeholder="Address"
+              rows={4}
+              required
+            />
+          </div>
+          <div className={`${styles.formGroup} ${styles.btnGroup}`}>
+            <button type="reset">Reset</button>
+            <button type="submit" disabled={disableBtn()}>
+              submit
+            </button>
+          </div>
+        </form>
       </div>
-    </Layout>
+      <div className={styles.imgContainer}>
+        <Image
+          src={'/assets/images/partner/signup/partner-signup.jpg'}
+          layout="fill"
+          objectFit="cover"
+          alt="hero image"
+          priority
+        />
+      </div>
+      <Toast setToastState={setSignupToast} toastState={signupToast} />
+    </div>
   );
 };
 
