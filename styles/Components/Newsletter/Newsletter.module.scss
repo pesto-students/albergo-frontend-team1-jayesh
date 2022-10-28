@@ -1,7 +1,7 @@
-@use '../../variables';
+@use '../../variables' as *;
 
 .container {
-  background-color: variables.$primaryBg;
+  background-color: $primaryBg;
   width: 100vw;
   max-width: 100%;
   display: grid;
@@ -9,7 +9,7 @@
   padding: 0 5vw;
 
   .innerContainer {
-    @include variables.display-flex(unset, center);
+    @include display-flex(unset, center);
     width: 70%;
     padding: 2rem;
     gap: 4rem;
@@ -29,10 +29,10 @@
     }
 
     form {
-      @include variables.border-radius(3rem);
-      @include variables.display-flex(unset, center);
+      @include border-radius(3rem);
+      @include display-flex(unset, center);
       width: 100%;
-      background: variables.$fontWhite;
+      background: $fontWhite;
       padding: 0.15rem 0 0.15rem 1.5rem;
 
       input {
@@ -40,17 +40,17 @@
         outline: none;
         width: 100%;
         font-size: 1.25rem;
-        color: variables.$fontGrey;
+        color: $fontGrey;
         letter-spacing: 1px;
       }
 
       button {
-        @include variables.border-radius(3rem);
+        @include border-radius(3rem);
         border: none;
         outline: none;
         padding: 0.5rem;
-        background: variables.$secondaryColor;
-        color: variables.$fontWhite;
+        background: $secondaryColor;
+        color: $fontWhite;
         display: grid;
         place-items: center;
       }

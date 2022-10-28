@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Fragment, useRef, useState } from 'react';
 import LoginContainer from '../Components/Login/loginContainer';
 import Toast, { IToast } from '../Components/Toast/Toast';
-import loginStyles from '../styles/Login/login.module.scss';
+import styles from '../styles/Login/login.module.scss';
 import { loginForm } from '../Utils/auth/login';
 
 const Login = () => {
@@ -10,9 +10,9 @@ const Login = () => {
   const passwordInput = useRef<HTMLInputElement>(null);
 
   const [toastState, setToastState] = useState<IToast>({
-    message: 'Hello Some error',
-    type: 'warning',
-    visible: true
+    message: '',
+    type: 'info',
+    visible: false
   });
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,19 +20,19 @@ const Login = () => {
     const email = emailInput.current?.value;
     const password = passwordInput.current?.value;
     if (email && password) {
-      loginForm({ email, password });
+      loginForm({ email, password }, setToastState);
     }
   };
 
   return (
     <Fragment>
       <LoginContainer title="login">
-        <form onSubmit={submitForm} className={loginStyles.form}>
-          <div className={loginStyles.formGroup}>
+        <form onSubmit={submitForm} className={styles.form}>
+          <div className={styles.formGroup}>
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" ref={emailInput} />
           </div>
-          <div className={loginStyles.formGroup}>
+          <div className={styles.formGroup}>
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -42,14 +42,14 @@ const Login = () => {
             />
           </div>
           <button type="submit">Login</button>
-          <div className={loginStyles.dividerWithText}>
+          <div className={styles.dividerWithText}>
             <hr />
             <small>or continue with</small>
             <hr />
           </div>
-          <div className={loginStyles.altAuthBtnContainer}>
+          <div className={styles.altAuthBtnContainer}>
             <button>
-              <div className={loginStyles.icon}>
+              <div className={styles.icon}>
                 <Image
                   src="/assets/icons/fbIcon.png"
                   width={15}
@@ -60,7 +60,7 @@ const Login = () => {
               facebook
             </button>
             <button>
-              <div className={loginStyles.icon}>
+              <div className={styles.icon}>
                 <Image
                   src="/assets/icons/googleIcon.png"
                   width={15}
@@ -71,7 +71,7 @@ const Login = () => {
               google
             </button>
             <button>
-              <div className={loginStyles.icon}>
+              <div className={styles.icon}>
                 <Image
                   src="/assets/icons/appleIcon.png"
                   width={15}

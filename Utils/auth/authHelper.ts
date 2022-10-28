@@ -3,7 +3,13 @@ import nookies from 'nookies';
 
 const API_URL = process.env.API_URL;
 
-const JWT_TOKEN_NAME = process.env.JWT_TOKEN_NAME ?? 'token';
+const JWT_TOKEN_NAME = process.env.NEXT_PUBLIC_JWT_TOKEN_NAME ?? 'token';
+
+const isValidateName = (name: string) => {
+  name = name.toLowerCase().trim();
+  const re = /^[a-z]+$/;
+  return re.test(String(name));
+};
 
 const isValidEmail = (email: string) => {
   const regex =
@@ -20,8 +26,10 @@ const checkPassword = (password: string, confirmPassword: string) => {
   return password === confirmPassword;
 };
 
-const parseJWT = (token: string) => {
-  return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+const parseJWT = (token: string | null) => {
+  return token === null
+    ? null
+    : JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
 };
 
 const setTokenCookie = (token: string) => {
@@ -50,6 +58,7 @@ const destroyTokenCookie = () => {
 };
 
 export {
+  isValidateName,
   isValidEmail,
   isValidPassword,
   checkPassword,

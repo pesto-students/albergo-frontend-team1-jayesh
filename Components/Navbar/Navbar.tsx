@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
-import navStyles from '../../styles/Components/Navbar/Navbar.module.scss';
+import { useAppSelector } from '../../redux/hooks';
+import styles from '../../styles/Components/Navbar/Navbar.module.scss';
 import { parseJWT } from '../../Utils/auth/authHelper';
-import { ITokenProp, MaterialIcon } from '../../Utils/Helper';
+import { MaterialIcon } from '../../Utils/Helper';
 
-const Navbar = ({ token }: ITokenProp) => {
-  const userToken = token ? parseJWT(token) : null;
+const Navbar = () => {
+  const userToken = parseJWT(
+    useAppSelector((state) => state.user.userEncryptedToken)
+  );
 
   const centralLinks = [
     {
@@ -26,7 +29,7 @@ const Navbar = ({ token }: ITokenProp) => {
         <li>
           <Link href={'/user/favourite'}>
             <a>
-              {MaterialIcon('favorite')}
+              <MaterialIcon iconName="favorite" />
               Favourites
             </a>
           </Link>
@@ -34,7 +37,7 @@ const Navbar = ({ token }: ITokenProp) => {
         <li>
           <Link href={'/user'}>
             <a>
-              {MaterialIcon('person')}
+              <MaterialIcon iconName="person" />
               {user.name}
             </a>
           </Link>
@@ -45,7 +48,7 @@ const Navbar = ({ token }: ITokenProp) => {
 
   return (
     <Fragment>
-      <nav className={navStyles.nav}>
+      <nav className={styles.nav}>
         <Link href="/">
           <a>
             <h2>Albergo</h2>
@@ -56,7 +59,7 @@ const Navbar = ({ token }: ITokenProp) => {
             <li key={index}>
               <Link href={link.link}>
                 <a>
-                  {MaterialIcon(link.icon)}
+                  <MaterialIcon iconName={link.icon} />
                   {link.name}
                 </a>
               </Link>
@@ -70,13 +73,13 @@ const Navbar = ({ token }: ITokenProp) => {
             <Fragment>
               <li>
                 <Link href="/partner">
-                  <a className={navStyles.partnerBtn}>Become a partner</a>
+                  <a className={styles.partnerBtn}>Become a partner</a>
                 </Link>
               </li>
               <li>
                 <Link href={'/login'}>
                   <a>
-                    {MaterialIcon('login')}
+                    <MaterialIcon iconName="login" />
                     login
                   </a>
                 </Link>

@@ -1,25 +1,25 @@
-@use '../../variables';
+@use '../../variables' as *;
 
 .footerLayout {
   width: 100vw;
   max-width: 100%;
   padding: 2rem 5vw;
-  background: variables.$primaryBg;
+  background: $primaryBg;
 
   & > p {
-    @include variables.font-variation(700);
+    @include font-variation(700);
     margin-top: 2rem;
   }
 
   .content {
-    @include variables.display-flex(space-between, center);
+    @include display-flex(space-between, center);
     gap: 2rem;
 
     .col1 {
       width: 40%;
 
       h2 {
-        @include variables.font-variation(600);
+        @include font-variation(600);
         margin: 0;
         margin-bottom: 1rem;
       }
@@ -35,7 +35,7 @@
 
         li {
           h5 {
-            @include variables.font-variation(600);
+            @include font-variation(600);
             margin: 0;
             margin-bottom: 1rem;
           }

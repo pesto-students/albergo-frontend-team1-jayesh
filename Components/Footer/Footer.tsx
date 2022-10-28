@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import footerStyles from '../../styles/Components/Footer/Footer.module.scss';
+import styles from '../../styles/Components/Footer/Footer.module.scss';
 
 const Footer = () => {
   return (
-    <footer className={footerStyles.footerLayout}>
-      <div className={footerStyles.content}>
-        <div className={footerStyles.col1}>
+    <footer className={styles.footerLayout}>
+      <div className={styles.content}>
+        <div className={styles.col1}>
           <h2>Albergo</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
@@ -15,7 +15,7 @@ const Footer = () => {
             lorem.
           </p>
         </div>
-        <div className={footerStyles.col2}>
+        <div className={styles.col2}>
           <ul>
             <li>
               <h5>Company</h5>
@@ -42,7 +42,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className={footerStyles.col3}>
+        <div className={styles.col3}>
           <ul>
             <li>
               <h5>Help Center</h5>
@@ -69,7 +69,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className={footerStyles.col4}>
+        <div className={styles.col4}>
           <ul>
             <li>
               <h5>Contact Information</h5>
