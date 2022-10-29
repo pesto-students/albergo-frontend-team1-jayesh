@@ -78,6 +78,18 @@ const Signup = () => {
     );
   };
 
+  const resetForm = () => {
+    setFormInp({
+      hotelName: '',
+      hotelEmail: '',
+      hotelPassword: '',
+      hotelConfirmPassword: '',
+      hotelPhone: '',
+      hotelAddress: '',
+      hotelZip: ''
+    });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
@@ -200,7 +212,9 @@ const Signup = () => {
             />
           </div>
           <div className={`${styles.formGroup} ${styles.btnGroup}`}>
-            <button type="reset">Reset</button>
+            <button type="reset" onClick={resetForm}>
+              Reset
+            </button>
             <button type="submit" disabled={disableBtn()}>
               submit
             </button>
