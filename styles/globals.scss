@@ -1,4 +1,4 @@
-@use 'variables';
+@use 'variables' as *;
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
@@ -29,6 +29,7 @@
 }
 
 * {
+  @include transition(0.35s ease-in-out);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -40,9 +41,9 @@ html {
 } /*16px*/
 
 body {
-  background: variables.$fontWhite;
-  color: variables.$fontGrey;
-  font-family: variables.$Montserrat;
+  background: $fontWhite;
+  color: $fontGrey;
+  font-family: $Montserrat;
   font-weight: 400;
   line-height: 1.75;
 
@@ -60,7 +61,7 @@ h2,
 h3,
 h4,
 h5 {
-  @include variables.font-variation(400);
+  @include font-variation(400);
   margin: 3rem 0 1.38rem;
   font-family: 'Montserrat', sans-serif;
   line-height: 1.3;
