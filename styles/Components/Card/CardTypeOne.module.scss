@@ -16,6 +16,7 @@
     height: 35vh;
     min-height: 30vh;
     max-height: 40vh;
+    z-index: -1;
 
     button {
       @include border-radius(5rem);

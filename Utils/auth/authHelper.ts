@@ -39,6 +39,10 @@ const setTokenCookie = (token: string) => {
     sameSite: true,
     secure: process.env.NODE_ENV === 'production'
   });
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(JWT_TOKEN_NAME, token);
+  }
+  return;
 };
 
 const getTokenCookieServer = (ctx: GetServerSidePropsContext) => {
@@ -50,6 +54,7 @@ const destroyTokenCookie = () => {
   nookies.destroy(null, JWT_TOKEN_NAME, {
     path: '/'
   });
+  return;
 };
 
 export {

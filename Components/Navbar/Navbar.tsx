@@ -26,14 +26,14 @@ const Navbar = () => {
   const AuthLinks = (user: { name: string }) => {
     return (
       <Fragment>
-        <li>
+        {/* <li>
           <Link href={'/user/favourite'}>
             <a>
               <MaterialIcon iconName="favorite" />
               Favourites
             </a>
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link href={'/user'}>
             <a>
@@ -54,6 +54,46 @@ const Navbar = () => {
             <h2>Albergo</h2>
           </a>
         </Link>
+        <button
+          className={styles.menuBtn}
+          onClick={() => {
+            const menu = document.getElementById('mobileMenu');
+            menu?.classList.toggle(styles.menuOpen);
+          }}
+        >
+          <MaterialIcon iconName="menu" />
+        </button>
+        <ul className={styles.menu} id={'mobileMenu'}>
+          {centralLinks.map((link) => (
+            <li key={link.name}>
+              <Link href={link.link}>
+                <a>
+                  <MaterialIcon iconName={link.icon} />
+                  {link.name}
+                </a>
+              </Link>
+            </li>
+          ))}
+          {userToken ? (
+            AuthLinks(userToken)
+          ) : (
+            <Fragment>
+              <li>
+                <Link href="/partner">
+                  <a className={styles.partnerBtn}>Become a partner</a>
+                </Link>
+              </li>
+              <li>
+                <Link href={'/auth'}>
+                  <a>
+                    <MaterialIcon iconName="person" />
+                    Login
+                  </a>
+                </Link>
+              </li>
+            </Fragment>
+          )}
+        </ul>
         <ul>
           {centralLinks.map((link, index) => (
             <li key={index}>
@@ -78,10 +118,7 @@ const Navbar = () => {
               </li>
               <li>
                 <Link href={'/login'}>
-                  <a>
-                    <MaterialIcon iconName="login" />
-                    login
-                  </a>
+                  <a>login</a>
                 </Link>
               </li>
             </Fragment>
