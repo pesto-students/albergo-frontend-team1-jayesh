@@ -2,12 +2,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import styles from '../../../styles/Homescreen/Banner.module.scss';
-import DateRangePicker from '../../DateRangePicker/DateRangePicker';
+import { DateRangePicker } from '../../DateRangePicker/DateRangePicker';
 
 const Banner = () => {
   const destinationInpRef = useRef<HTMLInputElement>(null);
   const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-  const router = useRouter()
+  const router = useRouter();
 
   const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,7 +19,7 @@ const Banner = () => {
           destination,
           checkInDate: checkInDate?.toDateString()
         }
-      })
+      });
     }
   };
 
@@ -34,10 +34,10 @@ const Banner = () => {
           id="destination"
           ref={destinationInpRef}
         />
-        <DateRangePicker
-          onChange={(val) => setCheckInDate(val)}
-        />
-        <button type="submit" disabled={disableBtn} >Search</button>
+        <DateRangePicker onChange={(val) => setCheckInDate(val)} />
+        <button type="submit" disabled={disableBtn}>
+          Search
+        </button>
       </form>
       <div className={styles.imageContainer}>
         <Image
