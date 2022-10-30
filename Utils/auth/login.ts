@@ -30,6 +30,8 @@ const loginForm = async (
       body: JSON.stringify(formObj)
     });
 
+    console.log(response);
+
     if (response.status !== 200) {
       const res = await response.json();
       throw new Error(res.message ?? res.error ?? 'Something went wrong');
