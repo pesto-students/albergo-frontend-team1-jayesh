@@ -14,9 +14,10 @@ const SectionTypeOne = ({
   viewMoreLink?: boolean;
   showOnMapLink?: boolean;
   flexWrap?: boolean;
-  dataArr: unknown[];
+  dataArr: {
+    [key: string]: string;
+  }[];
 }) => {
-
   return (
     <div className={styles.container}>
       <h3>{title}</h3>
@@ -28,7 +29,7 @@ const SectionTypeOne = ({
           </Link>
         )}
         {showOnMapLink && (
-          <Link href="/search" >
+          <Link href="/search">
             <a className={styles.moreLink}>Show on map</a>
           </Link>
         )}
