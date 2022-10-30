@@ -31,7 +31,7 @@ const Home: NextPage<IHomeProps> = ({ data }) => {
             dataArr={data.featuredHotels}
           />
           <SectionPartnerTypeOne title={'Partner with us'} />
-          <BlogSection title="Property Rental Guides &amp; Tips" />
+          {/* <BlogSection title="Property Rental Guides &amp; Tips" /> */}
           <SectionPartnerTypeTwo />
         </Layout>
       </Fragment>

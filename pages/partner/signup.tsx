@@ -1,10 +1,13 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
 import Toast, { IToast } from '../../Components/Toast/Toast';
 import styles from '../../styles/Partner/signup.module.scss';
 import { signupForm } from '../../Utils/auth/signup';
 
 const Signup = () => {
+  const router = useRouter();
+
   const [formInp, setFormInp] = useState({
     hotelName: '',
     hotelEmail: '',
@@ -100,7 +103,7 @@ const Signup = () => {
 
   const formSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signupForm(formInp, "partner", setSignupToast);
+    signupForm(formInp, 'partner', setSignupToast, router);
   };
 
   const resetForm = () => {
@@ -111,7 +114,7 @@ const Signup = () => {
       hotelPassword: '',
       hotelConfirmPassword: '',
       hotelPhone: '',
-      hotelAddress: '',
+      hotelAddress: ''
     }));
   };
 

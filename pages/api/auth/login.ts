@@ -1,5 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { API_URL } from '../../../Utils/auth/authHelper';
+import {
+  API_URL,
+  isValidEmail,
+  isValidPassword
+} from '../../../Utils/auth/authHelper';
+import { inValidPasswordMsg } from '../../../Utils/Helper';
 
 interface IResponseData {
   message?: string;
@@ -24,13 +29,21 @@ export default function handler(
     return res.status(400).json({ message: 'Invalid email or password' });
   }
 
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ message: 'Invalid email' });
+  }
+
+  if (!isValidPassword(password)) {
+    return res.status(400).json({ message: inValidPasswordMsg });
+  }
+
   return new Promise<void>(async (resolve) => {
     const raw = JSON.stringify({
       email,
       password
     });
 
-    await fetch(`${API_URL}/users/login`, {
+    await fetch(`${API_URL}/api/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -42,7 +55,8 @@ export default function handler(
         res.status(200).json({ data: response });
         resolve();
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         res.status(200).json({ error: 'Please try again later' });
         resolve();
       });

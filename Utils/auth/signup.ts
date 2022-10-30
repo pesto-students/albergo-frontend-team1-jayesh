@@ -1,3 +1,4 @@
+import { NextRouter } from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 import { IToast } from '../../Components/Toast/Toast';
 import store from '../../redux/store';
@@ -35,7 +36,8 @@ export interface IPartnerSignupForm {
 const signupForm = async (
   formObj: IPartnerSignupForm | IUserSignupForm,
   role: UserRole,
-  setToastState: Dispatch<SetStateAction<IToast>>
+  setToastState: Dispatch<SetStateAction<IToast>>,
+  router: NextRouter
 ) => {
   setToastState({
     message: 'Loading...',
@@ -43,54 +45,57 @@ const signupForm = async (
     visible: true
   });
 
-  await fetch('/api/auth/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ ...formObj, role })
-  })
-    .then((response) => {
-      if (response.status !== 200) {
-        return response.json().then((res) => {
-          setToastState({
-            message: res.message ?? res.error ?? 'Something went wrong',
-            type: 'error',
-            visible: true
-          });
-        });
-      }
-      if (response.status === 200) {
-        return response.json().then((res) => {
-          if (res?.data?.status === 'fail') {
-            setToastState({
-              message: res.data.message,
-              type: 'error',
-              visible: true
-            });
-          }
+  try {
+    const response = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ...formObj, role })
+    });
 
-          if (res?.data?.status === 'success') {
-            const token = res?.data?.token;
-            setTokenCookie(token);
-            store.dispatch(setUserEncryptedToken(token));
-            setToastState({
-              message: 'Signup successful',
-              type: 'success',
-              visible: true
-            });
-          }
-        });
-      }
-    })
-    .catch((err) => {
+    if (response.status !== 200) {
+      const res = await response.json();
       setToastState({
-        message: err.message ?? err.error ?? 'Something went wrong',
+        message: res.message ?? res.error ?? 'Something went wrong',
         type: 'error',
         visible: true
       });
-      return;
-    });
+    }
+
+    if (response.status === 200) {
+      const res = await response.json();
+
+      if (res?.data?.status === 'fail') {
+        setToastState({
+          message: res.data.message,
+          type: 'error',
+          visible: true
+        });
+      }
+
+      if (res?.data?.status === 'success') {
+        const token = res?.data?.token;
+        setTokenCookie(token);
+        store.dispatch(setUserEncryptedToken(token));
+        setToastState({
+          message: 'Signup successful',
+          type: 'success',
+          visible: true
+        });
+        router.push('/');
+      }
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      setToastState({
+        message: error.message ?? 'Something went wrong',
+        type: 'error',
+        visible: true
+      });
+    }
+  }
+  return;
 };
 
 export { signupForm };

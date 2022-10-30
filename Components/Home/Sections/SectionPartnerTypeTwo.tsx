@@ -17,21 +17,21 @@ const SectionPartnerTypeTwo = () => {
             animi, id est laborum et dolorum fuga.
           </p>
           <div className={styles.ctaContainer}>
-            <Link href={''}>
+            {/* <Link href={''}>
               <a>Ask a Question</a>
-            </Link>
-            <Link href={''}>
+            </Link> */}
+            <Link href={'/partner/signup'}>
               <a>Sign up</a>
             </Link>
           </div>
-          <Link href={''}>
+          <Link href={'/partner'}>
             <a className={styles.discoverMoreLink}>Discover More</a>
           </Link>
         </div>
         <div className={styles.imageContainer}>
           <Image
             src={
-              'https://images.unsplash.com/photo-1663772620360-1c344ad2336e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
+              "/assets/images/sectionPartnerTwo/sectionPartnerTwo.jpg"
             }
             layout="fill"
             objectFit="cover"

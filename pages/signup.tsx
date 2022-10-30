@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import LoginContainer from '../Components/Login/loginContainer';
 import Toast, { IToast } from '../Components/Toast/Toast';
@@ -6,6 +7,7 @@ import styles from '../styles/Login/login.module.scss';
 import { signupForm } from '../Utils/auth/signup';
 
 const Signup = () => {
+  const router = useRouter()
   const [formInp, setFormInp] = useState({
     name: '',
     phone: '',
@@ -87,7 +89,7 @@ const Signup = () => {
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signupForm(formInp, "user", setSignupToast);
+    signupForm(formInp, "user", setSignupToast, router);
   };
 
   const disableBtn = () => {

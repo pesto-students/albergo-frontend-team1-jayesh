@@ -11,7 +11,7 @@
     height: 100%;
     display: flex;
     overflow: hidden;
-    background: $secondaryColor;
+    position: relative;
 
     .content {
       @include display-flex(center, flex-start);
@@ -19,6 +19,9 @@
       width: 40%;
       height: 100%;
       padding: 2rem;
+      color: $fontWhite;
+      background: rgba($color: $secondaryColor, $alpha: 0.75);
+      backdrop-filter: blur(5px);
 
       h2 {
         @include font-variation(600);
@@ -40,9 +43,9 @@
     }
 
     .imageContainer {
-      position: relative;
       width: 60%;
       height: 100%;
+      z-index: -1;
     }
   }
 }
