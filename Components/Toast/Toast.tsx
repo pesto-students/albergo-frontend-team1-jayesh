@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import toastStyles from '../../styles/Components/Toast/toast.module.scss';
+import styles from '../../styles/Components/Toast/toast.module.scss';
 import { MaterialIcon } from '../../Utils/Helper';
 
 export interface IToast {
@@ -27,22 +27,22 @@ const Toast = ({
     if (toastState.visible) {
       setTimeout(() => {
         resetToast();
-      }, 5000);
+      }, 7500);
     }
-  }, [toastState.visible]);
+  });
 
   const getClassName = () => {
     switch (toastState.type) {
       case 'success':
-        return toastStyles.success;
+        return styles.success;
       case 'error':
-        return toastStyles.error;
+        return styles.error;
       case 'warning':
-        return toastStyles.warning;
+        return styles.warning;
       case 'info':
-        return toastStyles.info;
+        return styles.info;
       default:
-        return toastStyles.info;
+        return styles.info;
     }
   };
 
@@ -63,14 +63,13 @@ const Toast = ({
 
   return (
     <div
-      className={`${toastStyles.container} ${getClassName()} ${
-        toastState.visible ? undefined : toastStyles.hide
-      }`}
+      className={`${styles.container} ${getClassName()} ${toastState.visible ? undefined : styles.hide
+        }`}
     >
-      {MaterialIcon(getIcon())}
+      <MaterialIcon iconName={getIcon()} />
       <p>{toastState.message}</p>
       <button onClick={() => toastState.visible && resetToast()}>
-        {MaterialIcon('close')}
+        <MaterialIcon iconName="close" />
       </button>
     </div>
   );

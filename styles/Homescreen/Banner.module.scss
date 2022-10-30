@@ -1,20 +1,17 @@
-@use '../variables';
+@use '../variables' as *;
 
 .container {
-  height: 80vh;
+  min-height: 80vh;
   width: 100vw;
   max-width: 100%;
   position: relative;
-  // display: grid;
-  // place-items: center;
-  // isolation: isolate;
-
-  // & > * {
-  //   grid-column: 1/-1;
-  //   grid-row: 1/-1;
-  // }
+  display: grid;
+  place-items: center;
+  isolation: isolate;
 
   .imageContainer {
+    grid-column: 1/-1;
+    grid-row: 1/-1;
     z-index: -1;
     height: 100%;
     width: 100%;
@@ -22,133 +19,48 @@
     position: relative;
   }
 
-  .formContainer {
-    width: 65%;
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translate(-50%, -10%);
-    -webkit-transform: translate(-50%, -10%);
-    -moz-transform: translate(-50%, -10%);
-    -ms-transform: translate(-50%, -10%);
-    -o-transform: translate(-50%, -10%);
+  form {
+    @include border-radius(10px);
+    @include display-flex(center, center);
+    flex-wrap: wrap;
+    max-width: 90%;
+    gap: 1.5rem;
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    background: rgba($color: $fontWhite, $alpha: 0.75);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
 
-    .tabSection {
-      @include variables.display-flex(unset, center);
-      margin-bottom: 2rem;
-      gap: 2rem;
-
-      h2 {
-        @include variables.font-variation(600);
-        color: variables.$fontWhite;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin: 0 2rem 0 0;
-      }
-
-      h4 {
-        margin: 0;
-        color: variables.$fontWhite;
-        text-transform: capitalize;
-        letter-spacing: 1px;
-        cursor: pointer;
-      }
-
-      .tabActive {
-        position: relative;
-        &::after {
-          @include variables.border-radius(3px);
-          content: '';
-          position: absolute;
-          bottom: -0.5rem;
-          left: 0;
-          width: 70%;
-          height: 3px;
-          background: variables.$fontWhite;
-        }
-      }
+    input {
+      @include border-radius(5px);
+      flex: 1;
+      padding: 1rem;
+      background: $fontWhite;
+      border: none;
+      color: $secondaryColor;
+      font-size: 1rem;
+      font-weight: 500;
+      outline: none;
     }
 
-    form {
-      @include variables.border-radius(5rem);
-      @include variables.display-flex(space-between, baseline);
-      background: variables.$fontWhite;
-      width: 100%;
-      padding: 0.25rem 0.25rem 0.25rem 2rem;
-
-      input {
-        font-size: 1.25rem;
-        border: 0;
-        outline: none;
-
-        &:nth-child(4) {
-          width: 110px;
-          min-width: 100px;
-          max-width: 140px;
-        }
-      }
-
-      hr {
-        height: 1.5rem;
-        width: 1px;
-        background: variables.$fontGrey;
-      }
-
-      .searchBtn {
-        @include variables.border-radius(3rem);
-        border: none;
-        background: variables.$secondaryColor;
-        color: variables.$fontWhite;
-        display: grid;
-        place-items: center;
-        padding: 0.5rem;
-        cursor: pointer;
-      }
+    & > button {
+      flex: 1;
+      @include border-radius(5px);
+      outline: none;
+      border: none;
+      background: $secondaryColor;
+      color: $fontWhite;
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
     }
   }
 }
 
-// Laptop, Desktops
-@media (min-width: 769px) and (max-width: 1024px) {
-  .container {
-    .formContainer {
-      width: 75%;
-
-      .tabSection {
-        gap: 2.5rem;
-
-        h2 {
-          margin-right: 1rem;
-          font-size: 2.25rem;
-        }
-      }
-
-      form {
-        padding-left: 0.75rem;
-        gap: 0.5rem;
-      }
-    }
-  }
-}
-
-// ipads and tablets
 @media only screen and (max-width: 768px) {
-  .nav {
-    padding: 1rem;
-
-    ul {
-      display: none;
-    }
-
-    button {
-      display: grid;
-    }
+  .container {
+    min-height: 60vh;
   }
 }
-
-// // Mobiles
-// @media (min-width: 320px) and (max-width: 480px) {
-//   .nav {
-//     // padding: 1rem 1rem;
-//   }
-// }

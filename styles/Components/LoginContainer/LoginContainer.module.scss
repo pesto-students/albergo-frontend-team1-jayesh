@@ -1,0 +1,91 @@
+@use '../../variables' as *;
+
+$heroSectionWidth: 60%;
+
+.container {
+  @include display-flex(space-between, center);
+  flex-direction: row-reverse;
+  min-height: 100vh;
+  position: relative;
+
+  .heroSection {
+    width: $heroSectionWidth;
+    height: 100vmin;
+    z-index: -1;
+  }
+
+  .formContainer {
+    @include display-flex(unset, flex-start);
+    height: 100vmin;
+    width: calc(100% - #{$heroSectionWidth});
+    background: rgba($color: $fontWhite, $alpha: 0.7);
+    padding: 1rem;
+    backdrop-filter: blur(5px);
+
+    .formContent {
+      width: 100%;
+
+      h2 {
+        @include font-variation(700);
+        text-transform: capitalize;
+      }
+
+      p {
+        @include font-variation(500);
+        @include display-flex(unset, center);
+        gap: 0.25rem;
+
+        a {
+          @include font-variation(600);
+          position: relative;
+
+          &::after {
+            @include transition(0.3s ease-in-out);
+            @include transform(scaleX(0));
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: $secondaryColor;
+            transform-origin: left;
+          }
+
+          &:hover::after {
+            @include transform(scaleX(1));
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .container {
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+    min-height: 100vh;
+
+    & > * {
+      grid-column: 1/-1;
+      grid-row: 1/-1;
+    }
+
+    .heroSection {
+      height: 100%;
+      width: 100vw;
+    }
+
+    .formContainer {
+      width: 100%;
+      height: 100%;
+
+      .formContent {
+        width: min(100%, 500px);
+        margin: 0 auto;
+      }
+    }
+  }
+}

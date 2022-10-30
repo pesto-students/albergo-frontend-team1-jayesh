@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import sectionStyles from '../../../styles/Homescreen/SectionTypeOne.module.scss';
+import styles from '../../../styles/Homescreen/SectionTypeOne.module.scss';
 import CardTypeOne from '../../Card/CardTypeOne';
 
 const SectionTypeOne = ({
@@ -8,36 +8,35 @@ const SectionTypeOne = ({
   viewMoreLink = false,
   showOnMapLink = false,
   flexWrap = false,
-  numberOfCards = 4
+  dataArr
 }: {
   title: string;
   viewMoreLink?: boolean;
   showOnMapLink?: boolean;
   flexWrap?: boolean;
-  numberOfCards?: number;
+  dataArr: unknown[];
 }) => {
+
   return (
-    <div className={sectionStyles.container}>
+    <div className={styles.container}>
       <h3>{title}</h3>
-      <div className={sectionStyles.subTop}>
-        <hr className={sectionStyles.divider} />
+      <div className={styles.subTop}>
+        <hr className={styles.divider} />
         {viewMoreLink && (
-          <Link href="">
-            <a className={sectionStyles.moreLink}>View more</a>
+          <Link href="/explore">
+            <a className={styles.moreLink}>View more</a>
           </Link>
         )}
         {showOnMapLink && (
-          <Link href="">
-            <a className={sectionStyles.moreLink}>Show on map</a>
+          <Link href="/search" >
+            <a className={styles.moreLink}>Show on map</a>
           </Link>
         )}
       </div>
-      <div className={sectionStyles.cardContainer}>
-        {Array(numberOfCards)
-          .fill(0)
-          .map((_, index) => (
-            <CardTypeOne key={index} wide={flexWrap} />
-          ))}
+      <div className={styles.cardContainer}>
+        {dataArr.slice(0, 6).map((itemData, index) => (
+          <CardTypeOne key={index} wide={flexWrap} itemData={itemData} />
+        ))}
       </div>
     </div>
   );

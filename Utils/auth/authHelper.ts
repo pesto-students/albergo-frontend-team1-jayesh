@@ -7,7 +7,7 @@ const JWT_TOKEN_NAME = process.env.NEXT_PUBLIC_JWT_TOKEN_NAME ?? 'token';
 
 const isValidateName = (name: string) => {
   name = name.toLowerCase().trim();
-  const re = /^[a-z]+$/;
+  const re = /^[a-zA-Z ]+$/;
   return re.test(String(name));
 };
 
@@ -18,7 +18,8 @@ const isValidEmail = (email: string) => {
 };
 
 const isValidPassword = (password: string) => {
-  const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  const re =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d$&+,:;=?@#|'<>.^*()%!-]{8,}$/;
   return re.test(String(password));
 };
 
@@ -39,17 +40,19 @@ const setTokenCookie = (token: string) => {
     sameSite: true,
     secure: process.env.NODE_ENV === 'production'
   });
+  return;
 };
 
-const getTokenCookieServer = (ctx: GetServerSidePropsContext) => {
-  const cookies = nookies.get(ctx);
-  return cookies.JWT_TOKEN_NAME;
+const getTokenCookie = (ctx?: GetServerSidePropsContext) => {
+  const cookies = nookies.get(ctx ?? null);
+  return cookies[JWT_TOKEN_NAME];
 };
 
 const destroyTokenCookie = () => {
   nookies.destroy(null, JWT_TOKEN_NAME, {
     path: '/'
   });
+  return;
 };
 
 export {
@@ -60,6 +63,6 @@ export {
   API_URL,
   parseJWT,
   setTokenCookie,
-  getTokenCookieServer,
+  getTokenCookie,
   destroyTokenCookie
 };

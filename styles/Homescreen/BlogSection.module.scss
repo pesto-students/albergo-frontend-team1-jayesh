@@ -1,26 +1,26 @@
-@use '../variables';
+@use '../variables' as *;
 
 .container {
   width: 100%;
   padding: 1rem 0;
 
   & > h3 {
-    @include variables.font-variation(600);
+    @include font-variation(600);
     letter-spacing: 1px;
     width: 20%;
     margin-top: 0;
   }
 
   .divider {
-    @include variables.border-radius(10px);
+    @include border-radius(10px);
     width: 10%;
     border-width: 3px;
-    border-color: variables.$fontBlack;
-    background: variables.$fontBlack;
+    border-color: $fontBlack;
+    background: $fontBlack;
   }
 
   .cardContainer {
-    @include variables.display-flex(space-between, unset);
+    @include display-flex(space-between, unset);
     width: 100%;
     margin: 1rem 0;
     padding: 1rem 0;
@@ -29,16 +29,16 @@
   }
 
   .viewAllBlogLinkContainer {
-    @include variables.display-flex(center, center);
+    @include display-flex(center, center);
     width: 100%;
     padding: 1rem 0;
 
     .viewLink {
-      @include variables.border-radius(2rem);
-      @include variables.font-variation(500);
+      @include border-radius(2rem);
+      @include font-variation(500);
       letter-spacing: 1px;
-      background-color: variables.$secondaryColor;
-      color: variables.$fontWhite;
+      background-color: $secondaryColor;
+      color: $fontWhite;
       padding: 0.5rem 1rem;
     }
   }

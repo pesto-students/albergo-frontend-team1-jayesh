@@ -1,72 +1,84 @@
-@use '../variables';
+@use '../variables' as *;
 
 .form {
-  margin: 5vh 0;
+  width: min(100%, 416px);
 
   .formGroup {
     margin: 1rem 0;
 
     label {
+      @include font-variation(500);
       display: block;
       font-size: 0.85rem;
     }
 
     input {
-      @include variables.border-radius(0.2rem);
-      font-size: 1.25rem;
+      @include border-radius(0.2rem);
+      width: 100%;
+      font-size: 1rem;
       padding: 0.5rem;
-      min-width: 50%;
       outline: none;
-      border: 1px solid rgba($color: variables.$fontGrey, $alpha: 0.5);
+      border: 1px solid rgba($color: $fontGrey, $alpha: 0.5);
+      background: rgba($color: $fontWhite, $alpha: 0.5);
 
       &:focus {
-        border: 1px solid variables.$fontBlack;
+        border: 1px solid $fontBlack;
       }
     }
   }
 
-  button {
-    @include variables.border-radius(3rem);
-    @include variables.font-variation(500);
-    background: inherit;
-    padding: 1rem 2rem;
-    font-family: inherit;
-    border: none;
-    background: variables.$secondaryColor;
-    color: variables.$fontWhite;
-    letter-spacing: 1px;
-    cursor: pointer;
-  }
-
-  .dividerWithText {
-    @include variables.display-flex(unset, center);
-    width: 50%;
-    margin: 1rem 0;
-    gap: 0.5rem;
-
-    hr {
-      margin: 0;
-      flex: 1;
-    }
-  }
-
   .altAuthBtnContainer {
-    @include variables.display-flex(space-between, center);
-    width: 50%;
+    @include display-flex(space-between, center);
+    gap: 1rem;
 
     button {
-      @include variables.display-flex(unset, center);
-      @include variables.border-radius(2rem);
-      @include variables.font-variation(600);
+      @include border-radius(3rem);
+      @include font-variation(500);
+      background: inherit;
+      padding: 0.5rem 0.75rem;
+      font-family: inherit;
+      border: none;
+      background: $secondaryColor;
+      color: $fontWhite;
+      letter-spacing: 1px;
+      cursor: pointer;
+
+      &:disabled {
+        background: rgba($secondaryColor, 0.5);
+        cursor: not-allowed;
+      }
+    }
+
+    .dividerWithText {
+      @include display-flex(unset, center);
+      flex: 1;
+      margin: 1rem 0;
       gap: 0.5rem;
-      background: variables.$secondaryColor;
-      padding: 0.75rem 1rem;
+
+      small {
+        @include font-variation(500);
+        color: $fontGrey;
+        text-align: center;
+      }
+
+      hr {
+        margin: 0;
+        flex: 1;
+        border: 1px solid rgba($color: $fontGrey, $alpha: 0.5);
+      }
+    }
+
+    button {
+      @include display-flex(unset, center);
+      gap: 0.25rem;
+      background: $secondaryColor;
+      padding: 0.5rem 0.75rem;
       outline: none;
       border: none;
       font-family: inherit;
       font-size: 0.85rem;
       text-transform: capitalize;
-      color: variables.$fontWhite;
+      color: $fontWhite;
 
       .icon {
         position: relative;

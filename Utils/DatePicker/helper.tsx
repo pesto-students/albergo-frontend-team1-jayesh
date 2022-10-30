@@ -60,4 +60,4 @@ const getMonthDetails = (monthNum: number) => {
   };
 };
 
-export { daysArr, getCurrentMonth, getMonthDetails };
+export { daysArr, monthArr, getCurrentMonth, getMonthDetails };
