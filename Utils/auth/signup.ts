@@ -1,42 +1,70 @@
+import { NextRouter } from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 import { IToast } from '../../Components/Toast/Toast';
 import store from '../../redux/store';
 import { setUserEncryptedToken } from '../../redux/user/user.slice';
-import {
-  // checkPassword,
-  // isValidateName,
-  // isValidEmail,
-  // isValidPassword,
-  setTokenCookie
-} from './authHelper';
+import { UserRole } from '../Helper';
+import { setTokenCookie } from './authHelper';
 
-interface IAuthSignup {
+export interface IUserSignupForm {
   name: string;
+  phone: string;
   email: string;
   password: string;
   confirmPassword: string;
+  lat: number;
+  long: number;
+  city: string;
+  state: string;
+  country: string;
 }
 
-const signupMiddleware = async (
-  formObj: IAuthSignup,
-  setToastState: Dispatch<SetStateAction<IToast>>
-) => {
-  const { name, email, password } = formObj;
+export interface IPartnerSignupForm {
+  hotelName: string;
+  hotelEmail: string;
+  hotelPassword: string;
+  hotelConfirmPassword: string;
+  hotelPhone: string;
+  hotelAddress: string;
+  lat: number;
+  long: number;
+  hotelCity: string;
+  hotelState: string;
+  hotelCountry: string;
+}
 
-  const response = await fetch('/api/auth/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      name,
-      email,
-      password
-    })
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.error) throw new Error(res.error);
+const signupForm = async (
+  formObj: IPartnerSignupForm | IUserSignupForm,
+  role: UserRole,
+  setToastState: Dispatch<SetStateAction<IToast>>,
+  router: NextRouter
+) => {
+  setToastState({
+    message: 'Loading...',
+    type: 'info',
+    visible: true
+  });
+
+  try {
+    const response = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ...formObj, role })
+    });
+
+    if (response.status !== 200) {
+      const res = await response.json();
+      setToastState({
+        message: res.message ?? res.error ?? 'Something went wrong',
+        type: 'error',
+        visible: true
+      });
+    }
+
+    if (response.status === 200) {
+      const res = await response.json();
 
       if (res?.data?.status === 'fail') {
         setToastState({
@@ -55,80 +83,19 @@ const signupMiddleware = async (
           type: 'success',
           visible: true
         });
+        router.push('/');
       }
-    })
-    .catch((err) => {
-      // error handling
+    }
+  } catch (error) {
+    if (error instanceof Error) {
       setToastState({
-        message: err.message,
+        message: error.message ?? 'Something went wrong',
         type: 'error',
         visible: true
       });
-    });
-
-  console.log(response);
-  return response;
+    }
+  }
+  return;
 };
 
-const signupForm = async (
-  formObj: IAuthSignup,
-  setToastState: Dispatch<SetStateAction<IToast>>
-) => {
-  // const { name, email, password, confirmPassword } = formObj;
-
-  // // check if email and password are valid
-  // if (
-  //   !isValidateName(name) ||
-  //   !isValidEmail(email) ||
-  //   !isValidPassword(password) ||
-  //   !checkPassword(password, confirmPassword)
-  // ) {
-  //   setToastState({
-  //     message: 'Invalid credentials',
-  //     type: 'error',
-  //     visible: true
-  //   });
-  //   return;
-  // }
-
-  await signupMiddleware(formObj, setToastState);
-};
-
-interface IPartnerSignup {
-  hotelName: string;
-  hotelEmail: string;
-  hotelPassword: string;
-  hotelConfirmPassword: string;
-  hotelPhone: string;
-  hotelAddress: string;
-  hotelCity: string;
-  hotelState: string;
-  hotelCountry: string;
-  latitude: number;
-  longitude: number;
-}
-
-const partnerSignupMiddleware = async (formObj: IPartnerSignup) => {
-  const response = await fetch('/api/auth/partner/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(formObj)
-  })
-    .then((response) => response.json())
-    .catch((err) => {
-      // error handling
-      console.log('error', err);
-    });
-
-  console.log(response);
-  return response;
-};
-
-const partnerSignupForm = async (formObj: IPartnerSignup) => {
-  const response = await partnerSignupMiddleware(formObj);
-  console.log(response);
-};
-
-export { signupForm, partnerSignupForm };
+export { signupForm };

@@ -27,9 +27,9 @@ const Toast = ({
     if (toastState.visible) {
       setTimeout(() => {
         resetToast();
-      }, 5000);
+      }, 7500);
     }
-  }, [toastState.visible]);
+  });
 
   const getClassName = () => {
     switch (toastState.type) {
@@ -63,9 +63,8 @@ const Toast = ({
 
   return (
     <div
-      className={`${styles.container} ${getClassName()} ${
-        toastState.visible ? undefined : styles.hide
-      }`}
+      className={`${styles.container} ${getClassName()} ${toastState.visible ? undefined : styles.hide
+        }`}
     >
       <MaterialIcon iconName={getIcon()} />
       <p>{toastState.message}</p>

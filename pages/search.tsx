@@ -12,36 +12,35 @@ import styles from '../styles/Search/search.module.scss';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-const ExploreHome: NextPage = () => {
+const Search: NextPage = () => {
   const [viewportState, setViewportState] = useState({
     longitude: -100,
     latitude: 40,
     zoom: 12.5
   });
 
-  // useEffect(() => {
-  //   //  get location from browser
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //     console.log(position.coords);
-
-  //     setViewportState({
-  //       ...viewportState,
-  //       latitude: position.coords.latitude,
-  //       longitude: position.coords.longitude
-  //     });
-  //   });
-  // }, []);
+  useEffect(() => {
+    //  get location from browser
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position.coords);
+      setViewportState({
+        ...viewportState,
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      });
+    });
+  }, []);
 
   return (
     <Layout>
       <div className={styles.filterSection}></div>
       <div className={styles.container}>
         <div className={styles.contentSection}>
-          {Array(10)
+          {/* {Array(10)
             .fill(0)
             .map((_, index) => (
-              <CardTypeOne key={index} />
-            ))}
+              <CardTypeOne key={index}  />
+            ))} */}
         </div>
         <div className={styles.mapSection}>
           <ReactMapGL
@@ -77,4 +76,4 @@ const ExploreHome: NextPage = () => {
   );
 };
 
-export default ExploreHome;
+export default Search;

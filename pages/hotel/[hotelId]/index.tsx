@@ -2,11 +2,9 @@ import Image from 'next/image';
 import { Fragment } from 'react';
 import Layout from '../../../Components/Layout/Layout';
 import styles from '../../../styles/Hotel/hotelHome.module.scss';
-import { MaterialIcon } from '../../../Utils/Helper';
+import { MaterialIcon, Rupee } from '../../../Utils/Helper';
 
 const HotelSlugHome = () => {
-  const rupee = <span>&#8377;</span>;
-
   const arrObj = [
     {
       label: 'bedroom',
@@ -240,12 +238,18 @@ const HotelSlugHome = () => {
           </div>
           <div className={styles.cardSection}>
             <h5>
-              {rupee} 1000 - {rupee} 2000
+              <Rupee /> 1000 - <Rupee /> 2000
             </h5>
             <hr />
-            <p>Regular room: {rupee} 1000</p>
-            <p>Deluxe room: {rupee} 2000</p>
-            <p>Premium room: {rupee} 2000</p>
+            <p>
+              Regular room: <Rupee /> 1000
+            </p>
+            <p>
+              Deluxe room: <Rupee /> 2000
+            </p>
+            <p>
+              Premium room: <Rupee /> 2000
+            </p>
             <button>Reserve Now</button>
             <div className={styles.contactSection}>
               <small>
