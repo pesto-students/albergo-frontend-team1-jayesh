@@ -7,11 +7,7 @@ import {
 } from '../../Utils/DatePicker/helper';
 import { MaterialIcon } from '../../Utils/Helper';
 
-const DateRangePicker = ({
-  onChange
-}: {
-  onChange: (date: Date) => void;
-}) => {
+const DateRangePicker = ({ onChange }: { onChange: (date: Date) => void }) => {
   const [dateState, setDateState] = useState({
     show: false,
     monthDetails: getMonthDetails(getCurrentMonth()),
@@ -144,18 +140,36 @@ const DateRangePicker = ({
               )}
               {dateState.monthDetails.splitArrObj.currentMonthDays.map(
                 (day, index) => {
+                  const currentDate = new Date().getDate();
                   return (
                     <div key={index}>
                       <small
-                        className={`${getCurrentMonth() === dateState.currentMonth &&
+                        // className={`
+                        // ${getCurrentMonth() === dateState.currentMonth &&
+                        //     day === dateState.monthDetails.currentDay &&
+                        //     day >= currentDate
+                        //     ? `${styles.days} ${styles.active} ${styles.today}`
+                        //     : `${styles.days}`
+                        //   } ${dateState.selectedDay === day &&
+                        //     getCurrentMonth() === dateState.currentMonth
+                        //     ? styles.selected
+                        //     : undefined
+                        //   } ${day < currentDate ? styles.disabled : undefined}`}
+                        className={`${
+                          getCurrentMonth() === dateState.currentMonth
+                            ? styles.currentMonth
+                            : styles.disabled
+                        } ${
+                          getCurrentMonth() === dateState.currentMonth &&
                           day === dateState.monthDetails.currentDay
-                          ? `${styles.days} ${styles.active} ${styles.today}`
-                          : `${styles.active} ${styles.days}`
-                          } ${dateState.selectedDay === day &&
-                            getCurrentMonth() === dateState.currentMonth
-                            ? styles.selected
+                            ? styles.today
                             : undefined
-                          }`}
+                        } ${
+                          getCurrentMonth() === dateState.currentMonth &&
+                          day >= currentDate
+                            ? styles.valid
+                            : undefined
+                        } ${styles.days}`}
                         onClick={(e) =>
                           onClickTouchSelect(e.currentTarget.innerText)
                         }

@@ -7,7 +7,7 @@ const JWT_TOKEN_NAME = process.env.NEXT_PUBLIC_JWT_TOKEN_NAME ?? 'token';
 
 const isValidateName = (name: string) => {
   name = name.toLowerCase().trim();
-  const re = /^[a-z]+$/;
+  const re = /^[a-zA-Z ]+$/;
   return re.test(String(name));
 };
 
@@ -40,15 +40,12 @@ const setTokenCookie = (token: string) => {
     sameSite: true,
     secure: process.env.NODE_ENV === 'production'
   });
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(JWT_TOKEN_NAME, token);
-  }
   return;
 };
 
-const getTokenCookieServer = (ctx: GetServerSidePropsContext) => {
-  const cookies = nookies.get(ctx);
-  return cookies.JWT_TOKEN_NAME;
+const getTokenCookie = (ctx?: GetServerSidePropsContext) => {
+  const cookies = nookies.get(ctx ?? null);
+  return cookies[JWT_TOKEN_NAME];
 };
 
 const destroyTokenCookie = () => {
@@ -66,6 +63,6 @@ export {
   API_URL,
   parseJWT,
   setTokenCookie,
-  getTokenCookieServer,
+  getTokenCookie,
   destroyTokenCookie
 };

@@ -41,7 +41,7 @@ const Banner = () => {
       </form>
       <div className={styles.imageContainer}>
         <Image
-          src={'/assets/img/unsplash.jpg'}
+          src={'/assets/images/home/banner.jpg'}
           alt="banner"
           layout="fill"
           objectFit="cover"

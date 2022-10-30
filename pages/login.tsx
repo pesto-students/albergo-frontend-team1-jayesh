@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 import LoginContainer from '../Components/Login/loginContainer';
 import Toast, { IToast } from '../Components/Toast/Toast';
@@ -7,6 +8,7 @@ import styles from '../styles/Login/login.module.scss';
 import { loginForm } from '../Utils/auth/login';
 
 const Login = () => {
+  const router = useRouter();
   const [formState, setFormState] = useState({
     email: '',
     password: ''
@@ -22,7 +24,7 @@ const Login = () => {
     e.preventDefault();
     const email = formState.email;
     const password = formState.password;
-    loginForm({ email, password }, setToastState);
+    loginForm({ email, password }, setToastState, router);
   };
 
   const disableBtn = () => {

@@ -1,46 +1,44 @@
+import { NextRouter, Router } from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 import { IToast } from '../../Components/Toast/Toast';
 import store from '../../redux/store';
 import { setUserEncryptedToken } from '../../redux/user/user.slice';
-import {
-  isValidEmail,
-  isValidPassword,
-  // isValidEmail,
-  // isValidPassword,
-  setTokenCookie
-} from './authHelper';
+import { setTokenCookie } from './authHelper';
 
 interface ILoginFormObj {
   email: string;
   password: string;
 }
 
-const loginMiddleware = async (
+const loginForm = async (
   formObj: ILoginFormObj,
-  setToastState: Dispatch<SetStateAction<IToast>>
+  setToastState: Dispatch<SetStateAction<IToast>>,
+  router: NextRouter
 ) => {
-  const { email, password } = formObj;
+  setToastState({
+    message: 'Loading...',
+    type: 'info',
+    visible: true
+  });
 
-  await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email,
-      password
-    })
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.error) throw new Error(res.error);
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formObj)
+    });
 
+    if (response.status !== 200) {
+      const res = await response.json();
+      throw new Error(res.message ?? res.error ?? 'Something went wrong');
+    }
+
+    if (response.status === 200) {
+      const res = await response.json();
       if (res?.data?.status === 'fail') {
-        setToastState({
-          message: res.data.message,
-          type: 'error',
-          visible: true
-        });
+        throw new Error(res.data.message);
       }
 
       if (res?.data?.status === 'success') {
@@ -52,44 +50,18 @@ const loginMiddleware = async (
           type: 'success',
           visible: true
         });
+        router.push('/');
       }
-    })
-    .catch((err: Error) => {
-      // error handling
+    }
+  } catch (error) {
+    if (error instanceof Error) {
       setToastState({
-        message: err.message,
+        message: error.message ?? 'Something went wrong',
         type: 'error',
         visible: true
       });
-    });
-  return;
-};
-
-const loginForm = async (
-  formObj: ILoginFormObj,
-  setToastState: Dispatch<SetStateAction<IToast>>
-) => {
-  const { email, password } = formObj;
-
-  if (!isValidEmail(email)) {
-    setToastState({
-      message: 'Invalid email',
-      type: 'error',
-      visible: true
-    });
-    return;
+    }
   }
-
-  if (!isValidPassword(password)) {
-    setToastState({
-      message: 'Invalid password',
-      type: 'error',
-      visible: true
-    });
-    return;
-  }
-
-  await loginMiddleware(formObj, setToastState);
   return;
 };
 

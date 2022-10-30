@@ -67,10 +67,11 @@ export default function handler(
         name,
         phone,
         email,
-        password
+        password,
+        passwordConfirm: confirmPassword
       });
 
-      await fetch(`${API_URL}/users/signup`, {
+      await fetch(`${API_URL}/api/users/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -82,7 +83,9 @@ export default function handler(
           res.status(200).json({ data: response });
           resolve();
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
+
           res.status(200).json({ error: 'Please try again later' });
           resolve();
         });
