@@ -1,7 +1,7 @@
-@use '../variables';
+@use '../variables' as *;
 
 .container {
-  @include variables.display-flex(space-between, flex-start);
+  @include display-flex(space-between, flex-start);
   width: 100%;
   gap: 2rem;
 
@@ -9,11 +9,11 @@
     width: 70%;
 
     .header {
-      @include variables.display-flex(unset, center);
+      @include display-flex(unset, center);
       gap: 1rem;
 
       h3 {
-        @include variables.font-variation(600);
+        @include font-variation(600);
         margin: 0;
       }
     }

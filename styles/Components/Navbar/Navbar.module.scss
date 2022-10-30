@@ -1,64 +1,148 @@
-@use '../../variables';
+@use '../../variables' as *;
 
 .nav {
-  @include variables.display-flex(space-between, center);
+  @include display-flex(space-between, center);
   width: 100vw;
   max-width: 100%;
-  background: variables.$primaryBg;
-  padding: 1rem 3rem;
+  background: $primaryBg;
+  padding: 1rem 5vw;
+  z-index: 1;
 
   h2 {
-    @include variables.font-variation(600);
+    @include font-variation(600);
     margin: 0;
     letter-spacing: 1px;
   }
 
+  .menuBtn,
+  .menu {
+    display: none;
+  }
+
   ul {
-    @include variables.display-flex(space-between, center);
+    @include display-flex(space-between, center);
     list-style: none;
     gap: 2rem;
 
     li {
       a {
-        @include variables.display-flex(unset, center);
-        @include variables.font-variation(600);
+        @include display-flex(unset, center);
+        @include font-variation(600);
         gap: 0.25rem;
         position: relative;
         text-transform: capitalize;
 
         &::after {
-          @include variables.transform(scaleX(0));
-          @include variables.transition(transform 0.3s ease-in-out);
+          @include transform(scaleX(0));
+          @include transition(transform 0.3s ease-in-out);
           content: '';
           position: absolute;
           bottom: -0.25rem;
           left: 0;
           width: 100%;
           height: 2px;
-          background: variables.$secondaryColor;
+          background: $secondaryColor;
           transform-origin: left;
         }
 
         &:hover::after {
-          @include variables.transform(scaleX(1));
+          @include transform(scaleX(1));
         }
 
         span {
-          // @include variables.font-variation(400);
+          // @include font-variation(400);
           font-size: 1.2rem;
         }
       }
 
       .partnerBtn {
-        @include variables.font-variation(500);
-        @include variables.border-radius(2rem);
+        @include font-variation(500);
+        @include border-radius(2rem);
         letter-spacing: 1px;
-        background-color: variables.$secondaryColor;
-        color: variables.$fontWhite;
+        background-color: $secondaryColor;
+        color: $fontWhite;
         padding: 0.5rem 1rem;
 
         &::after {
           display: none;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .nav {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    ul {
+      gap: 1rem;
+
+      li {
+        a {
+          font-size: 0.9rem;
+        }
+
+        .partnerBtn {
+          padding: 0.25rem 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .nav {
+    position: relative;
+
+    .menuBtn {
+      @include border-radius(50%);
+      display: grid;
+      place-items: center;
+      outline: none;
+      border: none;
+      background: inherit;
+      color: $fontGrey;
+      padding: 0.25rem;
+      border: 0.5px solid rgba($fontGrey, 0.5);
+    }
+
+    ul {
+      display: none;
+    }
+
+    .menu {
+      @include display-flex(unset, flex-start);
+      @include transition(0.5s ease-in-out);
+      @include border-radius(0 0 0.5rem 0.5rem);
+      flex-direction: column;
+      width: 100%;
+      position: absolute;
+      top: -1000%;
+      left: 0;
+      background: rgba($primaryBg, 0.85);
+      padding: 1rem;
+      gap: 1rem;
+      backdrop-filter: blur(5px);
+
+      &.menuOpen {
+        top: 100%;
+      }
+
+      li {
+        width: 100%;
+
+        a {
+          font-size: 1rem;
+        }
+
+        .partnerBtn {
+          @include font-variation(600);
+          padding: 0;
+          background: transparent;
+          color: $fontGrey;
         }
       }
     }

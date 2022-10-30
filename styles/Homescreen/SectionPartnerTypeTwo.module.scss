@@ -1,4 +1,4 @@
-@use '../variables';
+@use '../variables' as *;
 
 .container {
   width: 100%;
@@ -8,53 +8,53 @@
   padding: 1rem 0;
 
   .innerContainer {
-    @include variables.display-flex(space-between, unset);
+    @include display-flex(space-between, unset);
     width: 100%;
     height: 100%;
 
     .content {
-      @include variables.display-flex(space-between, flex-start);
+      @include display-flex(space-between, flex-start);
       flex-direction: column;
       flex: 0.7 1 70%;
       height: 100%;
       padding: 2rem;
 
       .divider {
-        @include variables.border-radius(10px);
+        @include border-radius(10px);
         width: 10%;
         border-width: 3px;
-        border-color: variables.$fontBlack;
-        background: variables.$fontBlack;
+        border-color: $fontBlack;
+        background: $fontBlack;
       }
 
       h2 {
-        @include variables.font-variation(600);
+        @include font-variation(600);
         text-transform: capitalize;
         letter-spacing: 0.5px;
       }
 
       p {
-        @include variables.font-variation(600);
+        @include font-variation(600);
         font-size: 1.125rem;
       }
 
       .ctaContainer {
-        @include variables.display-flex(flex-start, center);
+        @include display-flex(flex-start, center);
         gap: 1rem;
       }
 
       .discoverMoreLink {
-        @include variables.border-radius(2rem);
-        @include variables.font-variation(600);
+        @include border-radius(2rem);
+        @include font-variation(600);
         letter-spacing: 0.5px;
         padding: 1rem 1.5rem;
-        background: variables.$secondaryColor;
-        color: variables.$fontWhite;
+        background: $secondaryColor;
+        color: $fontWhite;
       }
     }
 
     .imageContainer {
-      @include variables.border-radius(2rem);
+      @include border-radius(2rem);
       position: relative;
       width: 30%;
       min-width: 30%;
@@ -98,7 +98,7 @@
       }
 
       .imageContainer {
-        @include variables.border-radius(1rem);
+        @include border-radius(1rem);
         height: 40vh;
         min-height: 30vh;
         max-height: 50vh;

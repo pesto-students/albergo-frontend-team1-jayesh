@@ -1,90 +1,113 @@
-@use '../variables';
+@use '../variables' as *;
 
 .container {
-  @include variables.display-flex(unset, flex-start);
-  gap: 1rem;
-  height: 100vh;
-  min-height: 100vh;
+  width: 100vw;
+  background: #151515;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  position: relative;
 
-  .heroSection {
-    @include variables.border-radius(1rem);
-    width: 60%;
-    height: 100%;
-    background: #141414;
-    position: relative;
-    overflow: hidden;
-
-    h1 {
-      position: absolute;
-    }
+  .imgContainer {
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    width: 100%;
+    height: 100vh;
   }
 
   .formContainer {
-    width: 40%;
-    height: 100%;
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    @include border-radius(1rem);
+    margin: 1rem 0;
+    width: min(90%, 600px);
+    z-index: 1;
+    padding: 2rem;
+    background: rgba($fontWhite, 0.7);
+    backdrop-filter: blur(2rem);
 
-    .form {
-      width: 100%;
+    h4 {
+      @include font-variation(600);
+      margin-top: 0;
+    }
 
-      form {
-        width: 75%;
+    form {
+      @include display-flex(space-between, center);
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
 
-        .formGroup {
-          margin: 1rem 0;
+      .formGroup {
+        &.fullWidth {
+          flex: 1 1 100%;
+        }
 
-          label {
-            display: block;
-            font-size: 0.85rem;
+        &.halfWidth {
+          flex: 1 1 48%;
+        }
+
+        &.btnGroup {
+          @include display-flex(space-between, center);
+          flex: 1 1 100%;
+          gap: 1rem;
+        }
+
+        input,
+        textarea {
+          @include border-radius(0.5rem);
+          @include font-variation(500);
+          width: 100%;
+          outline: none;
+          border: 1px solid rgba($fontGrey, 0.25);
+          font-size: 1rem;
+          padding: 0.75rem 0.5rem;
+          font-family: inherit;
+
+          &:required {
+            border: 1px solid $fontBlack;
           }
 
-          input,
-          textarea {
-            @include variables.border-radius(0.2rem);
-            width: 100%;
-            font-size: 1.25rem;
-            padding: 0.5rem;
-            outline: none;
-            border: 1px solid rgba($color: variables.$fontGrey, $alpha: 0.5);
-
-            &:focus {
-              border: 1px solid variables.$fontBlack;
-            }
+          &:not([type='password']):focus:invalid {
+            border: 1px solid $toastErrorBg;
           }
 
-          textarea {
-            resize: vertical;
+          &:not([type='password']):valid {
+            border: 1px solid $toastSuccessBg;
+            background: rgba($toastSuccessBg, 0.15);
           }
         }
 
-        .btnGroup {
-          @include variables.display-flex(space-between, center);
-          width: 100%;
-          margin-top: 1rem 0;
+        textarea {
+          resize: vertical;
+        }
 
-          button {
-            @include variables.display-flex(unset, center);
-            gap: 0.25rem;
-            @include variables.border-radius(3rem);
-            @include variables.font-variation(500);
-            background: inherit;
-            padding: 0.5rem 1.25rem;
-            font-family: inherit;
-            border: none;
-            background: variables.$secondaryColor;
-            color: variables.$fontWhite;
-            letter-spacing: 1px;
-            cursor: pointer;
+        button {
+          @include border-radius(0.5rem);
+          @include font-variation(500);
+          @include transition(0.2s ease-in-out);
+          padding: 0.75rem 1rem;
+          background: $secondaryColor;
+          color: $fontWhite;
+          border: none;
+          cursor: pointer;
+          font-family: inherit;
+          text-transform: capitalize;
+          letter-spacing: 0.5px;
 
-            span {
-              font-size: 0.75rem;
-            }
-          }
-
-          .hiddenBtn {
-            visibility: hidden;
+          &:disabled {
+            background: rgba($secondaryColor, 0.5);
+            cursor: not-allowed;
           }
         }
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 426px) {
+  .container {
+    .formContainer {
+      padding: 1rem;
     }
   }
 }

@@ -18,7 +18,8 @@ const isValidEmail = (email: string) => {
 };
 
 const isValidPassword = (password: string) => {
-  const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  const re =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d$&+,:;=?@#|'<>.^*()%!-]{8,}$/;
   return re.test(String(password));
 };
 
@@ -39,6 +40,10 @@ const setTokenCookie = (token: string) => {
     sameSite: true,
     secure: process.env.NODE_ENV === 'production'
   });
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(JWT_TOKEN_NAME, token);
+  }
+  return;
 };
 
 const getTokenCookieServer = (ctx: GetServerSidePropsContext) => {
@@ -50,6 +55,7 @@ const destroyTokenCookie = () => {
   nookies.destroy(null, JWT_TOKEN_NAME, {
     path: '/'
   });
+  return;
 };
 
 export {

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRef, useState } from 'react';
-import bannerStyles from '../../../styles/Homescreen/Banner.module.scss';
+import styles from '../../../styles/Homescreen/Banner.module.scss';
 import DateRangePicker from '../../DateRangePicker/DateRangePicker';
 
 const Banner = () => {
@@ -14,24 +14,20 @@ const Banner = () => {
   };
 
   return (
-    <div className={bannerStyles.container}>
+    <div className={styles.container}>
       <form onSubmit={formSubmitHandler}>
-        <div className={bannerStyles.inpContainer}>
-          <label htmlFor="destination">destination</label>
-          <input
-            type="text"
-            placeholder="Where are you going?"
-            id="destination"
-            ref={destinationInpRef}
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="Where are you going?"
+          id="destination"
+          ref={destinationInpRef}
+        />
         <DateRangePicker
           onChange={(val) => setCheckInDate(val)}
-          placeholder="Checkin Date"
         />
         <button type="submit">Search</button>
       </form>
-      <div className={bannerStyles.imageContainer}>
+      <div className={styles.imageContainer}>
         <Image
           src={'/assets/img/unsplash.jpg'}
           alt="banner"

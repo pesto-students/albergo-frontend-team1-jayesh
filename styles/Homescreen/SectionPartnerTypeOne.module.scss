@@ -1,4 +1,4 @@
-@use '../variables';
+@use '../variables' as *;
 
 .container {
   width: 100%;
@@ -6,36 +6,36 @@
   padding: 1rem 0;
 
   .innerContainer {
-    @include variables.border-radius(1rem);
+    @include border-radius(1rem);
     width: 100%;
     height: 100%;
     display: flex;
     overflow: hidden;
-    background: variables.$secondaryColor;
+    background: $secondaryColor;
 
     .content {
-      @include variables.display-flex(center, flex-start);
+      @include display-flex(center, flex-start);
       flex-direction: column;
       width: 40%;
       height: 100%;
       padding: 2rem;
 
       h2 {
-        @include variables.font-variation(600);
+        @include font-variation(600);
         text-transform: capitalize;
         letter-spacing: 0.5px;
       }
 
       p {
-        @include variables.font-variation(600);
+        @include font-variation(600);
         font-size: 1.125rem;
       }
 
       a {
-        @include variables.border-radius(2rem);
+        @include border-radius(2rem);
         padding: 0.5rem 1.25rem;
-        background: variables.$fontGrey;
-        color: variables.$fontWhite;
+        background: $fontGrey;
+        color: $fontWhite;
       }
     }
 

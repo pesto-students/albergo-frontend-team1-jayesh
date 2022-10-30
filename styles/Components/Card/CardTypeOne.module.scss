@@ -1,14 +1,14 @@
-@use '../../variables';
+@use '../../variables' as *;
 
 .card {
-  @include variables.border-radius(10px);
-  @include variables.box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.2));
-  @include variables.transition(all 0.3s ease-in-out);
+  @include border-radius(10px);
+  @include box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.2));
+  @include transition(all 0.3s ease-in-out);
   flex: 1 20%;
   flex-basis: 280px;
 
   &:hover {
-    @include variables.box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.5));
+    @include box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.5));
   }
 
   .imageContainer {
@@ -16,10 +16,11 @@
     height: 35vh;
     min-height: 30vh;
     max-height: 40vh;
+    z-index: -1;
 
     button {
-      @include variables.border-radius(5rem);
-      @include variables.transition(all 0.3s ease-in-out);
+      @include border-radius(5rem);
+      @include transition(all 0.3s ease-in-out);
 
       cursor: pointer;
       position: absolute;
@@ -36,7 +37,7 @@
       }
 
       span {
-        @include variables.icon-variation(1);
+        @include icon-variation(1);
         font-size: 1.5rem;
         color: red;
       }
@@ -48,13 +49,13 @@
     width: 100%;
 
     h5 {
-      @include variables.font-variation(500);
+      @include font-variation(500);
       letter-spacing: 1px;
       margin: 0;
     }
 
     .amenitiesContainer {
-      @include variables.display-flex(unset, center);
+      @include display-flex(unset, center);
       gap: 1rem;
     }
   }
