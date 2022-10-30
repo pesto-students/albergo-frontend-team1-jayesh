@@ -21,9 +21,17 @@ const Home: NextPage<IHomeProps> = ({ data }) => {
       <Fragment>
         <Banner />
         <Layout>
-          <SectionTypeOne title="Latest on the Hotel listing" viewMoreLink dataArr={data.featuredHotels} />
+          <SectionTypeOne
+            title="Latest on the Hotel listing"
+            viewMoreLink
+            dataArr={data.featuredHotels}
+          />
           {/* <SectionTypeOne title="Nearby Listed Properties" showOnMapLink dataArr={data.topRatedHotels} /> */}
-          <SectionTypeOne title="Top Rated Properties" viewMoreLink dataArr={data.topRatedHotels} />
+          <SectionTypeOne
+            title="Top Rated Properties"
+            viewMoreLink
+            dataArr={data.topRatedHotels}
+          />
           <SectionPartnerTypeOne title={'Partner with us'} />
           <SectionTypeOne
             title="Featured Properties on our Listing"
@@ -44,27 +52,28 @@ const Home: NextPage<IHomeProps> = ({ data }) => {
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      }
+    });
 
-  const res = await fetch(`${process.env.API_URL}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    }
-  });
+    const data = await res.json();
 
-  const data = await res.json();
-
-  if (data) {
     return {
       props: {
-        data
-      },
-      revalidate: 30,
-    }
+        props: {
+          data
+        },
+        revalidate: 30
+      }
+    };
+  } catch (error) {
+    return {
+      props: {}
+    };
   }
-
-  return {
-    props: {}
-  };
 };

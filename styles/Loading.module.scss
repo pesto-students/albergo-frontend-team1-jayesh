@@ -8,7 +8,9 @@ $sat: 20%;
 
 .container {
   height: 100vh;
+  max-height: 100%;
   width: 100vw;
+  max-width: 100%;
   overflow: hidden;
   display: grid;
   place-items: center;

@@ -13,9 +13,7 @@ interface IExploreProps {
 }
 
 const Explore: NextPage = ({ data }: IExploreProps) => {
-
   if (data) {
-
     const tabs = [
       'dormitory',
       'houses',
@@ -30,7 +28,10 @@ const Explore: NextPage = ({ data }: IExploreProps) => {
         <div className={styles.filterSection}>
           <div className={styles.tabSection}>
             {tabs.map((tab, index) => (
-              <h5 key={index} className={index === 0 ? styles.active : undefined}>
+              <h5
+                key={index}
+                className={index === 0 ? styles.active : undefined}
+              >
                 {tab}
               </h5>
             ))}
@@ -52,33 +53,34 @@ const Explore: NextPage = ({ data }: IExploreProps) => {
     );
   }
 
-  return <Loading />
+  return <Loading />;
 };
 
 export default Explore;
 
 export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      }
+    });
 
-  const res = await fetch(`${process.env.API_URL}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    }
-  });
+    const data = await res.json();
 
-  const data = await res.json();
-
-  if (data) {
     return {
       props: {
-        data
-      },
-      revalidate: 30,
-    }
+        props: {
+          data
+        },
+        revalidate: 30
+      }
+    };
+  } catch (error) {
+    return {
+      props: {}
+    };
   }
-
-  return {
-    props: {}
-  };
 };
