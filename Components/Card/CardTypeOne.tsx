@@ -1,12 +1,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import styles from '../../styles/Components/Card/CardTypeOne.module.scss';
-import { MaterialIcon } from '../../Utils/Helper';
 
-const CardTypeOne = ({ wide = false }: { wide?: boolean }) => {
+interface ICardTypeOneProps {
+  itemData: any;
+  wide?: boolean;
+}
+
+const CardTypeOne = ({ wide = false, itemData }: ICardTypeOneProps) => {
+
+  const router = useRouter();
+
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={() => {
+      router.push(`/hotel/${itemData.id}`);
+    }} >
       <div className={styles.imageContainer}>
         <Image
           src={
@@ -16,17 +26,17 @@ const CardTypeOne = ({ wide = false }: { wide?: boolean }) => {
           objectFit="cover"
           alt="image"
         />
-        <button>
+        {/* <button>
           <MaterialIcon iconName="favorite" />
-        </button>
+        </button> */}
       </div>
       <div className={styles.cardContent}>
         <Link href={'/hotel/a/register'}>
           <a>
-            <h5>Al burj Hotel</h5>
+            <h5>{itemData?.name}</h5>
           </a>
         </Link>
-        <p>100 Smart Street, LA, USA</p>
+        <p>{itemData?.hotelCity}, {itemData?.hotelState}, {itemData?.hotelCountry}</p>
         {wide ? (
           <Fragment>
             <p>&#8377; 1000 - 3000</p>
@@ -45,7 +55,7 @@ const CardTypeOne = ({ wide = false }: { wide?: boolean }) => {
               <Star />
               <Star /> */}
             </div>
-            <p>209 reviews</p>
+            <p>{itemData?.ratingsQuantity} reviews</p>
           </Fragment>
         )}
       </div>
