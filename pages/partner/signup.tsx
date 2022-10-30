@@ -12,12 +12,12 @@ const Signup = () => {
     hotelConfirmPassword: '',
     hotelPhone: '',
     hotelAddress: '',
-    hotelZip: ''
-  });
-
-  const [locationState, setLocationState] = useState({
+    hotelZip: '',
+    hotelCity: '',
+    hotelState: '',
+    hotelCountry: '',
     lat: 0,
-    lon: 0
+    long: 0
   });
 
   const [signupToast, setSignupToast] = useState<IToast>({
@@ -27,21 +27,63 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-        setLocationState({
-          lat: position.coords.latitude,
-          lon: position.coords.longitude
-        });
-      },
-      function (error) {
-        console.log(error);
-      },
-      {
-        enableHighAccuracy: true,
-        maximumAge: 0
-      }
-    );
+    // ask for location permission
+    navigator.permissions
+      .query({ name: 'geolocation' })
+      .then(async (result) => {
+        if (result.state === 'granted') {
+          // if permission granted, get location
+          navigator.geolocation.getCurrentPosition((position) => {
+            setFormInp((prevFormInp) => ({
+              ...prevFormInp,
+              lat: position.coords.latitude,
+              long: position.coords.longitude
+            }));
+          });
+        } else if (result.state === 'prompt') {
+          // if permission not granted, ask for permission
+          navigator.geolocation.getCurrentPosition((position) => {
+            setFormInp((prevFormInp) => ({
+              ...prevFormInp,
+              lat: position.coords.latitude,
+              long: position.coords.longitude
+            }));
+          });
+        } else if (result.state === 'denied') {
+          // if permission denied, show toast
+          setSignupToast({
+            message: 'Location permission denied',
+            type: 'error',
+            visible: true
+          });
+
+          const ipAddr = await fetch('https://api.ipify.org/?format=json').then(
+            (res) => res.json()
+          );
+
+          const location = await fetch(
+            `http://ip-api.com/json/${ipAddr?.ip}?fields=573951`
+          ).then((res) => res.json());
+
+          if (location?.status === 'fail') {
+            setSignupToast({
+              message: location?.message ?? 'Location not found',
+              type: 'error',
+              visible: true
+            });
+            return;
+          }
+
+          setFormInp((prevFormInp) => ({
+            ...prevFormInp,
+            hotelCountry: location?.country,
+            hotelState: location?.regionName,
+            hotelCity: location?.city,
+            lat: location?.lat,
+            long: location?.lon
+          }));
+        }
+      });
   }, []);
 
   const disableBtn = () => {
@@ -53,29 +95,14 @@ const Signup = () => {
       formInp.hotelPhone &&
       formInp.hotelAddress &&
       formInp.hotelZip
-    ) {
+    )
       return false;
-    } else {
-      return true;
-    }
+    else return true;
   };
 
   const formSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    partnerSignupForm(
-      {
-        name: formInp.hotelName,
-        hotelEmail: formInp.hotelEmail,
-        hotelPassword: formInp.hotelPassword,
-        hotelConfirmPassword: formInp.hotelConfirmPassword,
-        hotelPhone: formInp.hotelPhone,
-        hotelAddress: formInp.hotelAddress,
-        hotelZip: formInp.hotelZip,
-        latitude: locationState?.lat,
-        longitude: locationState?.lon
-      },
-      setSignupToast
-    );
+    partnerSignupForm(formInp, setSignupToast);
   };
 
   return (
@@ -83,7 +110,6 @@ const Signup = () => {
       <div className={styles.formContainer}>
         <h4>Partner Signup</h4>
         <p>Please allow location permission</p>
-        <use></use>
         <form onSubmit={formSubmit}>
           <div className={`${styles.formGroup} ${styles.fullWidth}`}>
             <input

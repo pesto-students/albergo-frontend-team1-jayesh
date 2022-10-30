@@ -10,6 +10,7 @@
   left: 50%;
   padding: 0.5rem 1rem;
   gap: 2rem;
+  z-index: 1;
 
   &.success {
     background: $toastSuccessBg;
