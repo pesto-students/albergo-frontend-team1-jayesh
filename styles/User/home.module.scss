@@ -6,53 +6,6 @@
   gap: 3rem;
   padding: 1rem 0;
 
-  .sidebar {
-    @include border-radius(1rem);
-    width: 20%;
-    padding: 1rem;
-    background: rgba($primaryBg, 0.5);
-    position: sticky;
-    top: 1rem;
-    padding: 1rem;
-
-    .userLogoContainer {
-      @include border-radius(50%);
-      width: 60%;
-      padding-bottom: 60%;
-      margin: 0 auto 1rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    button {
-      @include font-variation(500);
-      @include border-radius(0.5rem);
-      display: block;
-      padding: 0;
-      border: none;
-      background: $secondaryColor;
-      color: $fontWhite;
-      font-family: inherit;
-      font-size: 0.9rem;
-      margin: 0 auto;
-      padding: 0.5rem 0.75rem;
-      cursor: pointer;
-    }
-
-    h4 {
-      margin: 1rem 0 0.5rem;
-    }
-
-    h5 {
-      margin: 1rem 0;
-    }
-    p {
-      @include display-flex(space-beween, center);
-      gap: 0.5rem;
-      margin: 0 0 0.5rem;
-    }
-  }
-
   .content {
     width: 80%;
 
@@ -61,19 +14,23 @@
     }
 
     small {
-      margin: 0 0 1rem;
+      margin: 0;
     }
 
-    button {
+    .editLink {
       @include border-radius(0.5rem);
       @include font-variation(600);
-      padding: 0.8rem 1.5rem;
+      padding: 0.5rem 0.75rem;
       background: inherit;
       font-family: inherit;
       border: 1.5px solid rgba($fontGrey, 1);
       letter-spacing: 0.5px;
       cursor: pointer;
-      margin: 0 0 1rem;
+      margin: 1rem 0;
+      display: block;
+      width: max-content;
+      font-size: 0.8rem;
+      cursor: pointer;
     }
 
     h5 {
