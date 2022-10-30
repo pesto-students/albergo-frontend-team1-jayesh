@@ -5,7 +5,10 @@ import {
   isValidEmail,
   isValidPassword
 } from '../../../Utils/auth/authHelper';
-import { IPartnerSignupForm } from '../../../Utils/auth/signup';
+import {
+  IPartnerSignupForm,
+  IUserSignupForm
+} from '../../../Utils/auth/signup';
 import { inValidPasswordMsg, UserRole } from '../../../Utils/Helper';
 
 interface IResponseData {
@@ -31,15 +34,20 @@ export default function handler(
 
   if (role === 'user') {
     //   get the email and password from the request body
-    const { name, email, password } = req.body;
+    const { name, phone, email, password, confirmPassword } =
+      req.body as IUserSignupForm;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !phone || !confirmPassword) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     //   check if email and password are valid
     if (!isValidateName(name)) {
       return res.status(400).json({ message: 'Invalid name' });
+    }
+
+    if (phone.length < 10) {
+      return res.status(400).json({ message: 'Invalid phone number' });
     }
 
     if (!isValidEmail(email)) {
@@ -50,12 +58,16 @@ export default function handler(
       return res.status(400).json({ message: inValidPasswordMsg });
     }
 
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: 'Password does not match' });
+    }
+
     return new Promise<void>(async (resolve) => {
       const raw = JSON.stringify({
         name,
+        phone,
         email,
-        password,
-        role
+        password
       });
 
       await fetch(`${API_URL}/users/signup`, {
@@ -116,29 +128,19 @@ export default function handler(
       return res.status(400).json({ message: 'Invalid address' });
     }
 
-    if (!formInp.hotelCity || formInp.hotelCity.trim().length < 1) {
-      return res.status(400).json({ message: 'Invalid city' });
-    }
-
-    if (!formInp.hotelState || formInp.hotelState.trim().length < 1) {
-      return res.status(400).json({ message: 'Invalid state' });
-    }
-
-    if (!formInp.hotelCountry || formInp.hotelCountry.trim().length < 1) {
-      return res.status(400).json({ message: 'Invalid country' });
-    }
-
-    if (!formInp.hotelZip || formInp.hotelZip.trim().length < 6) {
-      return res.status(400).json({ message: 'Invalid zip code' });
-    }
-
     return new Promise<void>(async (resolve) => {
       const raw = JSON.stringify({
-        ...formInp,
-        role
+        name: formInp.hotelName,
+        hotelPhone: formInp.hotelPhone,
+        hotelEmail: formInp.hotelEmail,
+        hotelPassword: formInp.hotelPassword,
+        hotelAddress: formInp.hotelAddress,
+        hotelCity: formInp.hotelCity,
+        hotelState: formInp.hotelState,
+        hotelCountry: formInp.hotelCountry
       });
 
-      await fetch(`${API_URL}/users/signup`, {
+      await fetch(`${API_URL}/hotel/onboard`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
