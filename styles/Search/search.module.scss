@@ -7,20 +7,40 @@
 .container {
   width: 100%;
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 
   .contentSection {
-    width: 50%;
+    width: 60%;
     @include display-flex(space-between, flex-start);
     flex-wrap: wrap;
     gap: 3vw;
   }
 
   .mapSection {
-    width: 20%;
-    height: 300px;
-    background-color: red;
+    width: 40%;
+    height: 90vh;
+    aspect-ratio: 1/1;
     position: sticky;
     top: 1rem;
+
+    .markerLabel {
+      @include display-flex(center, center);
+      @include border-radius(15px);
+      gap: 0.25rem;
+      background-color: $fontWhite;
+      color: $fontBlack;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid $fontBlack;
+
+      small {
+        letter-spacing: 0.1rem;
+      }
+
+      .iconContainer {
+        position: relative;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
   }
 }
