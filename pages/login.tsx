@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useState } from 'react';
 import LoginContainer from '../Components/Login/loginContainer';
 import Toast, { IToast } from '../Components/Toast/Toast';
 import styles from '../styles/Login/login.module.scss';

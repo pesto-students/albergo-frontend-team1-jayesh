@@ -15,7 +15,7 @@ $heroSectionWidth: 60%;
   }
 
   .formContainer {
-    @include display-flex(unset, center);
+    @include display-flex(unset, flex-start);
     height: 100vmin;
     width: calc(100% - #{$heroSectionWidth});
     background: rgba($color: $fontWhite, $alpha: 0.7);

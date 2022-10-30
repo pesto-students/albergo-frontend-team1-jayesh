@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { FormEvent, useEffect, useState } from 'react';
 import Toast, { IToast } from '../../Components/Toast/Toast';
 import styles from '../../styles/Partner/signup.module.scss';
-import { partnerSignupForm } from '../../Utils/auth/signup';
+import { signupForm } from '../../Utils/auth/signup';
 
 const Signup = () => {
   const [formInp, setFormInp] = useState({
@@ -12,7 +12,6 @@ const Signup = () => {
     hotelConfirmPassword: '',
     hotelPhone: '',
     hotelAddress: '',
-    hotelZip: '',
     hotelCity: '',
     hotelState: '',
     hotelCountry: '',
@@ -93,8 +92,7 @@ const Signup = () => {
       formInp.hotelPassword &&
       formInp.hotelConfirmPassword &&
       formInp.hotelPhone &&
-      formInp.hotelAddress &&
-      formInp.hotelZip
+      formInp.hotelAddress
     )
       return false;
     else return true;
@@ -102,19 +100,19 @@ const Signup = () => {
 
   const formSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    partnerSignupForm(formInp, setSignupToast);
+    signupForm(formInp, "partner", setSignupToast);
   };
 
   const resetForm = () => {
-    setFormInp({
+    setFormInp((prevFormInp) => ({
+      ...prevFormInp,
       hotelName: '',
       hotelEmail: '',
       hotelPassword: '',
       hotelConfirmPassword: '',
       hotelPhone: '',
       hotelAddress: '',
-      hotelZip: ''
-    });
+    }));
   };
 
   return (
@@ -202,22 +200,6 @@ const Signup = () => {
                 }))
               }
               placeholder="Phone"
-              required
-            />
-          </div>
-          <div className={`${styles.formGroup} ${styles.halfWidth}`}>
-            <input
-              type="text"
-              name="zip"
-              id="zip"
-              value={formInp.hotelZip}
-              onChange={(e) =>
-                setFormInp((prevFormInp) => ({
-                  ...prevFormInp,
-                  hotelZip: e.target.value
-                }))
-              }
-              placeholder="Zip"
               required
             />
           </div>
