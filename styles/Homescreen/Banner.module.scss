@@ -23,11 +23,13 @@
     @include border-radius(10px);
     @include display-flex(center, center);
     flex-wrap: wrap;
+    max-width: 90%;
     gap: 1.5rem;
     grid-column: 1/-1;
     grid-row: 1/-1;
     background: rgba($color: $fontWhite, $alpha: 0.75);
-    padding: 1rem;
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
 
     input {
       @include border-radius(5px);
