@@ -1,5 +1,8 @@
 import { GetServerSidePropsContext } from 'next';
+import { NextRouter } from 'next/router';
 import nookies from 'nookies';
+import store from '../../redux/store';
+import { removeEncryptedToken } from '../../redux/user/user.slice';
 
 const API_URL = process.env.API_URL;
 
@@ -55,6 +58,12 @@ const destroyTokenCookie = () => {
   return;
 };
 
+const logout = (router: NextRouter) => {
+  destroyTokenCookie();
+  store.dispatch(removeEncryptedToken());
+  router.push('/login');
+};
+
 export {
   isValidateName,
   isValidEmail,
@@ -64,5 +73,6 @@ export {
   parseJWT,
   setTokenCookie,
   getTokenCookie,
-  destroyTokenCookie
+  destroyTokenCookie,
+  logout
 };

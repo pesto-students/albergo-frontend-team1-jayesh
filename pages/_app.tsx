@@ -14,7 +14,7 @@ import { setUserEncryptedToken } from '../redux/user/user.slice';
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     const token = getTokenCookie();
-    store.dispatch(setUserEncryptedToken(token));
+    token && store.dispatch(setUserEncryptedToken(token));
   }, []);
 
   return (

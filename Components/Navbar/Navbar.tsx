@@ -1,11 +1,14 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import styles from '../../styles/Components/Navbar/Navbar.module.scss';
-import { parseJWT } from '../../Utils/auth/authHelper';
+import { logout, parseJWT } from '../../Utils/auth/authHelper';
 import { MaterialIcon } from '../../Utils/Helper';
 
 const Navbar = () => {
+  const router = useRouter();
+
   const userToken = parseJWT(
     useAppSelector((state) => state.user.userEncryptedToken)
   );
@@ -26,14 +29,6 @@ const Navbar = () => {
   const AuthLinks = (user: { name: string }) => {
     return (
       <Fragment>
-        {/* <li>
-          <Link href={'/user/favourite'}>
-            <a>
-              <MaterialIcon iconName="favorite" />
-              Favourites
-            </a>
-          </Link>
-        </li> */}
         <li>
           <Link href={'/user'}>
             <a>
@@ -41,6 +36,9 @@ const Navbar = () => {
               {user.name}
             </a>
           </Link>
+        </li>
+        <li>
+          <button onClick={() => logout(router)}>Logout</button>
         </li>
       </Fragment>
     );
