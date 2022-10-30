@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Layout from '../../Components/Layout/Layout';
-import dashboardStyles from '../../styles/Partner/dashboard.module.scss';
+import styles from '../../styles/Partner/dashboard.module.scss';
 import { MaterialIcon } from '../../Utils/Helper';
 
 const Dashboard = () => {
@@ -10,95 +10,91 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className={dashboardStyles.main}>
-        <div className={dashboardStyles.sectionHeader}>
+      <div className={styles.main}>
+        <div className={styles.sectionHeader}>
           <h5>Hotel Description</h5>
-          <div className={dashboardStyles.btnOptions}>
+          <div className={styles.btnOptions}>
             <button>Edit</button>
           </div>
         </div>
-        <div className={dashboardStyles.descContainer}>
-          <div className={dashboardStyles.descRowOne}>
-            <div className={dashboardStyles.iconContainer}>
-              {MaterialIcon('hotel')}
+        <div className={styles.descContainer}>
+          <div className={styles.descRowOne}>
+            <div className={styles.iconContainer}>
+              <MaterialIcon iconName="hotel" />
             </div>
-            <div className={dashboardStyles.descContent}>
-              <div className={dashboardStyles.descHeader}>
+            <div className={styles.descContent}>
+              <div className={styles.descHeader}>
                 <h4>Al burg Hotel</h4>
                 <small
                   className={`${
-                    isHotelOpen
-                      ? dashboardStyles.openChip
-                      : dashboardStyles.closeChip
-                  } ${dashboardStyles.chip}
+                    isHotelOpen ? styles.openChip : styles.closeChip
+                  } ${styles.chip}
                   `}
                 >
                   {isHotelOpen ? 'Open' : 'closed'}
                 </small>
               </div>
-              <div className={dashboardStyles.descDetailContainer}>
-                <div className={dashboardStyles.descDetails}>
+              <div className={styles.descDetailContainer}>
+                <div className={styles.descDetails}>
                   <p>Place : </p>
-                  <p className={dashboardStyles.fontDark}>London</p>
+                  <p className={styles.fontDark}>London</p>
                 </div>
-                <div className={dashboardStyles.descDetails}>
+                <div className={styles.descDetails}>
                   <p>Road : </p>
-                  <p className={dashboardStyles.fontDark}>Baker street</p>
+                  <p className={styles.fontDark}>Baker street</p>
                 </div>
-                <div className={dashboardStyles.descDetails}>
-                  <p className={dashboardStyles.fontLight}>Mail : </p>
+                <div className={styles.descDetails}>
+                  <p className={styles.fontLight}>Mail : </p>
                   <a href="mailto:alburjhotel@london.com">
-                    <p className={dashboardStyles.fontDark}>
-                      alburjhotel@london.com
-                    </p>
+                    <p className={styles.fontDark}>alburjhotel@london.com</p>
                   </a>
                 </div>
-                <div className={dashboardStyles.descDetails}>
-                  <p className={dashboardStyles.fontLight}>Phone : </p>
+                <div className={styles.descDetails}>
+                  <p className={styles.fontLight}>Phone : </p>
                   <a href="tel:+919702076050">
-                    <p className={dashboardStyles.fontDark}>+91 970 207 6050</p>
+                    <p className={styles.fontDark}>+91 970 207 6050</p>
                   </a>
                 </div>
               </div>
             </div>
           </div>
           <hr />
-          <div className={dashboardStyles.descRowTwo}>
-            <div className={dashboardStyles.contentItem}>
+          <div className={styles.descRowTwo}>
+            <div className={styles.contentItem}>
               <p>Available Rooms</p>
               <h5>50</h5>
             </div>
-            <div className={dashboardStyles.contentItem}>
+            <div className={styles.contentItem}>
               <p>highlight</p>
               <h5>1km to airport</h5>
             </div>
-            <div className={dashboardStyles.contentItem}>
+            <div className={styles.contentItem}>
               <p>review</p>
               <small>
                 <span>8.8</span> Excellent (3003 reviews)
               </small>
             </div>
-            <div className={dashboardStyles.contentItem}>
+            <div className={styles.contentItem}>
               <p>Check in</p>
               <h5>9:00 AM</h5>
             </div>
-            <div className={dashboardStyles.contentItem}>
+            <div className={styles.contentItem}>
               <p>Check out</p>
               <h5>6:00 PM</h5>
             </div>
           </div>
         </div>
-        <div className={dashboardStyles.sectionHeader}>
+        <div className={styles.sectionHeader}>
           <h5>Hotel Photos</h5>
-          <div className={dashboardStyles.btnOptions}>
+          <div className={styles.btnOptions}>
             <button>Edit</button>
           </div>
         </div>
-        <div className={dashboardStyles.photosContainer}>
+        <div className={styles.photosContainer}>
           {Array(15)
             .fill(0)
             .map((_, i) => (
-              <div className={dashboardStyles.photoCard} key={i}>
+              <div className={styles.photoCard} key={i}>
                 <Image
                   src={
                     'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
@@ -108,27 +104,29 @@ const Dashboard = () => {
                   objectPosition="center"
                   alt="hotel"
                 />
-                <button>{MaterialIcon('delete')}</button>
+                <button>
+                  <MaterialIcon iconName="delete" />
+                </button>
               </div>
             ))}
         </div>
-        <div className={dashboardStyles.sectionHeader}>
+        <div className={styles.sectionHeader}>
           <h5>Available rooms</h5>
-          <div className={dashboardStyles.btnOptions}>
+          <div className={styles.btnOptions}>
             <button>Edit Rooms</button>
             <button>View all</button>
           </div>
         </div>
-        <div className={dashboardStyles.roomsContainer}>
+        <div className={styles.roomsContainer}>
           {Array(15)
             .fill(0)
             .map((_, index) => (
-              <div className={dashboardStyles.roomCard} key={index}>
-                <div className={dashboardStyles.roomImage}></div>
-                <div className={dashboardStyles.roomDetails}>
+              <div className={styles.roomCard} key={index}>
+                <div className={styles.roomImage}></div>
+                <div className={styles.roomDetails}>
                   <p>Room Name</p>
                   <small>Room Description</small>
-                  <div className={dashboardStyles.roomPrice}>
+                  <div className={styles.roomPrice}>
                     <small>Price</small>
                     <small>Discount</small>
                   </div>
@@ -136,13 +134,13 @@ const Dashboard = () => {
               </div>
             ))}
         </div>
-        <div className={dashboardStyles.sectionHeader}>
+        <div className={styles.sectionHeader}>
           <h5>Bookings</h5>
-          <div className={dashboardStyles.btnOptions}>
+          <div className={styles.btnOptions}>
             <button>View</button>
           </div>
         </div>
-        <table className={dashboardStyles.bookingsTable}>
+        <table className={styles.bookingsTable}>
           <thead>
             <tr>
               <th>Booking ID</th>
