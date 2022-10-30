@@ -8,11 +8,9 @@ import {
 import { MaterialIcon } from '../../Utils/Helper';
 
 const DateRangePicker = ({
-  onChange,
-  placeholder
+  onChange
 }: {
   onChange: (date: Date) => void;
-  placeholder: string;
 }) => {
   const [dateState, setDateState] = useState({
     show: false,
@@ -20,7 +18,7 @@ const DateRangePicker = ({
     currentMonth: getCurrentMonth(),
     selectedDay: 0,
     selectedDate: new Date(),
-    inpValue: placeholder
+    inpValue: new Date().toDateString()
   });
 
   const onClickTouchShowCal = () => {
@@ -51,13 +49,9 @@ const DateRangePicker = ({
       selectedDay: parsedDay,
       show: false,
       selectedDate: selectedDate,
-      inpValue: selectedDate
-        .toLocaleDateString('pt-br')
-        .split('/')
-        .reverse()
-        .join('-')
+      inpValue: selectedDate.toDateString()
     }));
-    onChange && onChange(selectedDate);
+    onChange(selectedDate);
   };
 
   return (
@@ -153,17 +147,15 @@ const DateRangePicker = ({
                   return (
                     <div key={index}>
                       <small
-                        className={`${
-                          getCurrentMonth() === dateState.currentMonth &&
+                        className={`${getCurrentMonth() === dateState.currentMonth &&
                           day === dateState.monthDetails.currentDay
-                            ? `${styles.days} ${styles.active} ${styles.today}`
-                            : `${styles.active} ${styles.days}`
-                        } ${
-                          dateState.selectedDay === day &&
-                          getCurrentMonth() === dateState.currentMonth
+                          ? `${styles.days} ${styles.active} ${styles.today}`
+                          : `${styles.active} ${styles.days}`
+                          } ${dateState.selectedDay === day &&
+                            getCurrentMonth() === dateState.currentMonth
                             ? styles.selected
                             : undefined
-                        }`}
+                          }`}
                         onClick={(e) =>
                           onClickTouchSelect(e.currentTarget.innerText)
                         }

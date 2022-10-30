@@ -7,6 +7,7 @@ import Navbar from '../Components/Navbar/Navbar';
 import Footer from '../Components/Footer/Footer';
 import Newsletter from '../Components/Newsletter/Newsletter';
 import store from '../redux/store';
+import '../styles/Homescreen/Banner.scss';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
