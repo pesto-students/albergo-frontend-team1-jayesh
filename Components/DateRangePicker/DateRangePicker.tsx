@@ -9,20 +9,14 @@ import { MaterialIcon } from '../../Utils/Helper';
 import datePickerStyles from '../../styles/Components/DateRangePicker/DateRangePicker.module.scss';
 import monthPickerStyles from '../../styles/Components/DateRangePicker/MonthPicker.module.scss';
 
-const DateRangePicker = ({
-  onChange,
-  placeholder
-}: {
-  onChange: (date: Date) => void;
-  placeholder: string;
-}) => {
+const DateRangePicker = ({ onChange }: { onChange: (date: Date) => void }) => {
   const [dateState, setDateState] = useState({
     show: false,
     monthDetails: getMonthDetails(getCurrentMonth()),
     currentMonth: getCurrentMonth(),
     selectedDay: 0,
     selectedDate: new Date(),
-    inpValue: placeholder
+    inpValue: new Date().toDateString()
   });
 
   const onClickTouchShowCal = () => {
@@ -53,13 +47,9 @@ const DateRangePicker = ({
       selectedDay: parsedDay,
       show: false,
       selectedDate: selectedDate,
-      inpValue: selectedDate
-        .toLocaleDateString('pt-br')
-        .split('/')
-        .reverse()
-        .join('-')
+      inpValue: selectedDate.toDateString()
     }));
-    onChange && onChange(selectedDate);
+    onChange(selectedDate);
   };
 
   return (
@@ -154,20 +144,36 @@ const DateRangePicker = ({
               )}
               {dateState.monthDetails.splitArrObj.currentMonthDays.map(
                 (day, index) => {
+                  const currentDate = new Date().getDate();
                   return (
                     <div key={index}>
                       <small
+                        // className={`
+                        // ${getCurrentMonth() === dateState.currentMonth &&
+                        //     day === dateState.monthDetails.currentDay &&
+                        //     day >= currentDate
+                        //     ? `${styles.days} ${styles.active} ${styles.today}`
+                        //     : `${styles.days}`
+                        //   } ${dateState.selectedDay === day &&
+                        //     getCurrentMonth() === dateState.currentMonth
+                        //     ? styles.selected
+                        //     : undefined
+                        //   } ${day < currentDate ? styles.disabled : undefined}`}
                         className={`${
+                          getCurrentMonth() === dateState.currentMonth
+                            ? datePickerStyles.currentMonth
+                            : datePickerStyles.disabled
+                        } ${
                           getCurrentMonth() === dateState.currentMonth &&
                           day === dateState.monthDetails.currentDay
-                            ? `${datePickerStyles.days} ${datePickerStyles.active} ${datePickerStyles.today}`
-                            : `${datePickerStyles.active} ${datePickerStyles.days}`
-                        } ${
-                          dateState.selectedDay === day &&
-                          getCurrentMonth() === dateState.currentMonth
-                            ? datePickerStyles.selected
+                            ? datePickerStyles.today
                             : undefined
-                        }`}
+                        } ${
+                          getCurrentMonth() === dateState.currentMonth &&
+                          day >= currentDate
+                            ? datePickerStyles.valid
+                            : undefined
+                        } ${datePickerStyles.days}`}
                         onClick={(e) =>
                           onClickTouchSelect(e.currentTarget.innerText)
                         }

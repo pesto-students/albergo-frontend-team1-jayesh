@@ -3,17 +3,17 @@ import CardTypeOne from '../Components/Card/CardTypeOne';
 import Layout from '../Components/Layout/Layout';
 import styles from '../styles/Search/search.module.scss';
 
-const ExploreHome: NextPage = () => {
+const Search: NextPage = () => {
   return (
     <Layout>
       <div className={styles.filterSection}></div>
       <div className={styles.container}>
         <div className={styles.contentSection}>
-          {Array(10)
+          {/* {Array(10)
             .fill(0)
             .map((_, index) => (
-              <CardTypeOne key={index} />
-            ))}
+              <CardTypeOne key={index}  />
+            ))} */}
         </div>
         <div className={styles.mapSection}></div>
       </div>
@@ -21,4 +21,4 @@ const ExploreHome: NextPage = () => {
   );
 };
 
-export default ExploreHome;
+export default Search;
