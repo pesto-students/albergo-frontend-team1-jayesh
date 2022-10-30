@@ -32,16 +32,19 @@ const loginForm = async (
 
     if (response.status !== 200) {
       const res = await response.json();
+      console.log(res);
       throw new Error(res.message ?? res.error ?? 'Something went wrong');
     }
 
     if (response.status === 200) {
       const res = await response.json();
       if (res?.data?.status === 'fail') {
+        console.log('fail', res);
         throw new Error(res.data.message);
       }
 
       if (res?.data?.status === 'success') {
+        console.log('success', res);
         const token = res?.data?.token;
         setTokenCookie(token);
         store.dispatch(setUserEncryptedToken(token));
