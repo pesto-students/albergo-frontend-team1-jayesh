@@ -7,8 +7,12 @@ import { MaterialIcon } from '../Utils/Helper';
 
 interface IExploreProps {
   data?: {
-    featuredHotels: unknown[];
-    topRatedHotels: unknown[];
+    featuredHotels: {
+      [key: string]: string;
+    }[];
+    topRatedHotels: {
+      [key: string]: string;
+    }[];
   };
 }
 
@@ -72,15 +76,14 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
       props: {
-        props: {
-          data
-        },
-        revalidate: 30
-      }
+        data
+      },
+      revalidate: 30
     };
   } catch (error) {
     return {
-      props: {}
+      props: {},
+      revalidate: 30
     };
   }
 };

@@ -33,16 +33,13 @@
     cursor: pointer;
   }
 
-  h4 {
-    margin: 1rem 0 0.5rem;
-  }
-
   h5 {
     margin: 1rem 0;
   }
-  p {
-    @include variables.display-flex(space-beween, center);
-    gap: 0.5rem;
-    margin: 0 0 0.5rem;
+
+  a {
+    display: block;
+    text-transform: capitalize;
+    margin: 1rem 0;
   }
 }

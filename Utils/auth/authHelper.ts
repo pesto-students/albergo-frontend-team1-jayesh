@@ -30,10 +30,20 @@ const checkPassword = (password: string, confirmPassword: string) => {
   return password === confirmPassword;
 };
 
+interface IParsedToken {
+  id: string;
+  email: string;
+  name: string;
+  iat: number;
+  exp: number;
+}
+
 const parseJWT = (token: string | null) => {
   return token === null
     ? null
-    : JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+    : (JSON.parse(
+        Buffer.from(token.split('.')[1], 'base64').toString()
+      ) as IParsedToken);
 };
 
 const setTokenCookie = (token: string) => {
@@ -48,7 +58,7 @@ const setTokenCookie = (token: string) => {
 
 const getTokenCookie = (ctx?: GetServerSidePropsContext) => {
   const cookies = nookies.get(ctx ?? null);
-  return cookies[JWT_TOKEN_NAME];
+  return cookies ? cookies[JWT_TOKEN_NAME] : null;
 };
 
 const destroyTokenCookie = () => {

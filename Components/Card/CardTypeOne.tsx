@@ -5,18 +5,22 @@ import { Fragment } from 'react';
 import styles from '../../styles/Components/Card/CardTypeOne.module.scss';
 
 interface ICardTypeOneProps {
-  itemData: any;
+  itemData: {
+    [key: string]: string;
+  };
   wide?: boolean;
 }
 
 const CardTypeOne = ({ wide = false, itemData }: ICardTypeOneProps) => {
-
   const router = useRouter();
 
   return (
-    <div className={styles.card} onClick={() => {
-      router.push(`/hotel/${itemData.id}`);
-    }} >
+    <div
+      className={styles.card}
+      onClick={() => {
+        router.push(`/hotel/${itemData.id}`);
+      }}
+    >
       <div className={styles.imageContainer}>
         <Image
           src={
@@ -36,7 +40,10 @@ const CardTypeOne = ({ wide = false, itemData }: ICardTypeOneProps) => {
             <h5>{itemData?.name}</h5>
           </a>
         </Link>
-        <p>{itemData?.hotelCity}, {itemData?.hotelState}, {itemData?.hotelCountry}</p>
+        <p>
+          {itemData?.hotelCity}, {itemData?.hotelState},{' '}
+          {itemData?.hotelCountry}
+        </p>
         {wide ? (
           <Fragment>
             <p>&#8377; 1000 - 3000</p>
