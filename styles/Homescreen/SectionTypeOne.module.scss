@@ -24,10 +24,28 @@
     }
 
     .moreLink {
-      @include font-variation(600);
+      @include font-variation(700);
       @include display-flex(center, center);
-      font-size: 0.8rem;
+      font-size: 1rem;
       gap: 0.5rem;
+      position: relative;
+
+      &::after {
+        @include transition(all 0.3s ease-in-out);
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: -1px;
+        background: $fontBlack;
+        scale: 0;
+      }
+
+      &:hover {
+        &::after {
+          scale: 1;
+        }
+      }
     }
   }
   .cardContainer {

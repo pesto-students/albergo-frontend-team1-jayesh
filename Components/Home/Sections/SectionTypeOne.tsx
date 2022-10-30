@@ -8,36 +8,35 @@ const SectionTypeOne = ({
   viewMoreLink = false,
   showOnMapLink = false,
   flexWrap = false,
-  numberOfCards = 4
+  dataArr
 }: {
   title: string;
   viewMoreLink?: boolean;
   showOnMapLink?: boolean;
   flexWrap?: boolean;
-  numberOfCards?: number;
+  dataArr: unknown[];
 }) => {
+
   return (
     <div className={styles.container}>
       <h3>{title}</h3>
       <div className={styles.subTop}>
         <hr className={styles.divider} />
         {viewMoreLink && (
-          <Link href="">
+          <Link href="/explore">
             <a className={styles.moreLink}>View more</a>
           </Link>
         )}
         {showOnMapLink && (
-          <Link href="">
+          <Link href="/search" >
             <a className={styles.moreLink}>Show on map</a>
           </Link>
         )}
       </div>
       <div className={styles.cardContainer}>
-        {Array(numberOfCards)
-          .fill(0)
-          .map((_, index) => (
-            <CardTypeOne key={index} wide={flexWrap} />
-          ))}
+        {dataArr.slice(0, 6).map((itemData, index) => (
+          <CardTypeOne key={index} wide={flexWrap} itemData={itemData} />
+        ))}
       </div>
     </div>
   );
