@@ -1,26 +1,22 @@
-import { useState, Fragment } from 'react';
-import pickerStyles from '../../styles/Components/DateRangePicker/DateRangePicker.module.scss';
+import { useState, Fragment, useEffect } from 'react';
 import {
   daysArr,
   getCurrentMonth,
-  getMonthDetails
+  getMonthDetails,
+  monthArr
 } from '../../Utils/DatePicker/helper';
 import { MaterialIcon } from '../../Utils/Helper';
+import datePickerStyles from '../../styles/Components/DateRangePicker/DateRangePicker.module.scss';
+import monthPickerStyles from '../../styles/Components/DateRangePicker/MonthPicker.module.scss';
 
-const DateRangePicker = ({
-  onChange,
-  placeholder
-}: {
-  onChange: (date: Date) => void;
-  placeholder: string;
-}) => {
+const DateRangePicker = ({ onChange }: { onChange: (date: Date) => void }) => {
   const [dateState, setDateState] = useState({
     show: false,
     monthDetails: getMonthDetails(getCurrentMonth()),
     currentMonth: getCurrentMonth(),
     selectedDay: 0,
     selectedDate: new Date(),
-    inpValue: placeholder
+    inpValue: new Date().toDateString()
   });
 
   const onClickTouchShowCal = () => {
@@ -51,13 +47,9 @@ const DateRangePicker = ({
       selectedDay: parsedDay,
       show: false,
       selectedDate: selectedDate,
-      inpValue: selectedDate
-        .toLocaleDateString('pt-br')
-        .split('/')
-        .reverse()
-        .join('-')
+      inpValue: selectedDate.toDateString()
     }));
-    onChange && onChange(selectedDate);
+    onChange(selectedDate);
   };
 
   return (
@@ -75,12 +67,12 @@ const DateRangePicker = ({
         value={dateState.inpValue}
         placeholder="Select Date"
         readOnly
-        className={pickerStyles.dateInput}
+        className={datePickerStyles.dateInput}
       />
       {dateState.show && (
         <Fragment>
           <div
-            className={pickerStyles.backdrop}
+            className={datePickerStyles.backdrop}
             onClick={(e) => {
               e.preventDefault();
               onClickTouchCloseCal();
@@ -90,8 +82,8 @@ const DateRangePicker = ({
               onClickTouchCloseCal();
             }}
           />
-          <div className={pickerStyles.calendar}>
-            <div className={pickerStyles.calendarTop}>
+          <div className={datePickerStyles.calendar}>
+            <div className={datePickerStyles.calendarTop}>
               <button
                 disabled={dateState.currentMonth === 0}
                 onClick={() => {
@@ -106,7 +98,7 @@ const DateRangePicker = ({
                   });
                 }}
               >
-                {MaterialIcon('arrow_back_ios')}
+                <MaterialIcon iconName="arrow_back_ios" />
               </button>
               <span>
                 <h3>{dateState.monthDetails.year}</h3>
@@ -127,13 +119,13 @@ const DateRangePicker = ({
                 }}
               >
                 <span
-                  className={`material-symbols-outlined ${pickerStyles.rightIcon}`}
+                  className={`material-symbols-outlined ${datePickerStyles.rightIcon}`}
                 >
                   arrow_forward_ios
                 </span>
               </button>
             </div>
-            <div className={pickerStyles.calendarBody}>
+            <div className={datePickerStyles.calendarBody}>
               {daysArr.map((day, index) => (
                 <small key={index}>{day}</small>
               ))}
@@ -142,7 +134,7 @@ const DateRangePicker = ({
                   return (
                     <div key={index}>
                       <small
-                        className={`${pickerStyles.days} ${pickerStyles.disabled}`}
+                        className={`${datePickerStyles.days} ${datePickerStyles.disabled}`}
                       >
                         {day}
                       </small>
@@ -152,20 +144,36 @@ const DateRangePicker = ({
               )}
               {dateState.monthDetails.splitArrObj.currentMonthDays.map(
                 (day, index) => {
+                  const currentDate = new Date().getDate();
                   return (
                     <div key={index}>
                       <small
+                        // className={`
+                        // ${getCurrentMonth() === dateState.currentMonth &&
+                        //     day === dateState.monthDetails.currentDay &&
+                        //     day >= currentDate
+                        //     ? `${styles.days} ${styles.active} ${styles.today}`
+                        //     : `${styles.days}`
+                        //   } ${dateState.selectedDay === day &&
+                        //     getCurrentMonth() === dateState.currentMonth
+                        //     ? styles.selected
+                        //     : undefined
+                        //   } ${day < currentDate ? styles.disabled : undefined}`}
                         className={`${
+                          getCurrentMonth() === dateState.currentMonth
+                            ? datePickerStyles.currentMonth
+                            : datePickerStyles.disabled
+                        } ${
                           getCurrentMonth() === dateState.currentMonth &&
                           day === dateState.monthDetails.currentDay
-                            ? `${pickerStyles.days} ${pickerStyles.active} ${pickerStyles.today}`
-                            : `${pickerStyles.active} ${pickerStyles.days}`
-                        } ${
-                          dateState.selectedDay === day &&
-                          getCurrentMonth() === dateState.currentMonth
-                            ? pickerStyles.selected
+                            ? datePickerStyles.today
                             : undefined
-                        }`}
+                        } ${
+                          getCurrentMonth() === dateState.currentMonth &&
+                          day >= currentDate
+                            ? datePickerStyles.valid
+                            : undefined
+                        } ${datePickerStyles.days}`}
                         onClick={(e) =>
                           onClickTouchSelect(e.currentTarget.innerText)
                         }
@@ -184,7 +192,7 @@ const DateRangePicker = ({
                   return (
                     <div key={index}>
                       <small
-                        className={`${pickerStyles.days} ${pickerStyles.disabled}`}
+                        className={`${datePickerStyles.days} ${datePickerStyles.disabled}`}
                       >
                         {day}
                       </small>
@@ -200,4 +208,133 @@ const DateRangePicker = ({
   );
 };
 
-export default DateRangePicker;
+const MonthPicker = ({ onChange }: { onChange: (date: Date) => void }) => {
+  const [monthState, setMonthState] = useState({
+    currentMonth: getMonthDetails(getCurrentMonth()).month,
+    showSelect: false
+  });
+
+  useEffect(() => {
+    if (monthState.showSelect) {
+      const activeMonth = document.getElementById('activeMonth');
+      activeMonth &&
+        activeMonth.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        });
+    }
+  }, [monthState.showSelect]);
+
+  return (
+    <div className={monthPickerStyles.container}>
+      <input
+        type="text"
+        value={monthState.currentMonth}
+        readOnly
+        onClick={() =>
+          setMonthState((prevMonthState) => ({
+            ...prevMonthState,
+            showSelect: true
+          }))
+        }
+      />
+      {monthState.showSelect && (
+        <ul>
+          {monthArr.map((month, index) => (
+            <li
+              key={index}
+              onClick={() => {
+                setMonthState((prevMonthState) => ({
+                  ...prevMonthState,
+                  currentMonth: month,
+                  showSelect: false
+                }));
+                onChange &&
+                  onChange(
+                    new Date(getMonthDetails(index).year, index, 1, 0, 0, 0, 0)
+                  );
+              }}
+              id={monthState.currentMonth === month ? 'activeMonth' : undefined}
+              className={
+                monthState.currentMonth === month
+                  ? monthPickerStyles.active
+                  : undefined
+              }
+            >
+              {month}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+const YearPicker = ({ onChange }: { onChange: (date: Date) => void }) => {
+  const [yearState, setYearState] = useState({
+    currentYear: getMonthDetails(getCurrentMonth()).year,
+    showSelect: false
+  });
+
+  const yearArr = Array.from(
+    { length: 20 },
+    (v, k) => k + yearState.currentYear - 10
+  );
+
+  useEffect(() => {
+    if (yearState.showSelect) {
+      const activeYear = document.getElementById('activeYear');
+      activeYear &&
+        activeYear.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        });
+    }
+  }, [yearState.showSelect]);
+
+  return (
+    <div className={monthPickerStyles.container}>
+      <input
+        type="text"
+        value={yearState.currentYear}
+        readOnly
+        onClick={() =>
+          setYearState((prevYearState) => ({
+            ...prevYearState,
+            showSelect: true
+          }))
+        }
+      />
+      {yearState.showSelect && (
+        <ul>
+          {yearArr.map((year, index) => (
+            <li
+              key={index}
+              onClick={() => {
+                setYearState((prevYearState) => ({
+                  ...prevYearState,
+                  currentYear: year,
+                  showSelect: false
+                }));
+                onChange &&
+                  onChange(new Date(year, getCurrentMonth(), 1, 0, 0, 0, 0));
+              }}
+              id={yearState.currentYear === year ? 'activeYear' : undefined}
+              className={
+                yearState.currentYear === year
+                  ? monthPickerStyles.active
+                  : undefined
+              }
+            >
+              {year}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export { DateRangePicker, MonthPicker, YearPicker };

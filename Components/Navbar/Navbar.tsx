@@ -1,53 +1,129 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
-import navStyles from '../../styles/Components/Navbar/Navbar.module.scss';
+import { useAppSelector } from '../../redux/hooks';
+import styles from '../../styles/Components/Navbar/Navbar.module.scss';
+import { parseJWT } from '../../Utils/auth/authHelper';
 import { MaterialIcon } from '../../Utils/Helper';
 
 const Navbar = () => {
-  const toggleNavMenu = () => {
-    const menu = document.getElementById('menu');
-    menu?.classList.toggle(navStyles.active);
+  const userToken = parseJWT(
+    useAppSelector((state) => state.user.userEncryptedToken)
+  );
+
+  const centralLinks = [
+    {
+      name: 'Search',
+      icon: 'search',
+      link: '/search'
+    },
+    {
+      name: 'explore',
+      icon: 'explore',
+      link: '/explore'
+    }
+  ];
+
+  const AuthLinks = (user: { name: string }) => {
+    return (
+      <Fragment>
+        {/* <li>
+          <Link href={'/user/favourite'}>
+            <a>
+              <MaterialIcon iconName="favorite" />
+              Favourites
+            </a>
+          </Link>
+        </li> */}
+        <li>
+          <Link href={'/user'}>
+            <a>
+              <MaterialIcon iconName="person" />
+              {user.name}
+            </a>
+          </Link>
+        </li>
+      </Fragment>
+    );
   };
 
   return (
     <Fragment>
-      <nav className={navStyles.nav}>
+      <nav className={styles.nav}>
         <Link href="/">
           <a>
             <h2>Albergo</h2>
           </a>
         </Link>
-        <ul className={navStyles.navLinks}>
-          <li>
-            <Link href="/search">
-              <a>Find a hotel</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/blogs">
-              <a>Stories</a>
-            </Link>
-          </li>
+        <button
+          className={styles.menuBtn}
+          onClick={() => {
+            const menu = document.getElementById('mobileMenu');
+            menu?.classList.toggle(styles.menuOpen);
+          }}
+        >
+          <MaterialIcon iconName="menu" />
+        </button>
+        <ul className={styles.menu} id={'mobileMenu'}>
+          {centralLinks.map((link) => (
+            <li key={link.name}>
+              <Link href={link.link}>
+                <a>
+                  <MaterialIcon iconName={link.icon} />
+                  {link.name}
+                </a>
+              </Link>
+            </li>
+          ))}
+          {userToken ? (
+            AuthLinks(userToken)
+          ) : (
+            <Fragment>
+              <li>
+                <Link href="/partner">
+                  <a className={styles.partnerBtn}>Become a partner</a>
+                </Link>
+              </li>
+              <li>
+                <Link href={'/auth'}>
+                  <a>
+                    <MaterialIcon iconName="person" />
+                    Login
+                  </a>
+                </Link>
+              </li>
+            </Fragment>
+          )}
         </ul>
-        <ul className={navStyles.actionsContainer}>
-          <li>
-            <Link href="/becomePartner">
-              <a className={navStyles.partnerBtn}>Become a partner</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="">
-              <a>Login</a>
-            </Link>
-          </li>
+        <ul>
+          {centralLinks.map((link, index) => (
+            <li key={index}>
+              <Link href={link.link}>
+                <a>
+                  <MaterialIcon iconName={link.icon} />
+                  {link.name}
+                </a>
+              </Link>
+            </li>
+          ))}
         </ul>
-        <button onClick={toggleNavMenu}>{MaterialIcon('menu')}</button>
-        <div className={navStyles.menu} id="menu" onClick={toggleNavMenu}>
-          <h1>hello</h1>
-          <h1>hello</h1>
-          <h1>hello</h1>
-          <h1>hello</h1>
-        </div>
+        <ul>
+          {userToken ? (
+            AuthLinks(userToken)
+          ) : (
+            <Fragment>
+              <li>
+                <Link href="/partner">
+                  <a className={styles.partnerBtn}>Become a partner</a>
+                </Link>
+              </li>
+              <li>
+                <Link href={'/login'}>
+                  <a>login</a>
+                </Link>
+              </li>
+            </Fragment>
+          )}
+        </ul>
       </nav>
     </Fragment>
   );

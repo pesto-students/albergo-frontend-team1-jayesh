@@ -1,0 +1,62 @@
+@use '../variables' as *;
+
+.container {
+  margin: 5vh 0;
+
+  .cardContainer {
+    @include display-flex(space-between, flex-start);
+    margin: 5vh 0;
+    flex-wrap: wrap;
+    gap: 2rem 1rem;
+
+    .card {
+      @include border-radius(1.5rem);
+      position: relative;
+      width: 325px;
+      height: 45vh;
+      overflow: hidden;
+
+      .cardImage {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+      }
+
+      button {
+        @include border-radius(50%);
+        @include transition(0.3s ease-in-out);
+        // center
+        display: grid;
+        place-items: center;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        &:hover {
+          background: rgba(0, 0, 0, 0.338);
+        }
+
+        span {
+          @include icon-variation(0, 700, 200, 48);
+          font-size: 1.5rem;
+        }
+      }
+
+      .cardContent {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.655);
+        color: $fontWhite;
+
+        h5 {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}

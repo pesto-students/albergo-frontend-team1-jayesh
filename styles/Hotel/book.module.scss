@@ -1,0 +1,25 @@
+@use '../variables' as *;
+
+.container {
+  @include display-flex(space-between, flex-start);
+  width: 100%;
+  gap: 2rem;
+
+  .content {
+    width: 70%;
+
+    .header {
+      @include display-flex(unset, center);
+      gap: 1rem;
+
+      h3 {
+        @include font-variation(600);
+        margin: 0;
+      }
+    }
+  }
+
+  .sideContent {
+    width: 30%;
+  }
+}

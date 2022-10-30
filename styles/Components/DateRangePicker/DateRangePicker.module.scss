@@ -1,7 +1,6 @@
-@use '../../variables';
+@use '../../variables' as *;
 
 .dateInput {
-  width: 100%;
   outline: none;
   border: none;
   font-size: inherit;
@@ -10,7 +9,6 @@
 
 .backdrop {
   position: fixed;
-  bottom: -150%;
   left: 50%;
   width: 100vw;
   height: 150vh;
@@ -23,38 +21,35 @@
 }
 
 .calendar {
-  @include variables.border-radius(0.75rem);
-  @include variables.box-shadow(0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.1));
-
+  @include border-radius(0.75rem);
+  @include box-shadow(0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.1));
   padding: 0.5rem 1rem;
   position: absolute;
-  bottom: 1rem;
   left: 50%;
-  width: 320px;
-  min-width: 300px;
-  max-width: 100%;
+  // width: 320px;
+  // min-width: 300px;
+  // max-width: 100%;
   transform: translateX(-50%);
   z-index: 2;
-  background: variables.$fontWhite;
+  background: $fontWhite;
   -webkit-transform: translateX(-50%);
   -moz-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   -o-transform: translateX(-50%);
-  border: 0.5px solid variables.$fontGrey;
+  border: 0.5px solid $fontGrey;
 
   .calendarTop {
-    @include variables.display-flex(space-between, center);
+    @include display-flex(space-between, center);
     gap: 0.5rem;
 
     button {
-      @include variables.border-radius(3rem);
-      @include variables.transition(0.3s ease-in-out);
+      @include border-radius(3rem);
+      @include transition(0.3s ease-in-out);
       font-family: inherit;
       background: none;
       border: 1px solid transparent;
       outline: none;
       cursor: pointer;
-      font-size: 1.5rem;
       position: relative;
       overflow: hidden;
       width: 2.5rem;
@@ -62,10 +57,11 @@
 
       &:hover {
         background: rgba(0, 0, 0, 0.1);
-        border: 1px solid variables.$fontGrey;
+        border: 1px solid $fontGrey;
       }
 
       span {
+        font-size: 1rem;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -74,7 +70,7 @@
         -moz-transform: translate(-30%, -50%);
         -ms-transform: translate(-30%, -50%);
         -o-transform: translate(-30%, -50%);
-        color: variables.$fontGrey;
+        color: $fontGrey;
 
         &.rightIcon {
           transform: translate(-40%, -50%);
@@ -102,33 +98,49 @@
     margin-top: 1rem;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.75rem;
+    gap: 1rem;
     text-align: center;
 
+    small {
+      font-size: 1rem;
+      text-transform: capitalize;
+    }
+
     .days {
-      &.active {
-        @include variables.font-variation(600);
-        @include variables.transition(0.2s ease-in-out);
-        color: variables.$fontBlack;
+      @include border-radius(50%);
+      cursor: pointer;
+
+      &.currentMonth {
+        background: rgba($color: $fontBlack, $alpha: 0.15);
+      }
+
+      &.valid {
+        @include font-variation(600);
+        @include transition(0.2s ease-in-out);
+        color: $fontBlack;
         cursor: pointer;
+        background: rgba($color: $secondaryColor, $alpha: 0.7);
 
         &:hover {
-          background: rgba(0, 0, 0, 0.1);
+          background: rgba($color: $secondaryColor, $alpha: 0.9);
+          color: $fontWhite;
         }
       }
 
       &.disabled {
-        color: variables.$fontGrey;
+        background: rgba($color: $fontBlack, $alpha: 0.5);
+        color: $fontGrey;
         cursor: not-allowed;
       }
 
       &.today {
-        background: variables.$primaryBg;
+        background: $secondaryColor;
+        color: $fontWhite;
       }
 
       &.selected {
-        background: variables.$primaryBg;
-        color: variables.$fontWhite;
+        background: $primaryBg;
+        color: $fontWhite;
       }
     }
   }
