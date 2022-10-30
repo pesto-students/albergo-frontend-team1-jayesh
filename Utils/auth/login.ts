@@ -3,6 +3,8 @@ import { IToast } from '../../Components/Toast/Toast';
 import store from '../../redux/store';
 import { setUserEncryptedToken } from '../../redux/user/user.slice';
 import {
+  isValidEmail,
+  isValidPassword,
   // isValidEmail,
   // isValidPassword,
   setTokenCookie
@@ -67,16 +69,25 @@ const loginForm = async (
   formObj: ILoginFormObj,
   setToastState: Dispatch<SetStateAction<IToast>>
 ) => {
-  // const { email, password } = formObj;
+  const { email, password } = formObj;
 
-  // if (!isValidEmail(email) || !isValidPassword(password)) {
-  //   setToastState({
-  //     message: 'Invalid email or password',
-  //     type: 'error',
-  //     visible: true
-  //   });
-  //   return;
-  // }
+  if (!isValidEmail(email)) {
+    setToastState({
+      message: 'Invalid email',
+      type: 'error',
+      visible: true
+    });
+    return;
+  }
+
+  if (!isValidPassword(password)) {
+    setToastState({
+      message: 'Invalid password',
+      type: 'error',
+      visible: true
+    });
+    return;
+  }
 
   await loginMiddleware(formObj, setToastState);
   return;

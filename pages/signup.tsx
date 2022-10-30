@@ -58,24 +58,13 @@ const Signup = () => {
               ref={confirmPasswordInput}
             />
           </div>
-          <button type="submit">Signup</button>
-          <div className={styles.dividerWithText}>
-            <hr />
-            <small>or continue with</small>
-            <hr />
-          </div>
           <div className={styles.altAuthBtnContainer}>
-            <button>
-              <div className={styles.icon}>
-                <Image
-                  src="/assets/icons/fbIcon.png"
-                  width={15}
-                  height={15}
-                  alt="icon"
-                />
-              </div>
-              facebook
-            </button>
+            <button type="submit">Login</button>
+            <div className={styles.dividerWithText}>
+              <hr />
+              <small>or continue with</small>
+              <hr />
+            </div>
             <button>
               <div className={styles.icon}>
                 <Image
@@ -86,17 +75,6 @@ const Signup = () => {
                 />
               </div>
               google
-            </button>
-            <button>
-              <div className={styles.icon}>
-                <Image
-                  src="/assets/icons/appleIcon.png"
-                  width={15}
-                  height={15}
-                  alt="icon"
-                />
-              </div>
-              apple
             </button>
           </div>
         </form>
