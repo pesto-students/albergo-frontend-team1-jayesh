@@ -7,6 +7,7 @@ import { getTokenCookie, parseJWT } from "../../Utils/auth/authHelper";
 import { createRef, uploadFile } from "../../Utils/firebase/firebase";
 import { MaterialIcon, Rupee } from "../../Utils/Helper";
 import Toast, { IToast } from "../../Components/Toast/Toast";
+import { useRouter } from "next/router";
 
 const roomArr = [
   {
@@ -72,6 +73,7 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
     show: false,
     modalContent: <Fragment />,
   });
+  const router = useRouter();
 
   const [toastState, setToastState] = useState<IToast>({
     message: "̥",
@@ -124,6 +126,7 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
       files: [],
       uploadProgress: 0,
     });
+
 
     const uploadFileInp = useRef<HTMLInputElement>(null);
 
@@ -565,7 +568,7 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
         <div className={styles.sectionHeader}>
           <h5>Bookings</h5>
           <div className={styles.btnOptions}>
-            <button>View</button>
+            <button onClick={() => router.push("/partner/bookings")} >View</button>
           </div>
         </div>
         <table className={styles.bookingsTable}>
