@@ -30,7 +30,13 @@ export default function handler(
       },
       body: raw
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          res.status(200).json({ data: [] });
+          return;
+        }
+        return response.json()
+      })
       .then((response) => {
         res.status(200).json({ data: response.data });
         resolve();

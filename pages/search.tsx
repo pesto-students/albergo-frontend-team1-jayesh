@@ -61,8 +61,9 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
       body: JSON.stringify(raw)
     });
     const data = await res.json();
+    console.log(res);
     if (!res.ok) setDataArr([]);
-    else setDataArr(data?.data);
+    else setDataArr(data?.data ?? []);
   };
 
   return (
