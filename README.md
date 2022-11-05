@@ -35,9 +35,9 @@ Test Credentials:
     
 - Partner
 
-    email : hotelPrestige@gmail.com
+    email : goldfinch@mail.com
     
-    password : hotelPrestige@123
+    password : Goldfinch@123
 
 <br/>
 
