@@ -1,34 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Albergo
 
-## Getting Started
+This is an online platform that allows people to rent short term accommodation/stays. This ranges from regular people with a hotel rooms, to property management firms who lease multiple rooms for short term. 
 
-First, run the development server:
+# Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+1. [Demo](#demo)
+2. [Installation](#installation)
+3. [Technology Stack](#technology-stack)
+4. [Authors](#authors)
+5. [License](#license)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<br/>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+# Demo
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+[Live Demo](https://albergo-frontend-team1-jayesh-26xv-9pbv8n00f-albergo.vercel.app/)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<br/>
 
-## Learn More
+Please Note:
 
-To learn more about Next.js, take a look at the following resources:
+1. We recommend using this app on laptop/desktop.
+2. We are using JWT for authentication, so it's recommended not to use Safari as it blocks third-party cookies.
+3. As of now use the app on desktop/laptop
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<br/>
+Test Credentials:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- User   
 
-## Deploy on Vercel
+    email : pestoproject@demoMail.com
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    password: Pesto@project123
+    
+- Partner
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    email : goldfinch@mail.com
+    
+    password : Goldfinch@123
+
+<br/>
+
+# Installation
+
+- Fork or directly clone this repository to your local machine using the `git clone` command
+- Use the `npm install` command to install dependencies
+- Once the dependencies are finished installing, run `npm run dev` command to start the app in the development mode.
+- Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+<br/>
+
+# Technology Stack
+
+We tried to use a completely modern tech stack while testing out some new technologies that we had never used before. This resulted in a fast, performant, and easily-extensible web app that should be fairly future-proof for the coming next several years. We used:
+
+- [Nextjs](https://nextjs.org/)
+- [Material UI](https://mui.com/)
+- [Mapbox](https://www.mapbox.com/)
+- [Firebase](https://firebase.google.com/)
+- [Razorpay](https://razorpay.com/)
+
+<br/>
+
+# Authors
+
+- [Shobhit Sahoo](https://github.com/ShobhitSahoo)
+- [Siddhant Dalvi](https://github.com/Siddhant-ops)
+- [Rakesh Verma](https://github.com/rakeshverma89)
+
+<br/>
+
+# License
+
+[MIT](https://opensource.org/licenses/MIT)
