@@ -35,7 +35,7 @@ Test Credentials:
     
 - Partner
 
-    email : hotelPrestige@demogmail.com
+    email : hotelPrestige@gmail.com
     
     password : hotelPrestige@123
 
