@@ -200,7 +200,7 @@ const NavModal = () => {
                       }))
                     }
                     required
-                    placeholder="Enter Hotel name"
+                    placeholder="Enter name"
                   />
                 </div>
                 <div className={styles.formGroup}>
@@ -217,7 +217,7 @@ const NavModal = () => {
                       }))
                     }
                     required
-                    placeholder="Enter Hotel phone"
+                    placeholder="Enter phone"
                   />
                 </div>
                 <div className={styles.formGroup}>
@@ -234,7 +234,7 @@ const NavModal = () => {
                       }))
                     }
                     required
-                    placeholder="Enter Hotel email"
+                    placeholder="Enter email"
                   />
                 </div>
                 <div className={styles.formGroup}>
@@ -251,7 +251,7 @@ const NavModal = () => {
                       }))
                     }
                     required
-                    placeholder="Enter Hotel password"
+                    placeholder="Enter password"
                   />
                 </div>
                 <div className={styles.formGroup}>
@@ -268,7 +268,7 @@ const NavModal = () => {
                       }))
                     }
                     required
-                    placeholder="Confirm Hotel password"
+                    placeholder="Confirm password"
                   />
                 </div>
                 <button
