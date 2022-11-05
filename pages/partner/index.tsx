@@ -27,7 +27,7 @@ const HotelPartnerHome = () => {
             lacinia, nunc nisl aliquam nisl, quis aliquam nisl nisl sit amet
             lorem.
           </p>
-          <Link href="">
+          <Link href="/partner/signup">
             <a>Let&apos;s Get Started</a>
           </Link>
         </div>
