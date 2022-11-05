@@ -1,11 +1,12 @@
-@use '../../variables' as *;
+@use "../../variables" as *;
 
 .card {
   @include border-radius(10px);
   @include box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.2));
   @include transition(all 0.3s ease-in-out);
-  flex: 1 20%;
-  flex-basis: 280px;
+  width: 100%;
+  overflow: hidden;
+  cursor: pointer;
 
   &:hover {
     @include box-shadow(0 0 10px 0 rgba(0, 0, 0, 0.5));
@@ -48,13 +49,34 @@
     padding: 1rem;
     width: 100%;
 
-    h5 {
-      @include font-variation(500);
-      letter-spacing: 1px;
-      margin: 0;
+    .cardTopRow {
+      @include display-flex(space-between, center);
+      gap: 1rem;
+
+      p {
+        @include font-variation(500);
+        letter-spacing: 1px;
+        margin: 0;
+        text-transform: capitalize;
+
+        &:first-of-type {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        &:last-of-type {
+          @include display-flex(unset, center);
+          gap: 0.15rem;
+
+          span {
+            font-size: 1.15rem;
+          }
+        }
+      }
     }
 
-    .amenitiesContainer {
+    .facilitiesContainer {
       @include display-flex(unset, center);
       gap: 1rem;
     }
@@ -62,10 +84,10 @@
 }
 
 // Mobiles
-@media only screen and (max-width: 480px) {
-  .card {
-    .imageContainer {
-      height: 40vh;
-    }
-  }
-}
+// @media only screen and (max-width: 480px) {
+//   .card {
+//     .imageContainer {
+//       height: 40vh;
+//     }
+//   }
+// }

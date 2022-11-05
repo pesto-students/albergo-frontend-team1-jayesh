@@ -1,29 +1,38 @@
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
-import styles from '../../../styles/Homescreen/Banner.module.scss';
-import { DateRangePicker } from '../../DateRangePicker/DateRangePicker';
+import dayjs, { Dayjs } from "dayjs";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useRef, useState } from "react";
+import styles from "../../../styles/Homescreen/Banner.module.scss";
+import { MUIDatePicker } from "../../DateRangePicker/DateRangePicker";
+import Toast, { IToast } from "../../Toast/Toast";
 
 const Banner = () => {
   const destinationInpRef = useRef<HTMLInputElement>(null);
-  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+  const [toastState, setToastState] = useState<IToast>({
+    message: "",
+    visible: false,
+    type: "info",
+  });
+
   const router = useRouter();
 
   const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const destination = destinationInpRef.current?.value;
     if (destination) {
-      router.push({
-        pathname: '/search',
-        query: {
-          destination,
-          checkInDate: checkInDate?.toDateString()
-        }
-      });
+      router.push(
+        {
+          pathname: "/search",
+          query: {
+            destination,
+          },
+        },
+        "/search"
+      );
     }
   };
 
-  const disableBtn = !destinationInpRef.current?.value || !checkInDate;
+  const disableBtn = !destinationInpRef.current?.value;
 
   return (
     <div className={styles.container}>
@@ -33,15 +42,15 @@ const Banner = () => {
           placeholder="Where are you going?"
           id="destination"
           ref={destinationInpRef}
+          required
         />
-        <DateRangePicker onChange={(val) => setCheckInDate(val)} />
         <button type="submit" disabled={disableBtn}>
           Search
         </button>
       </form>
       <div className={styles.imageContainer}>
         <Image
-          src={'/assets/images/home/banner.jpg'}
+          src={"/assets/images/home/banner.jpg"}
           alt="banner"
           layout="fill"
           objectFit="cover"
@@ -49,6 +58,7 @@ const Banner = () => {
           priority={true}
         />
       </div>
+      <Toast toastState={toastState} setToastState={setToastState} />
     </div>
   );
 };

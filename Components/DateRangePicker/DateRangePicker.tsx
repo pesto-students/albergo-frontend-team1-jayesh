@@ -9,6 +9,12 @@ import { MaterialIcon } from '../../Utils/Helper';
 import datePickerStyles from '../../styles/Components/DateRangePicker/DateRangePicker.module.scss';
 import monthPickerStyles from '../../styles/Components/DateRangePicker/MonthPicker.module.scss';
 
+import { Dayjs } from 'dayjs';
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 const DateRangePicker = ({ onChange }: { onChange: (date: Date) => void }) => {
   const [dateState, setDateState] = useState({
     show: false,
@@ -85,6 +91,7 @@ const DateRangePicker = ({ onChange }: { onChange: (date: Date) => void }) => {
           <div className={datePickerStyles.calendar}>
             <div className={datePickerStyles.calendarTop}>
               <button
+                className="btn"
                 disabled={dateState.currentMonth === 0}
                 onClick={() => {
                   setDateState((prevDateState) => {
@@ -105,6 +112,7 @@ const DateRangePicker = ({ onChange }: { onChange: (date: Date) => void }) => {
                 <p>{dateState.monthDetails.month}</p>
               </span>
               <button
+                className="btn"
                 disabled={dateState.currentMonth === 11}
                 onClick={() => {
                   setDateState((prevDateState) => {
@@ -148,32 +156,18 @@ const DateRangePicker = ({ onChange }: { onChange: (date: Date) => void }) => {
                   return (
                     <div key={index}>
                       <small
-                        // className={`
-                        // ${getCurrentMonth() === dateState.currentMonth &&
-                        //     day === dateState.monthDetails.currentDay &&
-                        //     day >= currentDate
-                        //     ? `${styles.days} ${styles.active} ${styles.today}`
-                        //     : `${styles.days}`
-                        //   } ${dateState.selectedDay === day &&
-                        //     getCurrentMonth() === dateState.currentMonth
-                        //     ? styles.selected
-                        //     : undefined
-                        //   } ${day < currentDate ? styles.disabled : undefined}`}
-                        className={`${
-                          getCurrentMonth() === dateState.currentMonth
+                        className={`${getCurrentMonth() === dateState.currentMonth
                             ? datePickerStyles.currentMonth
                             : datePickerStyles.disabled
-                        } ${
-                          getCurrentMonth() === dateState.currentMonth &&
-                          day === dateState.monthDetails.currentDay
+                          } ${getCurrentMonth() === dateState.currentMonth &&
+                            day === dateState.monthDetails.currentDay
                             ? datePickerStyles.today
                             : undefined
-                        } ${
-                          getCurrentMonth() === dateState.currentMonth &&
-                          day >= currentDate
+                          } ${getCurrentMonth() === dateState.currentMonth &&
+                            day >= currentDate
                             ? datePickerStyles.valid
                             : undefined
-                        } ${datePickerStyles.days}`}
+                          } ${datePickerStyles.days}`}
                         onClick={(e) =>
                           onClickTouchSelect(e.currentTarget.innerText)
                         }
@@ -337,4 +331,25 @@ const YearPicker = ({ onChange }: { onChange: (date: Date) => void }) => {
   );
 };
 
-export { DateRangePicker, MonthPicker, YearPicker };
+const MUIDatePicker = ({
+  value,
+  setValue,
+  label
+}: {
+  value: Dayjs | null;
+  setValue: (value: Dayjs | null) => void;
+  label?: string;
+}) => {
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker
+        label={label ?? 'Select Date'}
+        value={value}
+        onChange={setValue}
+        renderInput={(params) => <TextField {...params} variant="filled" />}
+      />
+    </LocalizationProvider>
+  );
+};
+
+export { DateRangePicker, MonthPicker, YearPicker, MUIDatePicker };

@@ -1,15 +1,20 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 @font-face {
-  font-family: 'Material Symbols Outlined';
+  font-family: "Montserrat";
+  src: url("../public/assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf") format("truetype"),
+    url("../public/assets/fonts/Montserrat/Montserrat-Italic-VariableFont_wght.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Material Symbols Outlined";
   font-style: normal;
   font-weight: 100 700;
-  src: url('../public/assets/fonts/Material-Symbols-Outlined/Material-Symbols-Outlined.woff2')
-    format('woff2');
+  src: url("../public/assets/fonts/Material-Symbols-Outlined/Material-Symbols-Outlined.woff2") format("woff2");
 }
 
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
+  font-family: "Material Symbols Outlined";
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -20,21 +25,20 @@
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  font-feature-settings: 'liga';
-  -moz-font-feature-settings: 'liga';
-  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: "liga";
+  -moz-font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
 
 * {
-  @include transition(0.35s ease-in-out);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 
   &::selection {
-    background: #2e2e2e;
-    color: #fff;
+    background: #799292;
+    color: #cfd7d7;
   }
 }
 
@@ -65,7 +69,7 @@ h4,
 h5 {
   @include font-variation(400);
   margin: 3rem 0 1.38rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   line-height: 1.3;
 }
 
@@ -99,4 +103,262 @@ small,
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.readMore {
+  color: rgba($color: $secondaryColor, $alpha: 0.75);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: inherit;
+  cursor: pointer;
+
+  &:hover {
+    color: $secondaryColor;
+  }
+}
+
+.btn {
+  @include border-radius(10px);
+  @include font-variation(600);
+  @include transition(all 0.3s ease-in-out);
+  outline: none;
+  font-family: inherit;
+  border: 1px solid $fontBlack;
+  background: transparent;
+  cursor: pointer;
+  padding: .5rem .75rem;
+
+  &:hover {
+    background: $btnPrimaryHoverBg;
+    border: 1px solid $btnPrimaryHoverBorderColor;
+    color: $btnPrimaryHoverColor;
+  }
+
+  &:focus {
+    background: $btnPrimaryFocusBg;
+    border: 1px solid $btnPrimaryFocusBorderColor;
+    color: $btnPrimaryFocusColor;
+  }
+
+  &:disabled {
+    background: $btnPrimaryDisabledBg;
+    border: 1px solid $btnPrimaryDisabledBorderColor;
+    color: $fontBlack;
+  }
+
+  &.btn-primary {
+    background: $btnPrimaryBg;
+    border: 1px solid $btnPrimaryBorderColor;
+    color: $btnPrimaryColor;
+
+    &:hover {
+      background: $btnPrimaryHoverBg;
+      border: 1px solid $btnPrimaryHoverBorderColor;
+      color: $btnPrimaryHoverColor;
+    }
+
+    &:focus {
+      background: $btnPrimaryFocusBg;
+      border: 1px solid $btnPrimaryFocusBorderColor;
+      color: $btnPrimaryFocusColor;
+    }
+
+    &:disabled {
+      background: $btnPrimaryDisabledBg;
+      border: 1px solid $btnPrimaryDisabledBorderColor;
+      color: $fontBlack;
+    }
+  }
+
+  &.btn-secondary {
+    background: $btnSecondaryBg;
+    border: 1px solid $btnSecondaryBorderColor;
+    color: $btnSecondaryColor;
+
+    &:hover {
+      background: $btnSecondaryHoverBg;
+      border: 1px solid $btnSecondaryHoverBorderColor;
+      color: $btnSecondaryHoverColor;
+    }
+
+    &:focus {
+      background: $btnSecondaryFocusBg;
+      border: 1px solid $btnSecondaryFocusBorderColor;
+      color: $btnSecondaryFocusColor;
+    }
+
+    &:disabled {
+      background: $btnSecondaryDisabledBg;
+      border: 1px solid $btnSecondaryDisabledBorderColor;
+      color: $fontBlack;
+    }
+  }
+
+  &.btn-success {
+    background: $btnSuccessBg;
+    border: 1px solid $btnSuccessBorderColor;
+    color: $btnSuccessColor;
+
+    &:hover {
+      background: $btnSuccessHoverBg;
+      border: 1px solid $btnSuccessHoverBorderColor;
+      color: $btnSuccessHoverColor;
+    }
+
+    &:focus {
+      background: $btnSuccessFocusBg;
+      border: 1px solid $btnSuccessFocusBorderColor;
+      color: $btnSuccessFocusColor;
+    }
+
+    &:disabled {
+      background: $btnSuccessDisabledBg;
+      border: 1px solid $btnSuccessDisabledBorderColor;
+      color: $btnSuccessDisabledColor;
+    }
+  }
+
+  &.btn-danger {
+    background: $btnDangerBg;
+    border: 1px solid $btnDangerBorderColor;
+    color: $btnDangerColor;
+
+    &:hover {
+      background: $btnDangerHoverBg;
+      border: 1px solid $btnDangerHoverBorderColor;
+      color: $btnDangerHoverColor;
+    }
+
+    &:focus {
+      background: $btnDangerFocusBg;
+      border: 1px solid $btnDangerFocusBorderColor;
+      color: $btnDangerFocusColor;
+    }
+
+    &:disabled {
+      background: $btnDangerDisabledBg;
+      border: 1px solid $btnDangerDisabledBorderColor;
+      color: $btnDangerDisabledColor;
+    }
+  }
+
+  &.btn-warning {
+    background: $btnWarningBg;
+    border: 1px solid $btnWarningBorderColor;
+    color: $btnWarningColor;
+
+    &:hover {
+      background: $btnWarningHoverBg;
+      border: 1px solid $btnWarningHoverBorderColor;
+      color: $btnWarningHoverColor;
+    }
+
+    &:focus {
+      background: $btnWarningFocusBg;
+      border: 1px solid $btnWarningFocusBorderColor;
+      color: $btnWarningFocusColor;
+    }
+
+    &:disabled {
+      background: $btnWarningDisabledBg;
+      border: 1px solid $btnWarningDisabledBorderColor;
+      color: $btnWarningDisabledColor;
+    }
+  }
+
+  &.btn-info {
+    background: $btnInfoBg;
+    border: 1px solid $btnInfoBorderColor;
+    color: $btnInfoColor;
+
+    &:hover {
+      background: $btnInfoHoverBg;
+      border: 1px solid $btnInfoHoverBorderColor;
+      color: $btnInfoHoverColor;
+    }
+
+    &:focus {
+      background: $btnInfoFocusBg;
+      border: 1px solid $btnInfoFocusBorderColor;
+      color: $btnInfoFocusColor;
+    }
+
+    &:disabled {
+      background: $btnInfoDisabledBg;
+      border: 1px solid $btnInfoDisabledBorderColor;
+      color: $btnInfoDisabledColor;
+    }
+  }
+
+  &.btn-light {
+    background: $btnLightBg;
+    border: 1px solid $btnLightBorderColor;
+    color: $btnLightColor;
+
+    &:hover {
+      background: $btnLightHoverBg;
+      border: 1px solid $btnLightHoverBorderColor;
+      color: $btnLightHoverColor;
+    }
+
+    &:focus {
+      background: $btnLightFocusBg;
+      border: 1px solid $btnLightFocusBorderColor;
+      color: $btnLightFocusColor;
+    }
+
+    &:disabled {
+      background: $btnLightDisabledBg;
+      border: 1px solid $btnLightDisabledBorderColor;
+      color: $btnLightDisabledColor;
+    }
+  }
+
+  &.btn-dark {
+    background: $btnDarkBg;
+    border: 1px solid $btnDarkBorderColor;
+    color: $btnDarkColor;
+
+    &:hover {
+      background: $btnDarkHoverBg;
+      border: 1px solid $btnDarkHoverBorderColor;
+      color: $btnDarkHoverColor;
+    }
+
+    &:focus {
+      background: $btnDarkFocusBg;
+      border: 1px solid $btnDarkFocusBorderColor;
+      color: $btnDarkFocusColor;
+    }
+
+    &:disabled {
+      background: $btnDarkDisabledBg;
+      border: 1px solid $btnDarkDisabledBorderColor;
+      color: $btnDarkDisabledColor;
+    }
+  }
+
+  &.btn-link {
+    background: $btnLinkBg;
+    border: 1px solid $btnLinkBorderColor;
+    color: $btnLinkColor;
+
+    &:hover {
+      background: $btnLinkHoverBg;
+      border: 1px solid $btnLinkHoverBorderColor;
+      color: $btnLinkHoverColor;
+    }
+
+    &:focus {
+      background: $btnLinkFocusBg;
+      border: 1px solid $btnLinkFocusBorderColor;
+      color: $btnLinkFocusColor;
+    }
+
+    &:disabled {
+      background: $btnLinkDisabledBg;
+      border: 1px solid $btnLinkDisabledBorderColor;
+      color: $btnLinkDisabledColor;
+    }
+  }
 }

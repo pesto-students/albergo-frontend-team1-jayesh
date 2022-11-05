@@ -7,6 +7,7 @@ $hue: 180;
 $sat: 20%;
 
 .container {
+  position: relative;
   height: 100vh;
   max-height: 100%;
   width: 100vw;
@@ -15,7 +16,6 @@ $sat: 20%;
   display: grid;
   place-items: center;
   perspective: 1000vmin;
-  background: radial-gradient(circle at 50% 25%, $primaryBg, $secondaryColor);
 
   * {
     transform-style: preserve-3d;

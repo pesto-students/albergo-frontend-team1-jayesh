@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {
-  API_URL,
+  NEXT_PUBLIC_API_URL,
   isValidEmail,
   isValidPassword
 } from '../../../Utils/auth/authHelper';
@@ -43,7 +43,7 @@ export default function handler(
       password
     });
 
-    await fetch(`${API_URL}/api/users/login`, {
+    await fetch(`${NEXT_PUBLIC_API_URL}/api/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

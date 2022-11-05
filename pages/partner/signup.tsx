@@ -1,20 +1,22 @@
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
 import Toast, { IToast } from '../../Components/Toast/Toast';
 import styles from '../../styles/Partner/signup.module.scss';
+import { getTokenCookie, parseJWT } from '../../Utils/auth/authHelper';
 import { signupForm } from '../../Utils/auth/signup';
 
 const Signup = () => {
   const router = useRouter();
 
   const [formInp, setFormInp] = useState({
-    hotelName: '',
-    hotelEmail: '',
-    hotelPassword: '',
-    hotelConfirmPassword: '',
-    hotelPhone: '',
-    hotelAddress: '',
+    hotelName: 'Albergo HotelOne',
+    hotelEmail: 'albergoHotel@mail.com',
+    hotelPassword: 'Albergo@123',
+    hotelConfirmPassword: 'Albergo@123',
+    hotelPhone: '1234567890',
+    hotelAddress: 'Albergo Hotel One, Area, City, State, Country',
     hotelCity: '',
     hotelState: '',
     hotelCountry: '',
@@ -58,33 +60,30 @@ const Signup = () => {
             type: 'error',
             visible: true
           });
-
-          const ipAddr = await fetch('https://api.ipify.org/?format=json').then(
-            (res) => res.json()
-          );
-
-          const location = await fetch(
-            `http://ip-api.com/json/${ipAddr?.ip}?fields=573951`
-          ).then((res) => res.json());
-
-          if (location?.status === 'fail') {
-            setSignupToast({
-              message: location?.message ?? 'Location not found',
-              type: 'error',
-              visible: true
-            });
-            return;
-          }
-
-          setFormInp((prevFormInp) => ({
-            ...prevFormInp,
-            hotelCountry: location?.country,
-            hotelState: location?.regionName,
-            hotelCity: location?.city,
-            lat: location?.lat,
-            long: location?.lon
-          }));
         }
+        const ipAddr = await fetch('https://api.ipify.org/?format=json').then(
+          (res) => res.json()
+        );
+
+        const location = await fetch(
+          `http://ip-api.com/json/${ipAddr?.ip}?fields=573951`
+        ).then((res) => res.json());
+
+        if (location?.status === 'fail') {
+          setSignupToast({
+            message: location?.message ?? 'Location not found',
+            type: 'error',
+            visible: true
+          });
+          return;
+        }
+
+        setFormInp((prevFormInp) => ({
+          ...prevFormInp,
+          hotelCountry: location?.country,
+          hotelState: location?.regionName,
+          hotelCity: location?.city
+        }));
       });
   }, []);
 
@@ -247,3 +246,23 @@ const Signup = () => {
 };
 
 export default Signup;
+
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  const token = getTokenCookie(ctx);
+  const userToken = parseJWT(token);
+
+  if (userToken && userToken.role === 'Hotel') {
+    return {
+      redirect: {
+        destination: '/partner/dashboard',
+        permanent: false
+      }
+    };
+  }
+
+  return {
+    props: {}
+  };
+};

@@ -1,9 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { Fragment } from 'react';
 import Banner from '../Components/Home/Banner/Banner';
-import BlogSection from '../Components/Home/Sections/BlogSection';
 import SectionPartnerTypeOne from '../Components/Home/Sections/SectionPartnerTypeOne';
-import SectionPartnerTypeTwo from '../Components/Home/Sections/SectionPartnerTypeTwo';
 import SectionTypeOne from '../Components/Home/Sections/SectionTypeOne';
 import Layout from '../Components/Layout/Layout';
 import Loading from '../Components/Loading/Loading';
@@ -14,6 +12,9 @@ interface IHomeProps {
       [key: string]: string;
     }[];
     topRatedHotels: {
+      [key: string]: string;
+    }[];
+    latestHotels: {
       [key: string]: string;
     }[];
   };
@@ -28,23 +29,19 @@ const Home: NextPage<IHomeProps> = ({ data }) => {
           <SectionTypeOne
             title="Latest on the Hotel listing"
             viewMoreLink
-            dataArr={data.featuredHotels}
+            dataArr={data?.latestHotels}
           />
-          {/* <SectionTypeOne title="Nearby Listed Properties" showOnMapLink dataArr={data.topRatedHotels} /> */}
           <SectionTypeOne
             title="Top Rated Properties"
             viewMoreLink
-            dataArr={data.topRatedHotels}
+            dataArr={data?.topRatedHotels}
           />
           <SectionPartnerTypeOne title={'Partner with us'} />
           <SectionTypeOne
             title="Featured Properties on our Listing"
             flexWrap
-            dataArr={data.featuredHotels}
+            dataArr={data?.featuredHotels}
           />
-          <SectionPartnerTypeOne title={'Partner with us'} />
-          {/* <BlogSection title="Property Rental Guides &amp; Tips" /> */}
-          <SectionPartnerTypeTwo />
         </Layout>
       </Fragment>
     );
@@ -57,7 +54,7 @@ export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -65,18 +62,18 @@ export const getStaticProps: GetStaticProps = async () => {
       }
     });
 
-    const data = await res.json();
+    const data = await response.json();
 
     return {
       props: {
         data
       },
-      revalidate: 30
+      revalidate: 90
     };
   } catch (error) {
     return {
       props: {},
-      revalidate: 30
+      revalidate: 90
     };
   }
 };

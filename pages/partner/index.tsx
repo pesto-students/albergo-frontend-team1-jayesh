@@ -1,9 +1,11 @@
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import BlogSection from '../../Components/Home/Sections/BlogSection';
 import Layout from '../../Components/Layout/Layout';
 import styles from '../../styles/Partner/home.module.scss';
+import { getTokenCookie, parseJWT } from '../../Utils/auth/authHelper';
 
 const HotelPartnerHome = () => {
   return (
@@ -25,7 +27,7 @@ const HotelPartnerHome = () => {
             lacinia, nunc nisl aliquam nisl, quis aliquam nisl nisl sit amet
             lorem.
           </p>
-          <Link href="">
+          <Link href="/partner/signup">
             <a>Let&apos;s Get Started</a>
           </Link>
         </div>
@@ -65,3 +67,23 @@ const HotelPartnerHome = () => {
 };
 
 export default HotelPartnerHome;
+
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  const token = getTokenCookie(ctx);
+  const userToken = parseJWT(token);
+
+  if (userToken && userToken.role === 'Hotel') {
+    return {
+      redirect: {
+        destination: '/partner/dashboard',
+        permanent: false
+      }
+    };
+  }
+
+  return {
+    props: {}
+  };
+};

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {
-  API_URL,
+  NEXT_PUBLIC_API_URL,
   isValidateName,
   isValidEmail,
   isValidPassword
@@ -71,7 +71,7 @@ export default function handler(
         passwordConfirm: confirmPassword
       });
 
-      await fetch(`${API_URL}/api/users/signup`, {
+      await fetch(`${NEXT_PUBLIC_API_URL}/api/users/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -85,7 +85,6 @@ export default function handler(
         })
         .catch((err) => {
           console.log(err);
-
           res.status(200).json({ error: 'Please try again later' });
           resolve();
         });
@@ -143,22 +142,33 @@ export default function handler(
         hotelCountry: formInp.hotelCountry
       });
 
-      await fetch(`${API_URL}/hotel/onboard`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: raw
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          res.status(200).json({ data: response });
+      try {
+        const response = await fetch(
+          `${NEXT_PUBLIC_API_URL}/api/hotel/onboard`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: raw
+          }
+        );
+
+        if (response.status.toString().startsWith('4')) {
+          const err = await response.json();
+          res.status(200).json({ error: err.message });
           resolve();
-        })
-        .catch(() => {
-          res.status(400).json({ error: 'Please try again later' });
-          resolve();
-        });
+        }
+
+        const data = await response.json();
+
+        res.status(200).json({ data });
+        resolve();
+      } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: 'Please try again later' });
+        resolve();
+      }
     });
   }
 }

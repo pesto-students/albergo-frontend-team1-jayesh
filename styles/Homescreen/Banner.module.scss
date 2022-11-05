@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use "../variables" as *;
 
 .container {
   min-height: 80vh;
@@ -29,9 +29,9 @@
     grid-row: 1/-1;
     background: rgba($color: $fontWhite, $alpha: 0.75);
     backdrop-filter: blur(10px);
-    padding: 1.5rem;
+    padding: 1rem;
 
-    input {
+    & > input {
       @include border-radius(5px);
       flex: 1;
       padding: 1rem;
@@ -41,6 +41,11 @@
       font-size: 1rem;
       font-weight: 500;
       outline: none;
+    }
+
+    input {
+      background: $fontWhite;
+      color: $secondaryColor;
     }
 
     & > button {

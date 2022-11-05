@@ -1,140 +1,198 @@
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
 import Image from 'next/image';
-import { Fragment } from 'react';
+import { useRouter } from 'next/router';
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import Layout from '../../../Components/Layout/Layout';
 import styles from '../../../styles/Hotel/hotelHome.module.scss';
-import { MaterialIcon, Rupee } from '../../../Utils/Helper';
+import { MaterialIcon, ReadMore, Rupee } from '../../../Utils/Helper';
 
-const HotelSlugHome = () => {
-  const arrObj = [
-    {
-      label: 'bedroom',
-      iconName: 'bed'
-    },
-    {
-      label: 'bathrooms',
-      iconName: 'bathtub'
-    },
-    {
-      label: 'parking',
-      iconName: 'directions_car'
-    },
-    {
-      label: 'pets allowed',
-      iconName: 'pets'
-    }
-  ];
+interface IModalProps {
+  modalHeader: string;
+  setModalState: Dispatch<
+    SetStateAction<{
+      modalHeader: string;
+      show: boolean;
+      modalContent: JSX.Element;
+    }>
+  >;
+  children: JSX.Element;
+}
 
-  const amenitiesArr = [
-    {
-      label: 'kitchen',
-      iconName: 'cooking'
-    },
-    {
-      label: 'television',
-      iconName: 'tv'
-    },
-    {
-      label: 'Air conditioning',
-      iconName: 'ac_unit'
-    },
-    {
-      label: 'wifi',
-      iconName: 'wifi'
-    },
-    {
-      label: 'laundry',
-      iconName: 'local_laundry_service'
-    },
-    {
-      label: 'balcony',
-      iconName: 'balcony'
-    }
-  ];
+const Modal = ({ modalHeader, setModalState, children }: IModalProps) => {
+  return (
+    <div className={styles.modal}>
+      <div className={styles.modalContent}>
+        <div className={styles.modalHeader}>
+          <h5>{modalHeader}</h5>
+          <button
+            onClick={() =>
+              setModalState((prevModalState) => ({
+                ...prevModalState,
+                show: false
+              }))
+            }
+            className={styles.close}
+          >
+            <MaterialIcon iconName="close" />
+          </button>
+        </div>
+        <div className={styles.modalBody}>{children}</div>
+      </div>
+    </div>
+  );
+};
 
-  const safetyChecks = [
-    'daily cleaning',
-    'fire extinguishers',
-    'disinfections and sterilizations',
-    'smoke detectors'
-  ];
+const arrObj = [
+  {
+    label: 'bedroom',
+    iconName: 'bed'
+  },
+  {
+    label: 'bathrooms',
+    iconName: 'bathtub'
+  },
+  {
+    label: 'parking',
+    iconName: 'directions_car'
+  },
+  {
+    label: 'pets allowed',
+    iconName: 'pets'
+  }
+];
 
-  const reviewObjArr = [
-    {
-      name: 'amenities',
-      rating: 4.5
-    },
-    {
-      name: 'communication',
-      rating: 4.7
-    },
-    {
-      name: 'hygiene',
-      rating: 5
-    },
-    {
-      name: 'location',
-      rating: 4.9
-    },
-    {
-      name: 'value for money',
-      rating: 4
-    }
-  ];
+const facilitiesArr = [
+  {
+    label: 'kitchen',
+    iconName: 'cooking'
+  },
+  {
+    label: 'television',
+    iconName: 'tv'
+  },
+  {
+    label: 'Air conditioning',
+    iconName: 'ac_unit'
+  },
+  {
+    label: 'wifi',
+    iconName: 'wifi'
+  },
+  {
+    label: 'laundry',
+    iconName: 'local_laundry_service'
+  },
+  {
+    label: 'balcony',
+    iconName: 'balcony'
+  }
+];
+
+const safetyChecks = [
+  'daily cleaning',
+  'fire extinguishers',
+  'disinfections and sterilizations',
+  'smoke detectors'
+];
+
+const HotelSlugHome = ({ hotelData }: { hotelData: any }) => {
+  const router = useRouter();
+  const { hotelId } = router.query;
+
+  const [modalState, setModalState] = useState<{
+    modalHeader: string;
+    show: boolean;
+    modalContent: JSX.Element;
+  }>({
+    modalHeader: '',
+    show: false,
+    modalContent: <Fragment />
+  });
+
+  const [hotelImageState, setHotelImageState] = useState({
+    list: hotelData.images,
+    currentIndex: 0
+  });
+
+  useEffect(() => {
+    const imagesInterval = setInterval(() => {
+      setHotelImageState((prevState) => {
+        return {
+          ...prevState,
+          currentIndex:
+            prevState.currentIndex === prevState.list.length - 1
+              ? 0
+              : prevState.currentIndex + 1
+        };
+      });
+    }, 3000);
+
+    return () => {
+      clearInterval(imagesInterval);
+    };
+  }, []);
+
+  const ListModal = ({
+    listArr,
+    type
+  }: {
+    listArr:
+    | {
+      iconName: string;
+      label: string;
+    }[]
+    | string[];
+    type: 'facilities' | 'safetyChecks';
+  }) => {
+    return (
+      <div className={styles.facilitiesModal}>
+        {listArr.map((listItem, index) => (
+          <div className={styles.facilitiesItem} key={index}>
+            {type === 'facilities' && listItem instanceof Object ? (
+              <Fragment>
+                <MaterialIcon iconName={listItem.iconName} />
+                <p>{listItem.label}</p>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <MaterialIcon iconName="check" />
+                <p>{listItem.toString()}</p>
+              </Fragment>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <Fragment>
+      <Head>
+        <title>Albergo - {hotelData.name}</title>
+      </Head>
       <div className={styles.galleryContainer}>
         <div className={styles.gelleryHero}>
           <Image
-            src={
-              'https://images.unsplash.com/photo-1664073412845-f44940c3c2c7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-            }
+            src={hotelImageState.list[hotelImageState.currentIndex]}
             layout="fill"
             objectFit="cover"
             alt="some"
           />
         </div>
         <div className={styles.imagesContainer}>
-          <div className={styles.image}>
-            <Image
-              src={
-                'https://images.unsplash.com/photo-1664073412845-f44940c3c2c7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-              }
-              layout="fill"
-              objectFit="cover"
-              alt="some"
-            />
-          </div>
-          <div className={styles.image}>
-            <Image
-              src={
-                'https://images.unsplash.com/photo-1664073412845-f44940c3c2c7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-              }
-              layout="fill"
-              objectFit="cover"
-              alt="some"
-            />
-          </div>
-          <div className={styles.image}>
-            <Image
-              src={
-                'https://images.unsplash.com/photo-1664073412845-f44940c3c2c7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-              }
-              layout="fill"
-              objectFit="cover"
-              alt="some"
-            />
-          </div>
-          <div className={styles.image}>
-            <Image
-              src={
-                'https://images.unsplash.com/photo-1664073412845-f44940c3c2c7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-              }
-              layout="fill"
-              objectFit="cover"
-              alt="some"
-            />
-          </div>
+          {hotelImageState.list
+            .slice(0, 4)
+            .map((imageSrc: string, index: number) => (
+              <div className={styles.image} key={index}>
+                <Image
+                  src={imageSrc}
+                  layout="fill"
+                  objectFit="cover"
+                  alt="some"
+                />
+              </div>
+            ))}
         </div>
       </div>
       <Layout>
@@ -142,14 +200,37 @@ const HotelSlugHome = () => {
           <div className={styles.content}>
             <div className={styles.titleSection}>
               <div className={styles.infoSection}>
-                <h3>Sunny Hillside</h3>
-                <p>100 Smart Street, LA, USA</p>
+                <h3>{hotelData.name}</h3>
+                <p>
+                  {hotelData.city}, {hotelData.state}, {hotelData.country}
+                </p>
+                <small>{hotelData.address}</small>
+                <p>
+                  {Array(hotelData.ratingsAverage)
+                    .fill(0)
+                    .map((_, index) => (
+                      <MaterialIcon iconName="star" key={index} />
+                    ))}
+                </p>
               </div>
               <div className={styles.btnSection}>
                 <button>
                   <MaterialIcon iconName="favorite" />
                 </button>
-                <button>
+                <button
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator
+                        .share({
+                          title: `Albergo - ${hotelData.name}`,
+                          text: 'Check out Albergo - Hotel',
+                          url: window.location.href
+                        })
+                        .then(() => console.log('Successful share'))
+                        .catch((error) => console.log('Error sharing', error));
+                    }
+                  }}
+                >
                   <MaterialIcon iconName="share" />
                 </button>
               </div>
@@ -164,57 +245,68 @@ const HotelSlugHome = () => {
             </div>
             <h5>Hotel Description</h5>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-              quos dolor sed, porro expedita earum possimus, voluptates rem,
-              tempore iusto obcaecati. Maiores eaque, incidunt dolore fugiat
-              aspernatur explicabo laborum eos?
+              <ReadMore text={hotelData.description} maxLength={120} />
             </p>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-              quos dolor sed, porro expedita earum possimus, voluptates rem,
-              tempore iusto obcaecati. Maiores eaque, incidunt dolore fugiat
-              aspernatur explicabo laborum eos?
-            </p>
-            <div className={styles.amenitiesSection}>
-              <h5>Offered Amenities</h5>
-              <div className={styles.amenitiesContainer}>
-                {amenitiesArr.map((amenity, index) => (
-                  <div className={styles.amenity} key={index}>
-                    <MaterialIcon iconName={amenity.iconName} />
-                    <p>{amenity.label}</p>
-                  </div>
-                ))}
+            <div className={styles.facilitiesSection}>
+              <h5>Offered Facilities</h5>
+              <div className={styles.facilitiesContainer}>
+                {facilitiesArr
+                  .slice(0, Math.floor(facilitiesArr.length / 2))
+                  .map((amenity, index) => (
+                    <div className={styles.amenity} key={index}>
+                      <MaterialIcon iconName={amenity.iconName} />
+                      <p>{amenity.label}</p>
+                    </div>
+                  ))}
               </div>
-              <button>Show all 10 Amenities</button>
+              <button
+                className="btn"
+                onClick={() =>
+                  setModalState((prevModalState) => ({
+                    ...prevModalState,
+                    show: true,
+                    modalHeader: 'Offered Facilities',
+                    modalContent: (
+                      <ListModal listArr={facilitiesArr} type="facilities" />
+                    )
+                  }))
+                }
+              >
+                Show all {facilitiesArr.length} Facilities
+              </button>
             </div>
             <div className={styles.safetySection}>
               <h5>Safety and Hygiene</h5>
               <div className={styles.safetyContainer}>
-                {safetyChecks.map((checks, index) => (
-                  <div className={styles.safety} key={index}>
-                    <MaterialIcon iconName="assignment_turned_in" />
-                    <p>{checks}</p>
-                  </div>
-                ))}
+                {safetyChecks
+                  .slice(0, Math.floor(safetyChecks.length / 2))
+                  .map((checks, index) => (
+                    <div className={styles.safety} key={index}>
+                      <MaterialIcon iconName="assignment_turned_in" />
+                      <p>{checks}</p>
+                    </div>
+                  ))}
               </div>
+              <button
+                className="btn"
+                onClick={() =>
+                  setModalState((prevModalState) => ({
+                    ...prevModalState,
+                    show: true,
+                    modalHeader: 'Safety Checks',
+                    modalContent: (
+                      <ListModal listArr={safetyChecks} type="safetyChecks" />
+                    )
+                  }))
+                }
+              >
+                Show all {safetyChecks.length} Safety checks
+              </button>
             </div>
-            <div className={styles.locationSection}></div>
-            {/* <div className={hotelHomeStyles.nearbySection}></div> */}
             <div className={styles.reviewSection}>
-              <h5>
-                Reviews <MaterialIcon iconName="star" /> 5.0
-              </h5>
-              <div className={styles.reviewTypeContainer}>
-                {reviewObjArr.map((reviewObj, index) => (
-                  <div className={styles.reviewType} key={index}>
-                    <p>{reviewObj.name}</p>
-                    <p>-</p>
-                    <p>{reviewObj.rating}</p>
-                  </div>
-                ))}
-              </div>
+              <h5>Reviews</h5>
               <div className={styles.reviewCardContainer}>
-                {Array(4)
+                {/* {Array(4)
                   .fill(0)
                   .map((_, index) => (
                     <div className={styles.reviewCard} key={index}>
@@ -231,9 +323,9 @@ const HotelSlugHome = () => {
                         ipsa voluptatibus.
                       </p>
                     </div>
-                  ))}
+                  ))} */}
+                <h5>No reviews yet</h5>
               </div>
-              <button>Show all 100 reviews</button>
             </div>
           </div>
           <div className={styles.cardSection}>
@@ -250,22 +342,77 @@ const HotelSlugHome = () => {
             <p>
               Premium room: <Rupee /> 2000
             </p>
-            <button>Reserve Now</button>
+            <button
+              onClick={() => {
+                router.push({
+                  pathname: `/hotel/${hotelId}/book`
+                });
+              }}
+              className="btn btn-success"
+            >
+              Book Now
+            </button>
             <div className={styles.contactSection}>
-              <small>
-                <MaterialIcon iconName="apartment" />
+              <a href={`mailto:${hotelData.email}`}>
+                <MaterialIcon iconName="mail" />
                 Property inquiry
-              </small>
-              <small>
+              </a>
+              <a href={`tel:${hotelData.phone}`}>
                 <MaterialIcon iconName="call" />
-                contact host
-              </small>
+                Contact host
+              </a>
             </div>
           </div>
         </div>
       </Layout>
+      {modalState.show && (
+        <Modal
+          modalHeader={modalState.modalHeader}
+          setModalState={setModalState}
+        >
+          {modalState.modalContent}
+        </Modal>
+      )}
     </Fragment>
   );
 };
 
 export default HotelSlugHome;
+
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  const slug = ctx.params?.hotelId;
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/hotel/${slug}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      return {
+        notFound: true
+      };
+    }
+
+    const res = await response.json();
+
+    return {
+      props: {
+        hotelData: res.data
+      }
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      notFound: true
+    };
+  }
+};
