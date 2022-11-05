@@ -1,4 +1,4 @@
-import { NextRouter, Router } from 'next/router';
+import { NextRouter} from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 import { IToast } from '../../Components/Toast/Toast';
 import { toggleNavModal } from '../../redux/navModal/modal.slice';
@@ -16,12 +16,6 @@ const loginForm = async (
   setToastState: Dispatch<SetStateAction<IToast>>,
   router: NextRouter
 ) => {
-  setToastState({
-    message: 'Loading...',
-    type: 'info',
-    visible: true
-  });
-
   try {
     const response = await fetch('/api/auth/login', {
       method: 'POST',

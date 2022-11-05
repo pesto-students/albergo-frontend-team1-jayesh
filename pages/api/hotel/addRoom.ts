@@ -17,13 +17,11 @@ export default function handler(
   }
 
   return new Promise<void>(async (resolve) => {
-    const raw = JSON.stringify({
-      searchBy: req.body,
-    });
+    const raw = JSON.stringify(req.body);
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/hotel/search`,
+        `${process.env.NEXT_PUBLIC_API_URL}/rooms/`,
         {
           method: "POST",
           headers: {
@@ -38,19 +36,17 @@ export default function handler(
           data: [],
         });
         resolve();
-        return;
       }
 
-      const responseData = await response.json();
+      if (response.ok) {
+        const responseData = await response.json();
 
-      res.status(200).json({ data: responseData.data });
-      resolve();
-      return;
+        res.status(200).json({ data: responseData.data });
+      }
     } catch (error) {
       console.log(error);
       res.status(400).json({ error: "Please try again later" });
       resolve();
-      return;
     }
   });
 }

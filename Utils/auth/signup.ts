@@ -1,6 +1,7 @@
 import { NextRouter } from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 import { IToast } from '../../Components/Toast/Toast';
+import { setNavModalType } from '../../redux/navModal/modal.slice';
 import store from '../../redux/store';
 import { setUserEncryptedToken } from '../../redux/user/user.slice';
 import { UserRole } from '../Helper';
@@ -12,8 +13,6 @@ export interface IUserSignupForm {
   email: string;
   password: string;
   confirmPassword: string;
-  lat: number;
-  long: number;
   city: string;
   state: string;
   country: string;
@@ -39,12 +38,6 @@ const signupForm = async (
   setToastState: Dispatch<SetStateAction<IToast>>,
   router: NextRouter
 ) => {
-  setToastState({
-    message: 'Loading...',
-    type: 'info',
-    visible: true
-  });
-
   try {
     const response = await fetch('/api/auth/signup', {
       method: 'POST',
@@ -75,15 +68,12 @@ const signupForm = async (
       }
 
       if (res?.data?.status === 'success') {
-        const token = res?.data?.token;
-        setTokenCookie(token);
-        store.dispatch(setUserEncryptedToken(token));
         setToastState({
           message: 'Signup successful',
           type: 'success',
           visible: true
         });
-        router.push('/');
+        store.dispatch(setNavModalType("login"));
       }
     }
   } catch (error) {

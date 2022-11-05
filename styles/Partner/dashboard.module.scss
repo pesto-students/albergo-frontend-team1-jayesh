@@ -413,12 +413,12 @@
   height: 100%;
 
   form {
-    @include display-flex(unset, flex-start);
-    flex-direction: column;
-    gap: 1rem;
     padding: 1rem;
 
-    input {
+    input,
+    textarea {
+      margin-bottom: 1rem;
+      @include font-variation(500);
       @include border-radius(0.5rem);
       flex: 1 1 75%;
       font-size: 1rem;
@@ -427,10 +427,17 @@
       outline: none;
       border: 1px solid rgba($color: $fontGrey, $alpha: 0.5);
       background: rgba($color: $fontWhite, $alpha: 0.5);
+      font-family: inherit;
 
       &:focus {
         border: 1px solid $fontBlack;
       }
+    }
+
+    textarea {
+      width: 100%;
+      resize: vertical;
+      max-height: 50vh;
     }
   }
 

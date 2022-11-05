@@ -63,122 +63,299 @@ interface IModalProps {
   children: JSX.Element;
 }
 
-const Dashboard = ({ hotelData }: { hotelData: any }) => {
-  const [modalState, setModalState] = useState<{
-    modalHeader: string;
-    show: boolean;
-    modalContent: JSX.Element;
-  }>({
-    modalHeader: "",
-    show: false,
-    modalContent: <Fragment />,
-  });
-  const router = useRouter();
-
-  const [toastState, setToastState] = useState<IToast>({
-    message: "̥",
-    visible: false,
-    type: "info",
-  });
-
-  const Modal = ({ modalHeader, setModalState, children }: IModalProps) => {
-    return (
-      <div className={styles.modal}>
-        <div className={styles.modalContent}>
-          <div className={styles.modalHeader}>
-            <h5>{modalHeader}</h5>
-            <button
-              onClick={() =>
-                setModalState((prevModalState) => ({
-                  ...prevModalState,
-                  show: false,
-                }))
-              }
-              className={styles.close}
-            >
-              <MaterialIcon iconName="close" />
-            </button>
-          </div>
-          <div className={styles.modalBody}>{children}</div>
+const Modal = ({ modalHeader, setModalState, children }: IModalProps) => {
+  return (
+    <div className={styles.modal}>
+      <div className={styles.modalContent}>
+        <div className={styles.modalHeader}>
+          <h5>{modalHeader}</h5>
+          <button
+            onClick={() =>
+              setModalState((prevModalState) => ({
+                ...prevModalState,
+                show: false,
+              }))
+            }
+            className={styles.close}
+          >
+            <MaterialIcon iconName="close" />
+          </button>
         </div>
+        <div className={styles.modalBody}>{children}</div>
       </div>
-    );
+    </div>
+  );
+};
+
+const ImagePreviewModalBody = ({ imageSrc }: { imageSrc: string }) => {
+  return (
+    <div className={styles.imagePreviewBody}>
+      <Image
+        src={imageSrc}
+        layout="fill"
+        objectFit="cover"
+        alt="Image preview"
+      />
+    </div>
+  );
+};
+
+const HotelImageUploadModalBody = ({
+  hotelName,
+  setToastState,
+}: {
+  hotelName: string;
+  setToastState: Dispatch<SetStateAction<IToast>>;
+}) => {
+  const [fileState, setFileState] = useState<{
+    files: {
+      file: File;
+      name: string;
+      type: string;
+      size: number;
+    }[];
+    uploadProgress: number;
+  }>({
+    files: [],
+    uploadProgress: 0,
+  });
+
+  const uploadFileInp = useRef<HTMLInputElement>(null);
+
+  const removeFile = (file: File) => {
+    setFileState((prevFileState) => ({
+      ...prevFileState,
+      files: prevFileState.files.filter((f) => f.file !== file),
+    }));
   };
 
-  const ImagePreviewModalBody = ({ imageSrc }: { imageSrc: string }) => {
-    return (
-      <div className={styles.imagePreviewBody}>
-        <Image src={imageSrc} layout="fill" objectFit="cover" alt="Image preview" />
+  const uploadFiles = async () => {
+    try {
+      const downloadUrls: string[] = [];
+      for await (const file of fileState.files) {
+        const fileRef = createRef(`${hotelName}/images/${file.name}`);
+        const downloadUrl = await uploadFile(fileRef, file.file);
+        downloadUrls.push(downloadUrl);
+      }
+      const response = await fetch("/api/hotel/updateHotelPhotos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          photoURLS: downloadUrls,
+        }),
+      });
+      if (!response.ok) {
+        setToastState({
+          message: "files not uploaded successfully",
+          visible: true,
+          type: "error",
+        });
+        return;
+      }
+      setToastState({
+        message: "All files successfully uploaded",
+        type: "success",
+        visible: true,
+      });
+    } catch (error) {
+      console.log(error);
+      setToastState({
+        message: "Error uploading files",
+        type: "success",
+        visible: true,
+      });
+    }
+  };
+
+  return (
+    <div
+      className={styles.fileModalBody}
+      onDrop={(e) => {
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+        // map files to an array of file objects
+        const filesArray = Array.from(files)
+          .map((file) => ({
+            file,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+          }))
+          .filter((file) => {
+            const validTypes = ["image/png", "image/jpeg", "image/jpg"];
+            return validTypes.indexOf(file.type) !== -1;
+          });
+
+        setFileState((prevFileState) => ({
+          ...prevFileState,
+          files: [...prevFileState.files, ...filesArray],
+        }));
+      }}
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <input
+        ref={uploadFileInp}
+        type="file"
+        accept="image/png, image/jpeg, image/jpg"
+        multiple
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const files = e.target.files;
+          if (files) {
+            const filesArray = Array.from(files)
+              .map((file) => ({
+                file,
+                name: file.name,
+                type: file.type,
+                size: file.size,
+              }))
+              .filter((file) => {
+                const validTypes = ["image/png", "image/jpeg"];
+                return validTypes.indexOf(file.type) !== -1;
+              });
+            setFileState((prevFileState) => ({
+              ...prevFileState,
+              files: [...prevFileState.files, ...filesArray],
+            }));
+            e.target.value = "";
+          }
+        }}
+      />
+      <div
+        className={styles.fileModalHeader}
+        onClick={() => uploadFileInp.current && uploadFileInp.current.click()}
+      >
+        <h5>Click or drag and drop files here</h5>
+        <button
+          className="btn btn-info"
+          onClick={(e) => {
+            uploadFiles();
+            e.stopPropagation();
+          }}
+        >
+          Upload
+        </button>
       </div>
-    )
+      <div className={styles.fileModalFilesContainer}>
+        {fileState.files.map((file, index) => (
+          <div key={index} className={styles.fileModalFile}>
+            <div className={styles.fileImageContainer}>
+              <Image
+                src={URL.createObjectURL(file.file)}
+                layout={"fill"}
+                objectFit={"cover"}
+                alt={file.name}
+              />
+            </div>
+            <div className={styles.fileContent}>
+              <small>{file.name}</small>
+              <button
+                className="btn btn-danger"
+                onClick={(e) => {
+                  removeFile(file.file);
+                  e.stopPropagation();
+                }}
+              >
+                discard
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const AddRoomModalBody = ({
+  hotelName,
+  setToastState,
+}: {
+  hotelName: string;
+  setToastState: Dispatch<SetStateAction<IToast>>;
+}) => {
+  interface IRoom {
+    name: string;
+    price: string;
+    capacity: string;
+    description: string;
   }
 
-  const HotelImageUploadModalBody = () => {
-    const [fileState, setFileState] = useState<{
-      files: {
-        file: File;
-        name: string;
-        type: string;
-        size: number;
-      }[];
-      uploadProgress: number;
-    }>({
-      files: [],
-      uploadProgress: 0,
-    });
+  const [roomState, setRoomState] = useState<IRoom>({
+    name: "",
+    price: "",
+    capacity: "",
+    description: "",
+  });
 
+  const [roomPhotos, setRoomPhotos] = useState<{
+    files: {
+      file: File;
+      name: string;
+      type: string;
+      size: number;
+    }[];
+  }>({
+    files: [],
+  });
 
-    const uploadFileInp = useRef<HTMLInputElement>(null);
+  const uploadFileInp = useRef<HTMLInputElement>(null);
 
-    const removeFile = (file: File) => {
-      setFileState((prevFileState) => ({
-        ...prevFileState,
-        files: prevFileState.files.filter((f) => f.file !== file),
-      }));
-    };
+  const removeFile = (file: File) => {
+    setRoomPhotos((prevFileState) => ({
+      ...prevFileState,
+      files: prevFileState.files.filter((f) => f.file !== file),
+    }));
+  };
 
-    const uploadFiles = async () => {
-      try {
-        const downloadUrls: string[] = [];
-        for await (const file of fileState.files) {
-          const fileRef = createRef(`${hotelData.name}/images/${file.name}`);
-          const downloadUrl = await uploadFile(fileRef, file.file);
-          downloadUrls.push(downloadUrl);
-        }
-        const response = await fetch("/api/hotel/updateHotelPhotos", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            photoURLS: downloadUrls,
-          }),
-        });
-        if (!response.ok) {
-          setToastState({
-            message: "files not uploaded successfully",
-            visible: true,
-            type: "error",
-          });
-          return;
-        }
-        setToastState({
-          message: "All files successfully uploaded",
-          type: "success",
-          visible: true,
-        });
-      } catch (error) {
-        console.log(error);
-        setToastState({
-          message: "Error uploading files",
-          type: "success",
-          visible: true,
-        });
+  const addRoom = async () => {
+    try {
+      const images: string[] = [];
+      let index = 1;
+      for await (const file of roomPhotos.files) {
+        const fileRef = createRef(
+          `${hotelName}/${roomState.name}/photo-${index}`
+        );
+        const downloadUrl = await uploadFile(fileRef, file.file);
+        images.push(downloadUrl);
+        index++;
       }
-    };
+      setRoomState((prevState) => ({
+        ...prevState,
+        photosDownloadUrl: images,
+      }));
+      const response = await fetch("/api/hotel/addRoom", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ ...roomState, downloadUrls: images }),
+      });
+      if (!response.ok) {
+        setToastState({
+          message: "Room not added successfully",
+          visible: true,
+          type: "error",
+        });
+        return;
+      }
+      setToastState({
+        message: "Room successfully added",
+        type: "success",
+        visible: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    return (
+  return (
+    <div className={styles.addRoomModalBody}>
       <div
         className={styles.fileModalBody}
         onDrop={(e) => {
@@ -196,10 +373,8 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
               const validTypes = ["image/png", "image/jpeg", "image/jpg"];
               return validTypes.indexOf(file.type) !== -1;
             });
-
-          setFileState((prevFileState) => ({
-            ...prevFileState,
-            files: [...prevFileState.files, ...filesArray],
+          setRoomPhotos((prevState) => ({
+            files: [...prevState.files, ...filesArray],
           }));
         }}
         onDragOver={(e) => {
@@ -226,30 +401,21 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
                   const validTypes = ["image/png", "image/jpeg"];
                   return validTypes.indexOf(file.type) !== -1;
                 });
-              setFileState((prevFileState) => ({
-                ...prevFileState,
-                files: [...prevFileState.files, ...filesArray],
+              setRoomPhotos((prevState) => ({
+                files: [...prevState.files, ...filesArray],
               }));
               e.target.value = "";
             }
           }}
         />
-        <div className={styles.fileModalHeader}
+        <div
+          className={styles.fileModalHeader}
           onClick={() => uploadFileInp.current && uploadFileInp.current.click()}
         >
           <h5>Click or drag and drop files here</h5>
-          <button
-            className="btn btn-info"
-            onClick={(e) => {
-              uploadFiles();
-              e.stopPropagation();
-            }}
-          >
-            Upload
-          </button>
         </div>
         <div className={styles.fileModalFilesContainer}>
-          {fileState.files.map((file, index) => (
+          {roomPhotos.files.map((file, index) => (
             <div key={index} className={styles.fileModalFile}>
               <div className={styles.fileImageContainer}>
                 <Image
@@ -263,7 +429,7 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
                 <small>{file.name}</small>
                 <button
                   className="btn btn-danger"
-                  onClick={(e) => { removeFile(file.file); e.stopPropagation() }}
+                  onClick={() => removeFile(file.file)}
                 >
                   discard
                 </button>
@@ -272,171 +438,83 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
           ))}
         </div>
       </div>
-    );
-  };
-
-  const AddRoomModalBody = () => {
-    interface IRoom {
-      name: string;
-      price: string;
-      photosDownloadUrl: string[];
-      capacity: string;
-      amenities: {
-        name: string;
-        icon: string;
-      }[];
-    }
-
-    const [roomState, setRoomState] = useState<IRoom>({
-      name: "",
-      price: "0",
-      capacity: "1",
-      amenities: [],
-      photosDownloadUrl: [],
-    });
-
-    const [roomPhotos, setRoomPhotos] = useState<{
-      files: {
-        file: File;
-        name: string;
-        type: string;
-        size: number;
-      }[];
-    }>({
-      files: []
-    });
-
-    const uploadFileInp = useRef<HTMLInputElement>(null);
-
-    const removeFile = (file: File) => {
-      setRoomPhotos((prevFileState) => ({
-        ...prevFileState,
-        files: prevFileState.files.filter((f) => f.file !== file),
-      }));
-    };
-
-    const addRoom = async () => {
-      try {
-        const downloadUrls: string[] = [];
-        for await (const file of roomPhotos.files) {
-          const fileRef = createRef(`${hotelData.name}/images/${file.name}`);
-          const downloadUrl = await uploadFile(fileRef, file.file);
-          downloadUrls.push(downloadUrl);
-        }
-        const response = await fetch("/api/hotel/addRoom", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(roomState),
-        });
-        if (!response.ok) {
-          setToastState({
-            message: "Room not added successfully",
-            visible: true,
-            type: "error",
-          });
-          return;
-        }
-        setToastState({
-          message: "Room successfully added",
-          type: "success",
-          visible: true,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    return (
-      <div className={styles.addRoomModalBody}>
-        <form>
-          <input type="text" placeholder="Room Name : " value={roomState.name} onChange={e => setRoomState(prevState => ({ ...prevState, name: e.target.value }))} />
-          <input type={"text"} placeholder="Room Price : " value={roomState.price} onChange={e => setRoomState(prevState => ({ ...prevState, price: e.target.value }))} />
-          <input type={"number"} placeholder="Capacity" value={roomState.capacity} onChange={e => setRoomState(prevState => ({ ...prevState, capacity: e.target.value }))} />
-          <button className="btn" disabled={!roomState || !roomState.price || !roomState.capacity} >Add room</button>
-        </form>
-        <div
-          className={styles.fileModalBody}
-          onDrop={(e) => {
-            e.preventDefault();
-            const files = e.dataTransfer.files;
-            // map files to an array of file objects
-            const filesArray = Array.from(files)
-              .map((file) => ({
-                file,
-                name: file.name,
-                type: file.type,
-                size: file.size,
-              }))
-              .filter((file) => {
-                const validTypes = ["image/png", "image/jpeg", "image/jpg"];
-                return validTypes.indexOf(file.type) !== -1;
-              });
-            setRoomPhotos((prevState) => ({ files: [...prevState.files, ...filesArray] }))
-          }}
-          onDragOver={(e) => {
-            e.preventDefault();
-          }}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          addRoom();
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Room Name : "
+          value={roomState.name}
+          onChange={(e) =>
+            setRoomState((prevState) => ({
+              ...prevState,
+              name: e.target.value,
+            }))
+          }
+        />
+        <input
+          type={"text"}
+          placeholder="Room Price : "
+          value={roomState.price}
+          onChange={(e) =>
+            setRoomState((prevState) => ({
+              ...prevState,
+              price: e.target.value,
+            }))
+          }
+        />
+        <input
+          type={"number"}
+          placeholder="Capacity"
+          value={roomState.capacity}
+          onChange={(e) =>
+            setRoomState((prevState) => ({
+              ...prevState,
+              capacity: e.target.value,
+            }))
+          }
+        />
+        <textarea
+          value={roomState.description}
+          onChange={(e) =>
+            setRoomState((prevState) => ({
+              ...prevState,
+              description: e.target.value,
+            }))
+          }
+        />
+        <button
+          className="btn"
+          disabled={!roomState || !roomState.price || !roomState.capacity}
+          type={"submit"}
         >
-          <input
-            ref={uploadFileInp}
-            type="file"
-            accept="image/png, image/jpeg, image/jpg"
-            multiple
-            style={{ display: "none" }}
-            onChange={(e) => {
-              const files = e.target.files;
-              if (files) {
-                const filesArray = Array.from(files)
-                  .map((file) => ({
-                    file,
-                    name: file.name,
-                    type: file.type,
-                    size: file.size,
-                  }))
-                  .filter((file) => {
-                    const validTypes = ["image/png", "image/jpeg"];
-                    return validTypes.indexOf(file.type) !== -1;
-                  });
-                setRoomPhotos((prevState) => ({ files: [...prevState.files, ...filesArray] }))
-                e.target.value = "";
-              }
-            }}
-          />
-          <div className={styles.fileModalHeader}
-            onClick={() => uploadFileInp.current && uploadFileInp.current.click()}
-          >
-            <h5>Click or drag and drop files here</h5>
-          </div>
-          <div className={styles.fileModalFilesContainer}>
-            {roomPhotos.files.map((file, index) => (
-              <div key={index} className={styles.fileModalFile}>
-                <div className={styles.fileImageContainer}>
-                  <Image
-                    src={URL.createObjectURL(file.file)}
-                    layout={"fill"}
-                    objectFit={"cover"}
-                    alt={file.name}
-                  />
-                </div>
-                <div className={styles.fileContent}>
-                  <small>{file.name}</small>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => removeFile(file.file)}
-                  >
-                    discard
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  };
+          Add room
+        </button>
+      </form>
+    </div>
+  );
+};
+
+const Dashboard = ({ hotelData }: { hotelData: any }) => {
+  const [modalState, setModalState] = useState<{
+    modalHeader: string;
+    show: boolean;
+    modalContent: JSX.Element;
+  }>({
+    modalHeader: "",
+    show: false,
+    modalContent: <Fragment />,
+  });
+  const router = useRouter();
+
+  const [toastState, setToastState] = useState<IToast>({
+    message: "̥",
+    visible: false,
+    type: "info",
+  });
 
   return (
     <Layout>
@@ -510,7 +588,12 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
                 setModalState({
                   modalHeader: "Add Photos",
                   show: true,
-                  modalContent: <HotelImageUploadModalBody />,
+                  modalContent: (
+                    <HotelImageUploadModalBody
+                      hotelName={hotelData.name}
+                      setToastState={setToastState}
+                    />
+                  ),
                 });
               }}
             >
@@ -520,13 +603,17 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
         </div>
         <div className={styles.photosContainer}>
           {hotelData.images.map((imageSrc: string, i: number) => (
-            <div className={styles.photoCard} key={i} onClick={() => {
-              setModalState({
-                modalHeader: "Add Photos",
-                show: true,
-                modalContent: <ImagePreviewModalBody imageSrc={imageSrc} />,
-              });
-            }} >
+            <div
+              className={styles.photoCard}
+              key={i}
+              onClick={() => {
+                setModalState({
+                  modalHeader: "View Photo",
+                  show: true,
+                  modalContent: <ImagePreviewModalBody imageSrc={imageSrc} />,
+                });
+              }}
+            >
               <Image
                 src={imageSrc}
                 layout="fill"
@@ -543,13 +630,23 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
         <div className={styles.sectionHeader}>
           <h5>Available rooms</h5>
           <div className={styles.btnOptions}>
-            <button className="btn" onClick={() => {
-              setModalState({
-                modalHeader: "Add Photos",
-                show: true,
-                modalContent: <AddRoomModalBody />,
-              });
-            }} >Add Rooms</button>
+            <button
+              className="btn"
+              onClick={() => {
+                setModalState({
+                  modalHeader: "Add Photos",
+                  show: true,
+                  modalContent: (
+                    <AddRoomModalBody
+                      hotelName={hotelData.name}
+                      setToastState={setToastState}
+                    />
+                  ),
+                });
+              }}
+            >
+              Add Rooms
+            </button>
           </div>
         </div>
         <div className={styles.roomsContainer}>
@@ -568,7 +665,9 @@ const Dashboard = ({ hotelData }: { hotelData: any }) => {
         <div className={styles.sectionHeader}>
           <h5>Bookings</h5>
           <div className={styles.btnOptions}>
-            <button onClick={() => router.push("/partner/bookings")} >View</button>
+            <button onClick={() => router.push("/partner/bookings")}>
+              View
+            </button>
           </div>
         </div>
         <table className={styles.bookingsTable}>

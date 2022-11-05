@@ -8,15 +8,20 @@ import Footer from '../Components/Footer/Footer';
 import Newsletter from '../Components/Newsletter/Newsletter';
 import store from '../redux/store';
 import '../styles/Homescreen/Banner.scss';
-import { getTokenCookie } from '../Utils/auth/authHelper';
-import { setUserEncryptedToken } from '../redux/user/user.slice';
-import { useAppSelector } from '../redux/hooks';
+import { destroyTokenCookie, getTokenCookie, parseJWT, validateJWT } from '../Utils/auth/authHelper';
+import { removeEncryptedToken, setUserEncryptedToken } from '../redux/user/user.slice';
 import NavModal from '../Components/NavModal/NavModal';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     const token = getTokenCookie();
-    token && store.dispatch(setUserEncryptedToken(token));
+    if (validateJWT(parseJWT(token))) {
+      store.dispatch(setUserEncryptedToken(token));
+    }
+    else {
+      store.dispatch(removeEncryptedToken())
+      destroyTokenCookie()
+    }
   }, []);
 
   return (

@@ -13,6 +13,7 @@ import { signupForm } from '../../Utils/auth/signup';
 const NavModal = () => {
   const router = useRouter();
   const navModalState = useAppSelector((state) => state.navModal);
+
   const [loginFormState, setLoginFormState] = useState({
     inpEmail: '',
     inpPassword: ''
@@ -24,8 +25,6 @@ const NavModal = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    lat: 0,
-    long: 0,
     city: '',
     state: '',
     country: ''
@@ -38,59 +37,27 @@ const NavModal = () => {
   });
 
   useEffect(() => {
-    if (navModalState.type === 'login') {
-      navigator.permissions
-        .query({ name: 'geolocation' })
-        .then(async (result) => {
-          if (result.state === 'granted') {
-            navigator.geolocation.getCurrentPosition((position) => {
-              setFormInp((prevFormInp) => ({
-                ...prevFormInp,
-                lat: position.coords.latitude,
-                long: position.coords.longitude
-              }));
-            });
-          } else if (result.state === 'prompt') {
-            navigator.geolocation.getCurrentPosition((position) => {
-              setFormInp((prevFormInp) => ({
-                ...prevFormInp,
-                lat: position.coords.latitude,
-                long: position.coords.longitude
-              }));
-            });
-          } else if (result.state === 'denied') {
-            // if permission denied, show toast
-            setToastState({
-              message: 'Location permission denied',
-              type: 'error',
-              visible: true
-            });
+    if (navModalState.type === 'signup') {
 
-            const ipAddr = await fetch(
-              'https://api.ipify.org/?format=json'
-            ).then((res) => res.json());
+      const getLocationInfo = async () => {
+        const ipAddr = await fetch(
+          'https://api.ipify.org/?format=json'
+        ).then((res) => res.json());
 
-            const location = await fetch(
-              `http://ip-api.com/json/${ipAddr?.ip}?fields=573951`
-            ).then((res) => res.json());
+        const location = await fetch(
+          `http://ip-api.com/json/${ipAddr?.ip}?fields=573951`
+        ).then((res) => res.json());
+        return location
+      }
 
-            if (location?.status === 'fail') {
-              setToastState({
-                message: location?.message ?? 'Location not found',
-                type: 'error',
-                visible: true
-              });
-              return;
-            }
-
-            setFormInp((prevFormInp) => ({
-              ...prevFormInp,
-              country: location?.country,
-              state: location?.regionName,
-              city: location?.city
-            }));
-          }
-        });
+      getLocationInfo().then(location => {
+        setFormInp((prevFormInp) => ({
+          ...prevFormInp,
+          country: location?.country,
+          state: location?.regionName,
+          city: location?.city
+        }));
+      })
     }
   }, [navModalState.type]);
 

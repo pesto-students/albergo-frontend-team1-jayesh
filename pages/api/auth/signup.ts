@@ -1,15 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from "next";
 import {
   NEXT_PUBLIC_API_URL,
   isValidateName,
   isValidEmail,
-  isValidPassword
-} from '../../../Utils/auth/authHelper';
+  isValidPassword,
+} from "../../../Utils/auth/authHelper";
 import {
   IPartnerSignupForm,
-  IUserSignupForm
-} from '../../../Utils/auth/signup';
-import { inValidPasswordMsg, UserRole } from '../../../Utils/Helper';
+  IUserSignupForm,
+} from "../../../Utils/auth/signup";
+import { inValidPasswordMsg, UserRole } from "../../../Utils/Helper";
 
 interface IResponseData {
   message?: string;
@@ -22,36 +22,41 @@ export default function handler(
   res: NextApiResponse<IResponseData>
 ) {
   // only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
   const { role } = req.body as { role: UserRole };
 
-  if (!role || (role !== 'partner' && role !== 'user')) {
-    return res.status(400).json({ message: 'Invalid credentials' });
+  if (!role || (role !== "partner" && role !== "user")) {
+    return res.status(400).json({ message: "Invalid credentials" });
   }
 
-  if (role === 'user') {
+  if (role === "user") {
     //   get the email and password from the request body
-    const { name, phone, email, password, confirmPassword } =
-      req.body as IUserSignupForm;
+    const {
+      name,
+      phone,
+      email,
+      password,
+      confirmPassword,
+    } = req.body as IUserSignupForm;
 
     if (!name || !email || !password || !phone || !confirmPassword) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     //   check if email and password are valid
     if (!isValidateName(name)) {
-      return res.status(400).json({ message: 'Invalid name' });
+      return res.status(400).json({ message: "Invalid name" });
     }
 
     if (phone.length < 10) {
-      return res.status(400).json({ message: 'Invalid phone number' });
+      return res.status(400).json({ message: "Invalid phone number" });
     }
 
     if (!isValidEmail(email)) {
-      return res.status(400).json({ message: 'Invalid email' });
+      return res.status(400).json({ message: "Invalid email" });
     }
 
     if (!isValidPassword(password)) {
@@ -59,7 +64,7 @@ export default function handler(
     }
 
     if (password !== confirmPassword) {
-      return res.status(400).json({ message: 'Password does not match' });
+      return res.status(400).json({ message: "Password does not match" });
     }
 
     return new Promise<void>(async (resolve) => {
@@ -68,30 +73,43 @@ export default function handler(
         phone,
         email,
         password,
-        passwordConfirm: confirmPassword
+        passwordConfirm: confirmPassword,
       });
 
-      await fetch(`${NEXT_PUBLIC_API_URL}/api/users/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: raw
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          res.status(200).json({ data: response });
+      try {
+        const response = await fetch(
+          `${NEXT_PUBLIC_API_URL}/api/users/signup`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: raw,
+          }
+        );
+
+        if (!response.ok) {
+          const jsonResp = await response.json();
+          res.status(400).json({
+            message: jsonResp?.message ?? "Please try again later",
+          });
           resolve();
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(200).json({ error: 'Please try again later' });
-          resolve();
-        });
+          return;
+        }
+
+        const jsonResp = await response.json();
+        res.status(200).json({ data: jsonResp });
+        resolve();
+      } catch (error) {
+        console.log(error);
+        res.status(200).json({ error: "Please try again later" });
+        resolve();
+        return;
+      }
     });
   }
 
-  if (role === 'partner') {
+  if (role === "partner") {
     //   get the email and password from the request body
     const formInp = req.body as IPartnerSignupForm;
 
@@ -100,18 +118,18 @@ export default function handler(
         const formInpValue = formInp[formKey as keyof IPartnerSignupForm];
 
         if (!formInpValue) {
-          return res.status(400).json({ message: 'Invalid credentials' });
+          return res.status(400).json({ message: "Invalid credentials" });
         }
       }
     }
 
     //   check if email and password are valid
     if (!isValidateName(formInp.hotelName)) {
-      return res.status(400).json({ message: 'Invalid name' });
+      return res.status(400).json({ message: "Invalid name" });
     }
 
     if (!isValidEmail(formInp.hotelEmail)) {
-      return res.status(400).json({ message: 'Invalid email' });
+      return res.status(400).json({ message: "Invalid email" });
     }
 
     if (!isValidPassword(formInp.hotelPassword)) {
@@ -119,15 +137,15 @@ export default function handler(
     }
 
     if (formInp.hotelPassword !== formInp.hotelConfirmPassword) {
-      return res.status(400).json({ message: 'Password does not match' });
+      return res.status(400).json({ message: "Password does not match" });
     }
 
     if (formInp.hotelPhone.length < 10) {
-      return res.status(400).json({ message: 'Invalid phone number' });
+      return res.status(400).json({ message: "Invalid phone number" });
     }
 
     if (!formInp.hotelAddress || formInp.hotelAddress.trim().length < 1) {
-      return res.status(400).json({ message: 'Invalid address' });
+      return res.status(400).json({ message: "Invalid address" });
     }
 
     return new Promise<void>(async (resolve) => {
@@ -139,35 +157,40 @@ export default function handler(
         hotelAddress: formInp.hotelAddress,
         hotelCity: formInp.hotelCity,
         hotelState: formInp.hotelState,
-        hotelCountry: formInp.hotelCountry
+        hotelCountry: formInp.hotelCountry,
       });
 
       try {
         const response = await fetch(
           `${NEXT_PUBLIC_API_URL}/api/hotel/onboard`,
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json'
+              "Content-Type": "application/json",
             },
-            body: raw
+            body: raw,
           }
         );
 
-        if (response.status.toString().startsWith('4')) {
-          const err = await response.json();
-          res.status(200).json({ error: err.message });
+        if (!response.ok) {
+          const jsonResp = await response.json();
+          res
+            .status(400)
+            .json({ message: jsonResp.message ?? "Please try again later" });
           resolve();
+          return;
         }
 
         const data = await response.json();
 
         res.status(200).json({ data });
         resolve();
+        return;
       } catch (error) {
         console.log(error);
-        res.status(400).json({ error: 'Please try again later' });
+        res.status(400).json({ error: "Please try again later" });
         resolve();
+        return;
       }
     });
   }

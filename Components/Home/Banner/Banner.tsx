@@ -1,18 +1,10 @@
-import dayjs, { Dayjs } from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import styles from "../../../styles/Homescreen/Banner.module.scss";
-import { MUIDatePicker } from "../../DateRangePicker/DateRangePicker";
-import Toast, { IToast } from "../../Toast/Toast";
 
 const Banner = () => {
   const destinationInpRef = useRef<HTMLInputElement>(null);
-  const [toastState, setToastState] = useState<IToast>({
-    message: "",
-    visible: false,
-    type: "info",
-  });
 
   const router = useRouter();
 
@@ -58,7 +50,6 @@ const Banner = () => {
           priority={true}
         />
       </div>
-      <Toast toastState={toastState} setToastState={setToastState} />
     </div>
   );
 };

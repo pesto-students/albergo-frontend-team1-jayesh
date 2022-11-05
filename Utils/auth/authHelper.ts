@@ -1,7 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { NextRouter } from 'next/router';
 import nookies from 'nookies';
-import { type } from 'os';
 import store from '../../redux/store';
 import { removeEncryptedToken } from '../../redux/user/user.slice';
 
@@ -45,9 +44,19 @@ const parseJWT = (token: string | null) => {
   return token === null
     ? null
     : (JSON.parse(
-        Buffer.from(token.split('.')[1], 'base64').toString()
-      ) as IParsedToken);
+      Buffer.from(token.split('.')[1], 'base64').toString()
+    ) as IParsedToken) ?? null;
 };
+
+export const validateJWT = (token: IParsedToken | null) => {
+  if (!token) return false
+  const tokenexp = new Date(0);
+  tokenexp.setUTCSeconds(token.exp);
+  if (Date.now() <= +tokenexp) {
+    return true
+  }
+  return false
+}
 
 const setTokenCookie = (token: string) => {
   nookies.set(null, JWT_TOKEN_NAME, token, {

@@ -62,6 +62,13 @@ export const getStaticProps: GetStaticProps = async () => {
       }
     });
 
+    if (!response.ok) {
+      return {
+        props: {},
+        revalidate: 90
+      }
+    }
+
     const data = await response.json();
 
     return {
@@ -70,6 +77,7 @@ export const getStaticProps: GetStaticProps = async () => {
       },
       revalidate: 90
     };
+
   } catch (error) {
     return {
       props: {},
