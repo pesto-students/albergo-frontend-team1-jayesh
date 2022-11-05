@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {
-  NEXT_PUBLIC_API_URL,
 } from '../../../Utils/auth/authHelper';
 
 interface IResponseData {
@@ -24,7 +23,7 @@ export default function handler(
     });
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_API_URL}/hotel/search`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/hotel/search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -86,7 +86,7 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-      <p>&copy; 2021 All Rights Reserved. Designed by </p>
+      <p>&copy; 2022 All Rights Reserved. Designed by </p>
     </footer>
   );
 };
