@@ -49,11 +49,13 @@
     }
   }
   .cardContainer {
-    @include display-flex(space-between, unset);
+    // @include display-flex(space-between, center);
     width: 100%;
     margin: 1rem 0;
     padding: 1rem 0;
     flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem 1rem;
   }
 }

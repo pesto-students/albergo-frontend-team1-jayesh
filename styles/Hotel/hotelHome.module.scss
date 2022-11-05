@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use "../variables" as *;
 
 .galleryContainer {
   @include display-flex(unset, unset);
@@ -51,10 +51,16 @@
 
       .infoSection {
         h3 {
+          @include font-variation(600);
           margin: 0;
           font-size: 1.5rem;
-          font-weight: 500;
           text-transform: capitalize;
+        }
+
+        p {
+          @include font-variation(400);
+          margin: 0;
+          font-size: 1rem;
         }
       }
 
@@ -97,8 +103,8 @@
       }
     }
 
-    .amenitiesSection {
-      .amenitiesContainer {
+    .facilitiesSection {
+      .facilitiesContainer {
         width: 50%;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -121,11 +127,6 @@
       }
 
       button {
-        @include border-radius(10px);
-        @include font-variation(600);
-        font-family: inherit;
-        border: 1px solid $fontBlack;
-        background: transparent;
         padding: 1rem 2rem;
       }
     }
@@ -152,9 +153,19 @@
           }
         }
       }
+
+      button {
+        padding: 1rem 2rem;
+      }
     }
 
     .reviewSection {
+      margin: 1rem 0;
+      h5 {
+        @include display-flex(unset, center);
+        gap: 0.5rem;
+      }
+
       .reviewTypeContainer {
         width: 50%;
         display: grid;
@@ -209,15 +220,6 @@
           }
         }
       }
-
-      button {
-        @include border-radius(10px);
-        @include font-variation(600);
-        font-family: inherit;
-        border: 1px solid $fontBlack;
-        background: transparent;
-        padding: 1rem 2rem;
-      }
     }
   }
 
@@ -256,14 +258,11 @@
       @include border-radius(2rem);
       @include font-variation(500);
       width: 100%;
-      padding: 1rem;
+      margin: 0 auto;
+      padding: 0.75rem;
       margin-bottom: 1rem;
-      background: $secondaryColor;
-      color: $fontWhite;
-      font-family: inherit;
-      font-size: 1rem;
+      // font-size: 1rem;
       letter-spacing: 1px;
-      border: none;
     }
 
     .contactSection {
@@ -271,10 +270,78 @@
       gap: 1rem;
       padding: 1rem 0;
 
-      small {
+      a {
         @include display-flex(unset, center);
-        gap: 0.5rem;
+        gap: 0.25rem;
       }
+    }
+  }
+}
+
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  .modalContent {
+    @include border-radius(1rem);
+    width: min(90%, 500px);
+    height: min(90%, 500px);
+    background: $fontWhite;
+    padding: 1rem;
+    cursor: auto;
+
+    .modalHeader {
+      @include display-flex(space-between, center);
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      h5 {
+        @include font-variation(600);
+        margin: 0;
+      }
+
+      button {
+        @include border-radius(50%);
+        @include transition(0.3s ease-in-out);
+        background: transparent;
+        cursor: pointer;
+        padding: 0.5rem;
+        display: grid;
+        place-items: center;
+        border: 0.5px solid transparent;
+
+        &:hover {
+          background: rgba($fontGrey, 0.25);
+          border-color: $fontGrey;
+        }
+      }
+    }
+
+    .modalBody {
+      width: 100%;
+    }
+  }
+}
+
+.facilitiesModal {
+  @include display-flex(space-between, center);
+  flex-wrap: wrap;
+  gap: 1.5rem;
+
+  .facilitiesItem {
+    flex: 1 0 40%;
+    @include display-flex(unset, center);
+    gap: 0.25rem;
+
+    p {
+      margin: 0;
     }
   }
 }

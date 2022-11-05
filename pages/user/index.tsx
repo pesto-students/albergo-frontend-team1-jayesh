@@ -23,8 +23,6 @@ const UserHome: NextPage<IUserHomeProps> = ({
   data
 }) => {
   if (userToken && data) {
-    console.log(data?.reviews);
-
     return (
       <Layout>
         <div className={styles.container}>
@@ -93,27 +91,35 @@ export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
   const token = getTokenCookie(ctx);
+
+  console.log(token);
+
   const userToken = parseJWT(token);
+
+  console.log(userToken);
 
   if (!userToken) {
     return {
       redirect: {
-        destination: '/user/login',
+        destination: '/',
         permanent: false
       }
     };
   }
 
   try {
-    const response = await fetch(`${process.env.API_URL}/api/users/me`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/me`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
-    if (response.status === 200) {
+    if (response.ok) {
       const res = await response.json();
       return {
         props: {
@@ -123,15 +129,17 @@ export const getServerSideProps: GetServerSideProps = async (
       };
     } else {
       return {
-        props: {
-          loadingMessage: 'Something went wrong'
+        redirect: {
+          destination: '/',
+          permanent: false
         }
       };
     }
   } catch (error) {
     return {
-      props: {
-        loadingMessage: 'Something went wrong'
+      redirect: {
+        destination: '/',
+        permanent: false
       }
     };
   }

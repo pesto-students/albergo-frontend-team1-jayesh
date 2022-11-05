@@ -1,10 +1,11 @@
 import { GetServerSidePropsContext } from 'next';
 import { NextRouter } from 'next/router';
 import nookies from 'nookies';
+import { type } from 'os';
 import store from '../../redux/store';
 import { removeEncryptedToken } from '../../redux/user/user.slice';
 
-const API_URL = process.env.API_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const JWT_TOKEN_NAME = process.env.NEXT_PUBLIC_JWT_TOKEN_NAME ?? 'token';
 
@@ -31,11 +32,13 @@ const checkPassword = (password: string, confirmPassword: string) => {
 };
 
 interface IParsedToken {
-  id: string;
+  id?: string;
+  slug?: string;
   email: string;
   name: string;
   iat: number;
   exp: number;
+  role: 'User' | 'Hotel';
 }
 
 const parseJWT = (token: string | null) => {
@@ -53,12 +56,20 @@ const setTokenCookie = (token: string) => {
     sameSite: true,
     secure: process.env.NODE_ENV === 'production'
   });
+  localStorage.setItem(JWT_TOKEN_NAME, token);
   return;
 };
 
 const getTokenCookie = (ctx?: GetServerSidePropsContext) => {
   const cookies = nookies.get(ctx ?? null);
-  return cookies ? cookies[JWT_TOKEN_NAME] : null;
+  // if cookies[JWT_TOKEN_NAME] is undefined then check localStorage
+  if (!ctx) {
+    return (
+      cookies[JWT_TOKEN_NAME] ?? localStorage.getItem(JWT_TOKEN_NAME) ?? null
+    );
+  }
+
+  return cookies[JWT_TOKEN_NAME] ?? null;
 };
 
 const destroyTokenCookie = () => {
@@ -70,8 +81,9 @@ const destroyTokenCookie = () => {
 
 const logout = (router: NextRouter) => {
   destroyTokenCookie();
+  localStorage.removeItem(JWT_TOKEN_NAME);
   store.dispatch(removeEncryptedToken());
-  router.push('/login');
+  router.push('/');
 };
 
 export {
@@ -79,7 +91,7 @@ export {
   isValidEmail,
   isValidPassword,
   checkPassword,
-  API_URL,
+  NEXT_PUBLIC_API_URL,
   parseJWT,
   setTokenCookie,
   getTokenCookie,

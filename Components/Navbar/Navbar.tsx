@@ -2,6 +2,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { useAppSelector } from '../../redux/hooks';
+import {
+  setNavModalType,
+  toggleNavModal
+} from '../../redux/navModal/modal.slice';
+import store from '../../redux/store';
 import styles from '../../styles/Components/Navbar/Navbar.module.scss';
 import { logout, parseJWT } from '../../Utils/auth/authHelper';
 import { MaterialIcon } from '../../Utils/Helper';
@@ -18,22 +23,24 @@ const Navbar = () => {
       name: 'Search',
       icon: 'search',
       link: '/search'
-    },
-    {
-      name: 'explore',
-      icon: 'explore',
-      link: '/explore'
     }
   ];
 
-  const AuthLinks = (user: { name: string }) => {
+  const AuthLinks = () => {
     return (
       <Fragment>
         <li>
-          <Link href={'/user'}>
+          <Link
+            href={
+              userToken && userToken.role === 'User'
+                ? '/user'
+                : '/partner/dashboard'
+            }
+          >
             <a>
-              <MaterialIcon iconName="person" />
-              {user.name}
+              {userToken && userToken.role === 'User'
+                ? 'profile'
+                : 'dashboard'}
             </a>
           </Link>
         </li>
@@ -73,21 +80,28 @@ const Navbar = () => {
             </li>
           ))}
           {userToken ? (
-            AuthLinks(userToken)
+            AuthLinks()
           ) : (
             <Fragment>
               <li>
-                <Link href="/partner">
-                  <a className={styles.partnerBtn}>Become a partner</a>
-                </Link>
+                <button
+                  onClick={() => {
+                    store.dispatch(setNavModalType('signup'));
+                    store.dispatch(toggleNavModal());
+                  }}
+                >
+                  Sign up
+                </button>
               </li>
               <li>
-                <Link href={'/auth'}>
-                  <a>
-                    <MaterialIcon iconName="person" />
-                    Login
-                  </a>
-                </Link>
+                <button
+                  onClick={() => {
+                    store.dispatch(setNavModalType('login'));
+                    store.dispatch(toggleNavModal());
+                  }}
+                >
+                  Login
+                </button>
               </li>
             </Fragment>
           )}
@@ -96,31 +110,75 @@ const Navbar = () => {
           {centralLinks.map((link, index) => (
             <li key={index}>
               <Link href={link.link}>
-                <a>
-                  <MaterialIcon iconName={link.icon} />
-                  {link.name}
-                </a>
+                <a>{link.name}</a>
               </Link>
             </li>
           ))}
         </ul>
         <ul>
-          {userToken ? (
-            AuthLinks(userToken)
-          ) : (
-            <Fragment>
-              <li>
-                <Link href="/partner">
-                  <a className={styles.partnerBtn}>Become a partner</a>
-                </Link>
-              </li>
-              <li>
-                <Link href={'/login'}>
-                  <a>login</a>
-                </Link>
-              </li>
-            </Fragment>
+          {userToken && userToken.role === 'User' && (
+            <li>
+              <Link href="/partner">
+                <a className={styles.partnerBtn}>Become a partner</a>
+              </Link>
+            </li>
           )}
+          <li>
+            <div className={styles.optionMenu}>
+              <input type="checkbox" name="optionMenu" id="optionMenu" />
+              <label htmlFor="optionMenu">
+                <MaterialIcon iconName="menu" />
+                <MaterialIcon iconName="account_circle" />
+              </label>
+              <ul className={styles.optionMenuList}>
+                {userToken ? (
+                  <Fragment>
+                    <li>
+                      <Link
+                        href={
+                          userToken && userToken.role === 'User'
+                            ? '/user'
+                            : '/partner/dashboard'
+                        }
+                      >
+                        <a>
+                          {userToken && userToken.role === 'User'
+                            ? 'profile'
+                            : 'dashboard'}
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <button onClick={() => logout(router)}>Logout</button>
+                    </li>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <li>
+                      <button
+                        onClick={() => {
+                          store.dispatch(setNavModalType('signup'));
+                          store.dispatch(toggleNavModal());
+                        }}
+                      >
+                        Sign up
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          store.dispatch(setNavModalType('login'));
+                          store.dispatch(toggleNavModal());
+                        }}
+                      >
+                        Login
+                      </button>
+                    </li>
+                  </Fragment>
+                )}
+              </ul>
+            </div>
+          </li>
         </ul>
       </nav>
     </Fragment>

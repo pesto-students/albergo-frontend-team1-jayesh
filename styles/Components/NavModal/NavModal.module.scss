@@ -1,0 +1,72 @@
+@use "../../variables" as *;
+
+.modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+
+    .modalContainer {
+        @include border-radius(1rem);
+        @include transform(translate(-50%, -50%));
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: min(90%, 450px);
+        padding: 1rem;
+        background: $fontWhite;
+
+        .modalHeader {
+            @include display-flex(space-between, center);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid $primaryBg;
+            padding: 0 0 1rem;
+
+            h4 {
+                @include font-variation(500);
+                margin: 0;
+                letter-spacing: 1px;
+                text-transform: capitalize;
+            }
+
+            .closeBtn {
+                @include font-variation(600);
+                @include border-radius(50%);
+                display: grid;
+                place-items: center;
+                width: 2rem;
+                height: 2rem;
+                padding: 0;
+            }
+        }
+
+        .modalBody {
+            .formGroup {
+                margin: 1rem 0;
+
+                label {
+                    @include font-variation(500);
+                    display: block;
+                    font-size: 0.85rem;
+                }
+
+                input {
+                    @include border-radius(0.2rem);
+                    width: 100%;
+                    font-size: 1rem;
+                    padding: 0.5rem;
+                    outline: none;
+                    border: 1px solid rgba($color: $fontGrey, $alpha: 0.5);
+                    background: rgba($color: $fontWhite, $alpha: 0.5);
+
+                    &:focus {
+                        border: 1px solid $fontBlack;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,68 +1,78 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import styles from '../../styles/Components/Card/CardTypeOne.module.scss';
+import { MaterialIcon } from '../../Utils/Helper';
 
 interface ICardTypeOneProps {
   itemData: {
     [key: string]: string;
   };
+  onClickFn: () => void;
   wide?: boolean;
 }
 
-const CardTypeOne = ({ wide = false, itemData }: ICardTypeOneProps) => {
-  const router = useRouter();
+const CardTypeOne = ({
+  wide = false,
+  itemData,
+  onClickFn
+}: ICardTypeOneProps) => {
+  const [hotelImages, setHotelImages] = useState({
+    list: itemData.images,
+    currentIndex: 0
+  });
+
+  useEffect(() => {
+    const imagesInterval = setInterval(() => {
+      setHotelImages((prevState) => {
+        return {
+          ...prevState,
+          currentIndex:
+            prevState.currentIndex === prevState.list.length - 1
+              ? 0
+              : prevState.currentIndex + 1
+        };
+      });
+    }, 5000);
+
+    return () => {
+      clearInterval(imagesInterval);
+    };
+  }, []);
 
   return (
     <div
       className={styles.card}
-      onClick={() => {
-        router.push(`/hotel/${itemData.id}`);
-      }}
+      onClick={() => onClickFn()}
+      id={`card-${itemData.slug}`}
     >
       <div className={styles.imageContainer}>
         <Image
-          src={
-            'https://images.unsplash.com/photo-1663706532601-60130a7bbb74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-          }
+          src={itemData.images[hotelImages.currentIndex]}
           layout="fill"
           objectFit="cover"
           alt="image"
         />
-        {/* <button>
-          <MaterialIcon iconName="favorite" />
-        </button> */}
       </div>
       <div className={styles.cardContent}>
-        <Link href={'/hotel/a/register'}>
-          <a>
-            <h5>{itemData?.name}</h5>
-          </a>
-        </Link>
-        <p>
-          {itemData?.hotelCity}, {itemData?.hotelState},{' '}
-          {itemData?.hotelCountry}
-        </p>
-        {wide ? (
+        <div className={styles.cardTopRow}>
+          <p>{itemData?.name}</p>
+          <p>
+            {itemData?.ratingsAverage}  <MaterialIcon iconName="star" />
+          </p>
+        </div>
+        <small>
+          {itemData?.city}<br />{itemData?.state}, {itemData?.country}
+        </small>
+        {wide && (
           <Fragment>
             <p>&#8377; 1000 - 3000</p>
-            <div className={styles.amenitiesContainer}>
+            <div className={styles.facilitiesContainer}>
               {/* <Bed />
               <Bathtub />
               <TimeToLeave />
               <Pets />
               <Wifi /> */}
             </div>
-          </Fragment>
-        ) : (
-          <Fragment>
-            <div className={styles.starsContainer}>
-              {/* <Star />
-              <Star />
-              <Star /> */}
-            </div>
-            <p>{itemData?.ratingsQuantity} reviews</p>
           </Fragment>
         )}
       </div>

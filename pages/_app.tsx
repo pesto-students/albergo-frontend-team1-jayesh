@@ -10,6 +10,8 @@ import store from '../redux/store';
 import '../styles/Homescreen/Banner.scss';
 import { getTokenCookie } from '../Utils/auth/authHelper';
 import { setUserEncryptedToken } from '../redux/user/user.slice';
+import { useAppSelector } from '../redux/hooks';
+import NavModal from '../Components/NavModal/NavModal';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
@@ -31,6 +33,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <Component {...pageProps} />
         <Newsletter />
         <Footer />
+        <NavModal />
       </Provider>
     </Fragment>
   );
