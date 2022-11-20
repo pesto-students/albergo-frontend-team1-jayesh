@@ -68,7 +68,6 @@ export default function handler(
       resolve();
       return;
     } catch (error) {
-      console.log(error);
       res.status(200).json({ error: "Please try again later" });
       resolve();
       return;

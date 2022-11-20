@@ -1,39 +1,37 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useState } from "react";
 import styles from "../../../styles/Homescreen/Banner.module.scss";
 
 const Banner = () => {
-  const destinationInpRef = useRef<HTMLInputElement>(null);
-
+  const [destinationQuery, setDestinationQuery] = useState("");
   const router = useRouter();
 
   const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const destination = destinationInpRef.current?.value;
-    if (destination) {
+    if (destinationQuery) {
       router.push(
         {
           pathname: "/search",
           query: {
-            destination,
+            destination: destinationQuery,
           },
-        },
-        "/search"
+        }
       );
     }
   };
 
-  const disableBtn = !destinationInpRef.current?.value;
+  const disableBtn = !destinationQuery;
 
   return (
     <div className={styles.container}>
       <form onSubmit={formSubmitHandler}>
         <input
           type="text"
-          placeholder="Where are you going?"
+          placeholder="favourite city"
           id="destination"
-          ref={destinationInpRef}
+          value={destinationQuery}
+          onChange={e => setDestinationQuery(e.target.value)}
           required
         />
         <button type="submit" disabled={disableBtn}>

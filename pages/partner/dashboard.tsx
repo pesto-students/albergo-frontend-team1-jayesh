@@ -87,7 +87,7 @@ const Modal = ({ modalHeader, setModalState, children }: IModalProps) => {
   );
 };
 
-const ImagePreviewModalBody = ({ imageSrc }: { imageSrc: string }) => {
+const ImagePreviewModalBody = ({ imageSrc }: { imageSrc: string; }) => {
   return (
     <div className={styles.imagePreviewBody}>
       <Image
@@ -161,7 +161,6 @@ const HotelImageUploadModalBody = ({
         visible: true,
       });
     } catch (error) {
-      console.log(error);
       setToastState({
         message: "Error uploading files",
         type: "success",
@@ -350,7 +349,6 @@ const AddRoomModalBody = ({
         visible: true,
       });
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -498,7 +496,7 @@ const AddRoomModalBody = ({
   );
 };
 
-const Dashboard = ({ hotelData }: { hotelData: any }) => {
+const Dashboard = ({ hotelData }: { hotelData: any; }) => {
   const [modalState, setModalState] = useState<{
     modalHeader: string;
     show: boolean;
@@ -757,7 +755,6 @@ export const getServerSideProps: GetServerSideProps = async (
         },
       };
     } catch (error) {
-      console.log(error);
       return {
         notFound: true,
       };

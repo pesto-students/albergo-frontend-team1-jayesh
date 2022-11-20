@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import Layout from '../../../Components/Layout/Layout';
 import styles from '../../../styles/Hotel/hotelHome.module.scss';
+import { makeReq } from '../../../Utils/db';
 import { MaterialIcon, ReadMore, Rupee } from '../../../Utils/Helper';
 
 interface IModalProps {
@@ -96,7 +97,7 @@ const safetyChecks = [
   'smoke detectors'
 ];
 
-const HotelSlugHome = ({ hotelData }: { hotelData: any }) => {
+const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
   const router = useRouter();
   const { hotelId } = router.query;
 
@@ -384,35 +385,18 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   const slug = ctx.params?.hotelId;
 
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/hotel/${slug}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-
-    if (!response.ok) {
+  return Promise.resolve(makeReq(`${process.env.NEXT_PUBLIC_API_URL}/hotel/${slug}`, "GET")).then(res => {
+    if (!res) {
       return {
         notFound: true
       };
     }
-
-    const res = await response.json();
 
     return {
       props: {
         hotelData: res.data
       }
     };
-  } catch (error) {
-    console.log(error);
-
-    return {
-      notFound: true
-    };
   }
+  );
 };

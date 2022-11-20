@@ -95,13 +95,3 @@ const BookingId = () => {
 };
 
 export default BookingId;
-
-//export const getServerSideProps: GetServerSideProps = async (
-//  context: GetServerSidePropsContext
-//) => {
-//  const reqQuery = context.query;
-//  console.log(reqQuery);
-//  return {
-//    props: {}
-//  };
-//};

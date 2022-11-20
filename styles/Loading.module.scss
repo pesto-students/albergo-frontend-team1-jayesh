@@ -1,10 +1,31 @@
-@use './variables' as *;
+@use "./variables" as *;
 
 $cubeHeight: 10;
 $cubeWidth: 10;
 $depth: 10;
 $hue: 180;
 $sat: 20%;
+
+.messageContainer {
+  @include border-radius(1rem);
+  @include transform(translate(-50%, -35%));
+  @include display-flex(center, cenetr);
+  z-index: 1;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  width: 50vw;
+  height: 50vh;
+  padding: 1rem;
+  backdrop-filter: blur(2.5px);
+  -webkit-backdrop-filter: blur(2.5px);
+
+  h3 {
+    @include font-variation(500);
+    text-align: center;
+    mix-blend-mode: difference;
+  }
+}
 
 .container {
   position: relative;
@@ -63,48 +84,34 @@ $sat: 20%;
         }
 
         &:nth-of-type(2) {
-          @include transform(
-            translate3d(-50%, -50%, calc($depth * -0.5vmin)) rotateY(180deg)
-          );
+          @include transform(translate3d(-50%, -50%, calc($depth * -0.5vmin)) rotateY(180deg));
           background: hsl($hue, $sat, 25%);
         }
 
         &:nth-of-type(3) {
-          @include transform(
-            translate(-50%, -50%) rotateY(90deg)
-              translate3d(0, 0, calc($cubeWidth * 0.5vmin))
-          );
+          @include transform(translate(-50%, -50%) rotateY(90deg) translate3d(0, 0, calc($cubeWidth * 0.5vmin)));
           width: calc($depth * 1vmin);
           background: hsl($hue, $sat, 75%);
         }
         &:nth-of-type(4) {
-          @include transform(
-            translate(-50%, -50%) rotateY(-90deg)
-              translate3d(0, 0, calc($cubeWidth * 0.5vmin))
-          );
+          @include transform(translate(-50%, -50%) rotateY(-90deg) translate3d(0, 0, calc($cubeWidth * 0.5vmin)));
           width: calc($depth * 1vmin);
           background: hsl($hue, $sat, 40%);
         }
         &:nth-of-type(5) {
-          @include transform(
-            translate(-50%, -50%) rotateX(90deg)
-              translate3d(0, 0, calc($cubeHeight * 0.5vmin))
-          );
+          @include transform(translate(-50%, -50%) rotateX(90deg) translate3d(0, 0, calc($cubeHeight * 0.5vmin)));
           height: calc($depth * 1vmin);
           background: hsl($hue, $sat, 75%);
         }
         &:nth-of-type(6) {
-          @include transform(
-            translate(-50%, -50%) rotateX(-90deg)
-              translate3d(0, 0, calc($cubeHeight * 0.5vmin))
-          );
+          @include transform(translate(-50%, -50%) rotateX(-90deg) translate3d(0, 0, calc($cubeHeight * 0.5vmin)));
           height: calc($depth * 1vmin);
           background: hsl($hue, $sat, 20%);
         }
 
         &:nth-of-type(6):before {
           @include transform(translateZ(30vmin));
-          content: '';
+          content: "";
           background: #0004;
           position: absolute;
           width: 10vmin;

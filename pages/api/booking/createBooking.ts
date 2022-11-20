@@ -105,7 +105,6 @@ export default function handler(
         resolve();
       }
     } catch (error) {
-      console.log(error);
       res.status(200).json({ message: 'Please try again later' });
       resolve();
     }

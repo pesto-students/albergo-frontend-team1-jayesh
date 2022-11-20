@@ -26,7 +26,7 @@ export default function handler(
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { role } = req.body as { role: UserRole };
+  const { role } = req.body as { role: UserRole; };
 
   if (!role || (role !== "partner" && role !== "user")) {
     return res.status(400).json({ message: "Invalid credentials" });
@@ -101,7 +101,6 @@ export default function handler(
         res.status(200).json({ data: jsonResp });
         resolve();
       } catch (error) {
-        console.log(error);
         res.status(200).json({ error: "Please try again later" });
         resolve();
         return;
@@ -187,7 +186,6 @@ export default function handler(
         resolve();
         return;
       } catch (error) {
-        console.log(error);
         res.status(400).json({ error: "Please try again later" });
         resolve();
         return;

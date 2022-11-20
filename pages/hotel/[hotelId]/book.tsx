@@ -162,7 +162,7 @@ const RoomItem = ({
   );
 };
 
-const HotelSlugBook = ({ hotelData }: { hotelData: any }) => {
+const HotelSlugBook = ({ hotelData }: { hotelData: any; }) => {
   const router = useRouter();
   const { hotelId } = router.query;
 
@@ -230,8 +230,6 @@ export const getServerSideProps: GetServerSideProps = async (
       }
     };
   } catch (error) {
-    console.log(error);
-
     return {
       notFound: true
     };

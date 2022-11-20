@@ -19,12 +19,12 @@ const NavModal = () => {
     inpPassword: ''
   });
 
-  const [formInp, setFormInp] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+  const [signupFormState, setSignupFormState] = useState({
+    name: 'Abcd One',
+    phone: '1234567890',
+    email: 'abcd@one.com',
+    password: 'Abc@one123',
+    confirmPassword: 'Abc@one123',
     city: '',
     state: '',
     country: ''
@@ -47,17 +47,17 @@ const NavModal = () => {
         const location = await fetch(
           `http://ip-api.com/json/${ipAddr?.ip}?fields=573951`
         ).then((res) => res.json());
-        return location
-      }
+        return location;
+      };
 
       getLocationInfo().then(location => {
-        setFormInp((prevFormInp) => ({
+        setSignupFormState((prevFormInp) => ({
           ...prevFormInp,
           country: location?.country,
           state: location?.regionName,
           city: location?.city
         }));
-      })
+      });
     }
   }, [navModalState.type]);
 
@@ -72,16 +72,16 @@ const NavModal = () => {
 
   const submitSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signupForm(formInp, 'user', setToastState, router);
+    signupForm(signupFormState, 'user', setToastState, router);
   };
 
   const disableSignupBtn = () => {
     if (
-      formInp.name &&
-      formInp.phone &&
-      formInp.password &&
-      formInp.confirmPassword &&
-      formInp.email
+      signupFormState.name &&
+      signupFormState.phone &&
+      signupFormState.password &&
+      signupFormState.confirmPassword &&
+      signupFormState.email
     )
       return false;
     else return true;
@@ -159,9 +159,9 @@ const NavModal = () => {
                     type="text"
                     name="name"
                     id="name"
-                    value={formInp.name}
+                    value={signupFormState.name}
                     onChange={(e) =>
-                      setFormInp((prevFormInp) => ({
+                      setSignupFormState((prevFormInp) => ({
                         ...prevFormInp,
                         name: e.target.value
                       }))
@@ -176,9 +176,9 @@ const NavModal = () => {
                     type="tel"
                     name="phone"
                     id="phone"
-                    value={formInp.phone}
+                    value={signupFormState.phone}
                     onChange={(e) =>
-                      setFormInp((prevFormInp) => ({
+                      setSignupFormState((prevFormInp) => ({
                         ...prevFormInp,
                         phone: e.target.value
                       }))
@@ -193,9 +193,9 @@ const NavModal = () => {
                     type="email"
                     name="email"
                     id="email"
-                    value={formInp.email}
+                    value={signupFormState.email}
                     onChange={(e) =>
-                      setFormInp((prevFormInp) => ({
+                      setSignupFormState((prevFormInp) => ({
                         ...prevFormInp,
                         email: e.target.value
                       }))
@@ -210,9 +210,9 @@ const NavModal = () => {
                     type="password"
                     name="password"
                     id="password"
-                    value={formInp.password}
+                    value={signupFormState.password}
                     onChange={(e) =>
-                      setFormInp((prevFormInp) => ({
+                      setSignupFormState((prevFormInp) => ({
                         ...prevFormInp,
                         password: e.target.value
                       }))
@@ -227,9 +227,9 @@ const NavModal = () => {
                     type="password"
                     name="confirmPassword"
                     id="confirmPassword"
-                    value={formInp.confirmPassword}
+                    value={signupFormState.confirmPassword}
                     onChange={(e) =>
-                      setFormInp((prevFormInp) => ({
+                      setSignupFormState((prevFormInp) => ({
                         ...prevFormInp,
                         confirmPassword: e.target.value
                       }))

@@ -10,7 +10,7 @@ import Toast, { IToast } from "../../../Components/Toast/Toast";
 import styles from "../../../styles/Hotel/bookDetails.module.scss";
 import { MaterialIcon, Rupee } from "../../../Utils/Helper";
 
-const BookDetails = ({ hotelData }: { hotelData: any }) => {
+const BookDetails = ({ hotelData }: { hotelData: any; }) => {
   const router = useRouter();
   const { hotelId } = router.query;
   const [detailsState, setDetailsState] = useState({
@@ -61,16 +61,16 @@ const BookDetails = ({ hotelData }: { hotelData: any }) => {
     ) === 0
       ? 1
       : detailsState.customerDetails.checkOutDate.diff(
-          detailsState.customerDetails.checkInDate,
-          "day"
-        );
+        detailsState.customerDetails.checkInDate,
+        "day"
+      );
 
   useEffect(() => {
     const imageInterval = setInterval(() => {
       setDetailsState((prevState) => {
         const nextIndex =
           prevState.room.images.activeIndex + 1 ===
-          prevState.room.images.list.length
+            prevState.room.images.list.length
             ? 0
             : prevState.room.images.activeIndex + 1;
         return {
@@ -282,7 +282,6 @@ const BookDetails = ({ hotelData }: { hotelData: any }) => {
         return;
       });
     } catch (error) {
-      console.log(error);
       setToastState({
         message: "Something went wrong",
         type: "error",
@@ -448,7 +447,7 @@ const BookDetails = ({ hotelData }: { hotelData: any }) => {
               <Image
                 src={
                   detailsState.room.images.list[
-                    detailsState.room.images.activeIndex
+                  detailsState.room.images.activeIndex
                   ]
                 }
                 layout="fill"
@@ -529,8 +528,6 @@ export const getServerSideProps: GetServerSideProps = async (
       },
     };
   } catch (error) {
-    console.log(error);
-
     return {
       notFound: true,
     };

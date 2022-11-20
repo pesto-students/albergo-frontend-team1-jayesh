@@ -21,10 +21,11 @@
       flex-wrap: wrap;
       gap: 1rem;
       position: sticky;
-      top: 0;
+      top: 10px;
       background: $fontWhite;
       padding: 0.5rem 1rem;
       border: 1px solid $fontGrey;
+      z-index: 1;
 
       input {
         @include transition(0.3s ease-in-out);

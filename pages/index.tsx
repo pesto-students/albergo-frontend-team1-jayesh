@@ -1,10 +1,11 @@
 import type { GetStaticProps, NextPage } from 'next';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Banner from '../Components/Home/Banner/Banner';
 import SectionPartnerTypeOne from '../Components/Home/Sections/SectionPartnerTypeOne';
 import SectionTypeOne from '../Components/Home/Sections/SectionTypeOne';
 import Layout from '../Components/Layout/Layout';
 import Loading from '../Components/Loading/Loading';
+import { getHomePageResults } from '../Utils/db';
 
 interface IHomeProps {
   data?: {
@@ -21,67 +22,81 @@ interface IHomeProps {
 }
 
 const Home: NextPage<IHomeProps> = ({ data }) => {
-  if (data) {
+
+  const [pageState, setPageState] = useState({
+    data: data,
+    loadingState: {
+      state: true,
+      message: "Please wait for a few moments",
+      timeout: false
+    }
+  });
+
+  useEffect(() => {
+    if (!data || !pageState.loadingState.timeout) {
+      Promise.resolve(getHomePageResults()).then(res => {
+        if (!res) {
+          setPageState(prevState => ({ ...prevState, loadingState: { ...prevState.loadingState, timeout: true, message: "Please try again later" } }));
+          return;
+        }
+        setPageState(prevState => ({ data: res, loadingState: { ...prevState.loadingState, state: false } }));
+      });
+    }
+  }, [data]);
+
+  if (data || pageState.data) {
     return (
       <Fragment>
         <Banner />
         <Layout>
-          <SectionTypeOne
-            title="Latest on the Hotel listing"
-            viewMoreLink
-            dataArr={data?.latestHotels}
-          />
-          <SectionTypeOne
-            title="Top Rated Properties"
-            viewMoreLink
-            dataArr={data?.topRatedHotels}
-          />
+          {pageState.data?.latestHotels && (
+            <SectionTypeOne
+              title="Latest on the Hotel listing"
+              viewMoreLink
+              dataArr={pageState.data?.latestHotels}
+            />
+          )}
+          {pageState.data?.topRatedHotels && (
+            <SectionTypeOne
+              title="Top Rated Properties"
+              viewMoreLink
+              dataArr={pageState.data?.topRatedHotels}
+            />
+          )
+          }
           <SectionPartnerTypeOne title={'Partner with us'} />
-          <SectionTypeOne
-            title="Featured Properties on our Listing"
-            flexWrap
-            dataArr={data?.featuredHotels}
-          />
+          {pageState.data?.featuredHotels && (
+            <SectionTypeOne
+              title="Featured Properties on our Listing"
+              flexWrap
+              dataArr={pageState.data?.featuredHotels}
+            />
+          )}
         </Layout>
       </Fragment>
     );
   }
 
-  return <Loading />;
+  return <Loading message={pageState.loadingState.message} />;
 };
 
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    });
 
-    if (!response.ok) {
-      return {
-        props: {},
-        revalidate: 90
-      }
-    }
+  const res = await Promise.resolve(getHomePageResults());
 
-    const data = await response.json();
+  let revalidateObj = {
+    revalidate: 7200
+  };
 
-    return {
-      props: {
-        data
-      },
-      revalidate: 90
-    };
+  if (!res) revalidateObj = { ...revalidateObj, revalidate: 300 };
 
-  } catch (error) {
-    return {
-      props: {},
-      revalidate: 90
-    };
-  }
+  return {
+    props: {
+      data: res
+    },
+    ...revalidateObj
+  };
+
 };

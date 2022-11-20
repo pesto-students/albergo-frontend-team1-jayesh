@@ -13,17 +13,20 @@ import { Fragment, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Loading from '../Components/Loading/Loading';
 import { useRouter } from 'next/router';
+import { getHomePageResults, makeReq } from '../Utils/db';
 
 interface ISearchProps {
   data?: any;
 }
 
 const Search: NextPage<ISearchProps> = ({ data }) => {
-  const [dataArr, setDataArr] = useState(data ?? []);
+  const [dataArr, setDataArr] = useState(data);
+
+  const router = useRouter();
 
   const [formInp, setFormInp] = useState({
     name: '',
-    city: '',
+    city: router.query.destination ?? router.asPath.split("?")[1]?.split("=")[1] ?? "",
     state: '',
     country: ''
   });
@@ -31,21 +34,50 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
   const [viewportState, setViewportState] = useState({
     longitude: -100,
     latitude: 40,
-    zoom: 12.5
+    zoom: 4
   });
 
-  const router = useRouter();
+  const [loadingState, setLoadingState] = useState({
+    state: true,
+    message: "Please wait for a few moments"
+  });
+
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position.coords);
       setViewportState((prevState) => ({
         ...prevState,
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       }));
     });
+
+    if (formInp.city) {
+
+      const raw = Object.fromEntries(
+        Object.entries({ city: formInp.city }).filter(([key, value]) => value !== '')
+      );
+
+      Promise.resolve(makeReq('/api/hotel/search', "POST", raw)).then(res => {
+        if (!res && !res?.data) setLoadingState(prevState => ({ ...prevState, message: "No data found" }));
+        setDataArr(res?.data);
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    if (formInp.city === "" && formInp.country === "" && formInp.name === "" && formInp.state === "") {
+      Promise.resolve(getHomePageResults()).then(res => {
+
+        const featuredHotels = res?.featuredHotels ?? [];
+        const topRatedHotels = res?.topRatedHotels ?? [];
+
+        const data = [...featuredHotels, ...topRatedHotels];
+        setDataArr(data);
+      });
+    }
+  }, [formInp.city, formInp.country, formInp.name, formInp.state]);
+
 
   const formSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,17 +85,10 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
     const raw = Object.fromEntries(
       Object.entries(formInp).filter(([key, value]) => value !== '')
     );
-    const res = await fetch('/api/hotel/search', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(raw)
+    Promise.resolve(makeReq('/api/hotel/search', "POST", raw)).then(res => {
+      if (!res && !res?.data) setLoadingState(prevState => ({ ...prevState, message: "No data found" }));
+      setDataArr(res?.data);
     });
-    const data = await res.json();
-    console.log(res);
-    if (!res.ok) setDataArr([]);
-    else setDataArr(data?.data ?? []);
   };
 
   return (
@@ -130,7 +155,7 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
             </button>
           </form>
           <div className={styles.contentBody}>
-            {dataArr.length > 0 ? (
+            {dataArr && dataArr.length > 0 ? (
               <Fragment>
                 {dataArr.map(
                   (
@@ -148,7 +173,7 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
                 )}
               </Fragment>
             ) : (
-              <h5>No Data found</h5>
+              <Loading message={loadingState.message} />
             )}
           </div>
         </div>
@@ -171,7 +196,7 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
             <GeolocateControl showAccuracyCircle />
             <AttributionControl customAttribution="Albergo" />
             <NavigationControl />
-            {dataArr.length > 0 &&
+            {dataArr && dataArr.length > 0 &&
               dataArr.map((item: any, index: number) => (
                 <Marker
                   longitude={item.coordinates?.long}
@@ -214,27 +239,24 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
 export default Search;
 
 export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    });
 
-    const data = await response.json();
+  const res = await Promise.resolve(getHomePageResults());
 
-    return {
-      props: {
-        data: data?.latestHotels ?? []
-      },
-      revalidate: 90
-    };
-  } catch (error) {
-    return {
-      props: {},
-      revalidate: 90
-    };
-  }
+  let revalidateObj = {
+    revalidate: 7200
+  };
+
+  if (!res) revalidateObj = { ...revalidateObj, revalidate: 300 };
+
+  const featuredHotels = res?.featuredHotels ?? [];
+  const topRatedHotels = res?.topRatedHotels ?? [];
+
+  const data = [...featuredHotels, ...topRatedHotels];
+
+  return {
+    props: {
+      data
+    },
+    ...revalidateObj
+  };
 };

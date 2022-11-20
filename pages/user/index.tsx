@@ -92,12 +92,7 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   const token = getTokenCookie(ctx);
 
-  console.log(token);
-
   const userToken = parseJWT(token);
-
-  console.log(userToken);
-
   if (!userToken) {
     return {
       redirect: {

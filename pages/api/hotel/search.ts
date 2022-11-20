@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {} from "../../../Utils/auth/authHelper";
+import { } from "../../../Utils/auth/authHelper";
 
 interface IResponseData {
   message?: string;
@@ -47,7 +47,6 @@ export default function handler(
       resolve();
       return;
     } catch (error) {
-      console.log(error);
       res.status(400).json({ error: "Please try again later" });
       resolve();
       return;
