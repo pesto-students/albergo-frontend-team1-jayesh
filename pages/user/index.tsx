@@ -1,23 +1,89 @@
 import styles from '../../styles/User/home.module.scss';
 import Layout from '../../Components/Layout/Layout';
 import Image from 'next/image';
-import { MaterialIcon } from '../../Utils/Helper';
+import { generateUID, IUserData, MaterialIcon } from '../../Utils/Helper';
 import UserProfileSidebar from '../../Components/User/Sidebar';
 import Link from 'next/link';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import { getTokenCookie, parseJWT } from '../../Utils/auth/authHelper';
-import { Fragment } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { makeReq } from '../../Utils/db';
+import { createRef, uploadFile } from '../../Utils/firebase/firebase';
 
 interface IUserHomeProps {
-  data: any;
+  data: IUserData;
 }
 
 const UserHome: NextPage<IUserHomeProps> = ({ data }) => {
+
+  const [profileState, setProfileState] = useState({
+    name: {
+      editable: false,
+      value: data?.name,
+    },
+    email: {
+      editable: false,
+      value: data?.email,
+    },
+    profileImage: data?.profileImage ?? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
+    reviews: data?.reviews ?? [],
+  });
+
+  const profileInpRef = useRef<HTMLInputElement>(null);
+
+  const changeProfile = () => {
+    profileInpRef.current?.click();
+  };
+
+  const onInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
+    try {
+      const firebaseImageFileRef = createRef(`users/${data.uuid}/profile/${generateUID(file.name, file.size.toString())}`);
+      const firebaseImageURL = await uploadFile(firebaseImageFileRef, file);
+    } catch (error) {
+
+    }
+
+  };
+
   return (
     <Layout>
-      <div className={styles.container}>
-        <UserProfileSidebar data={data} />
+      <section className="section">
+        <div className={styles.sidebar}>
+          <div className={styles.profileContainer}>
+            <div className={styles.imageContainer}>
+              <Image src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" layout="fill" objectFit="cover" alt="user-logo" />
+            </div>
+            <input
+              accept='image/*'
+              type="file"
+              style={{ display: "none" }}
+              ref={profileInpRef} />
+            <button onClick={changeProfile} >Change profile Picture</button>
+          </div>
+        </div>
+        <div className={styles.content}></div>
+      </section>
+      {/* <div className={styles.container}>
+        <div className={styles.sidebar}>
+          <div className={styles.userLogoContainer}>
+            <Image
+              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+              layout="fill"
+              objectFit="cover"
+              alt="user-logo"
+            />
+          </div>
+          <input type="file" style={{ display: "none" }} />
+          <button>Change profile Picture</button>
+          <h5>{data?.name}</h5>
+          <Link href="/user/edit">
+            <a className={styles.editLink}>Edit Profile</a>
+          </Link>
+          <Link href="/user/edit">
+            <a className={styles.editLink}>update Password</a>
+          </Link>
+        </div>
         <div className={styles.content}>
           <h3>Hello, {data?.name}</h3>
           <small>Joined in Aug, 2021</small>
@@ -58,17 +124,17 @@ const UserHome: NextPage<IUserHomeProps> = ({ data }) => {
                     </div>
                   ))}
               </div> */}
-            </Fragment>
-          ) : (
-            <div className={styles.noReviews}>
-              <h5>No reviews yet</h5>
-              <Link href="/explore">
-                <a>click here to explore Hotels</a>
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
+      {/* </Fragment>
+          ) : (  */}
+      {/* //       <div className={styles.noReviews}>
+               <h5>No reviews yet</h5>
+               <Link href="/explore">
+                 <a>click here to explore Hotels</a>
+               </Link>
+             </div>
+           )}
+         </div> 
+       </div> */}
     </Layout>
   );
 };

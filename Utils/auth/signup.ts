@@ -36,6 +36,8 @@ const signupForm = async (
 
 	const resObj = await makeReq('/api/auth/signup', "POST", { ...formObj, role });
 
+	console.log(resObj);
+
 	const res = handleResponse(resObj, enqueueSnackbar);
 
 	if (res) {

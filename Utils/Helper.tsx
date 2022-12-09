@@ -84,6 +84,16 @@ export interface IRoomData {
   quantity: number;
 }
 
+export interface IUserData {
+  bookings: string[];
+  email: string;
+  name: string;
+  reviews: string[];
+  uuid: string;
+  wishlist: string[];
+  profileImage: string;
+}
+
 export const Rupee = () => <span >&#8377;</span>;
 
 export const MaterialIcon = ({ iconName }: { iconName: string; }) => {
@@ -347,3 +357,5 @@ export const roomAmenities = [
     icon: "wardrobe"
   }
 ];
+
+

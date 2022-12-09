@@ -10,7 +10,7 @@ const JWT_TOKEN_NAME = process.env.NEXT_PUBLIC_JWT_TOKEN_NAME ?? 'token';
 
 const isValidateName = (name: string) => {
   name = name.toLowerCase().trim();
-  const re = /^[a-zA-Z ]+$/;
+  const re = /([a-zA-Z ])\w+/g;
   return re.test(String(name));
 };
 

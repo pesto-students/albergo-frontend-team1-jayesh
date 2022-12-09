@@ -5,7 +5,7 @@ import Layout from "../../Components/Layout/Layout";
 import styles from "../../styles/Partner/dashboard.module.scss";
 import { getTokenCookie, parseJWT } from "../../Utils/auth/authHelper";
 import { createRef, storage, uploadFile } from "../../Utils/firebase/firebase";
-import { generateUID, hotelFacilities, IExpValidator, IFullHotelData, IRoomData, MaterialIcon, Rupee, SnackbarType } from "../../Utils/Helper";
+import { generateUID, hotelFacilities, IFullHotelData, IRoomData, MaterialIcon, Rupee, SnackbarType } from "../../Utils/Helper";
 import { handleResponse, makeReq } from "../../Utils/db";
 import { OptionsObject as SnackbarOptions, SnackbarKey, SnackbarMessage, useSnackbar } from "notistack";
 import { useAppSelector } from "../../redux/hooks";

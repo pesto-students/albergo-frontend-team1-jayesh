@@ -259,7 +259,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const res = await getHomePageResults();
 
-  let revalidateObj = {
+  const revalidateObj = {
     revalidate: 7200
   };
 

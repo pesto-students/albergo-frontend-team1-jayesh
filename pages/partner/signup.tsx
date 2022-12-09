@@ -1,17 +1,12 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { FormEvent, useEffect, useState } from 'react';
-import MUIToast from '../../Components/Toast/MUIToast';
-import Toast, { IToast } from '../../Components/Toast/Toast';
 import styles from '../../styles/Partner/signup.module.scss';
 import { getTokenCookie, parseJWT } from '../../Utils/auth/authHelper';
 import { signupForm } from '../../Utils/auth/signup';
-import { AlertStateType } from '../../Utils/Helper';
 
 const Signup = () => {
-  const router = useRouter();
 
   const [formInp, setFormInp] = useState({
     name: 'goldfinch hotel delhi ncr',
@@ -26,18 +21,6 @@ const Signup = () => {
     lat: 0,
     long: 0
   });
-
-  // const [signupToast, setSignupToast] = useState<IToast>({
-  //   message: '',
-  //   type: 'info',
-  //   visible: false
-  // });
-
-  // const [alertState, setAlertState] = useState<AlertStateType>({
-  //   message: "",
-  //   severity: "info",
-  //   visible: false,
-  // });
 
   const { enqueueSnackbar } = useSnackbar();
 
