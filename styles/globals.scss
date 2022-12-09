@@ -29,6 +29,7 @@
   -moz-font-feature-settings: "liga";
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
+  user-select: none;
 }
 
 * {
@@ -126,7 +127,7 @@ a {
   border: 1px solid $fontBlack;
   background: transparent;
   cursor: pointer;
-  padding: .5rem .75rem;
+  padding: 0.5rem 0.75rem;
 
   &:hover {
     background: $btnPrimaryHoverBg;
@@ -362,3 +363,79 @@ a {
     }
   }
 }
+
+// Editor styles
+
+// .codex-editor__redactor {
+//   padding-bottom: 1.5vh !important;
+
+//   .ce-block__content {
+//     width: 90%;
+//     max-width: none;
+
+//     .cdx-checklist__item {
+//       gap: 1rem;
+//       align-items: center;
+//       margin: 0.3rem 0;
+
+//       & > span {
+//         margin: 0;
+//       }
+//     }
+//   }
+
+//   .tc-add-column:hover,
+//   .tc-add-row:hover {
+//     background-color: #c2c2c280;
+//   }
+
+//   .tc-add-row:hover:before {
+//     transition: 0.1s;
+//     background-color: #c2c2c280;
+//   }
+// }
+
+// #postReadonly {
+//   .codex-editor {
+//     z-index: 0;
+//     .codex-editor__redactor {
+//       padding-bottom: 0 !important;
+
+//       .ce-block__content {
+//         width: 100%;
+//         position: relative;
+//         max-width: unset;
+//         margin: 0;
+//         transition: none;
+//         -webkit-transition: none;
+//         -moz-transition: none;
+//         -ms-transition: none;
+//         -o-transition: none;
+
+//         h1.ce-header {
+//           padding: 0;
+//           margin: 0;
+//           line-height: unset;
+//           outline: none;
+
+//           &:first-of-type {
+//             font-family: "Silk Serif", Fallback, "Open Sans";
+//           }
+//         }
+
+//         .ce-header {
+//           padding: 0;
+//           margin: 0;
+//           line-height: unset;
+//           outline: none;
+//         }
+
+//         .cdx-checklist__item {
+//           & > span {
+//             margin: 0;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

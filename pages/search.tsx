@@ -13,13 +13,16 @@ import { Fragment, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Loading from '../Components/Loading/Loading';
 import { useRouter } from 'next/router';
-import { getHomePageResults, makeReq } from '../Utils/db';
+import { getHomePageResults, handleResponse, makeReq } from '../Utils/db';
+import { IHotelData } from '../Utils/Helper';
+import { useSnackbar } from 'notistack';
 
 interface ISearchProps {
-  data?: any;
+  data: IHotelData[] | null;
 }
 
 const Search: NextPage<ISearchProps> = ({ data }) => {
+
   const [dataArr, setDataArr] = useState(data);
 
   const router = useRouter();
@@ -42,6 +45,8 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
     message: "Please wait for a few moments"
   });
 
+  const { enqueueSnackbar } = useSnackbar();
+
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -58,22 +63,33 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
         Object.entries({ city: formInp.city }).filter(([key, value]) => value !== '')
       );
 
-      Promise.resolve(makeReq('/api/hotel/search', "POST", raw)).then(res => {
-        if (!res && !res?.data) setLoadingState(prevState => ({ ...prevState, message: "No data found" }));
-        setDataArr(res?.data);
+      Promise.resolve(makeReq('/api/hotel/search', "POST", raw)).then(resObj => {
+        if (!resObj || !resObj.res?.data) {
+          setLoadingState(prevState => ({ ...prevState, message: "No data found" }));
+          return;
+        }
+        setDataArr(resObj?.res?.data);
+        return;
       });
     }
   }, []);
 
   useEffect(() => {
     if (formInp.city === "" && formInp.country === "" && formInp.name === "" && formInp.state === "") {
+
+      if (dataArr?.length === data?.length) return;
+
       Promise.resolve(getHomePageResults()).then(res => {
 
-        const featuredHotels = res?.featuredHotels ?? [];
-        const topRatedHotels = res?.topRatedHotels ?? [];
+        const resData = res.data;
 
-        const data = [...featuredHotels, ...topRatedHotels];
-        setDataArr(data);
+        const returnData = [] as any[];
+
+        resData.forEach((category: any) => {
+          returnData.push(...category.data);
+        });
+
+        setDataArr(returnData);
       });
     }
   }, [formInp.city, formInp.country, formInp.name, formInp.state]);
@@ -85,10 +101,17 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
     const raw = Object.fromEntries(
       Object.entries(formInp).filter(([key, value]) => value !== '')
     );
-    Promise.resolve(makeReq('/api/hotel/search', "POST", raw)).then(res => {
-      if (!res && !res?.data) setLoadingState(prevState => ({ ...prevState, message: "No data found" }));
-      setDataArr(res?.data);
-    });
+
+    const resObj = await makeReq('/api/hotel/search', "POST", raw);
+
+    console.log(resObj);
+
+
+    const res = handleResponse(resObj, enqueueSnackbar);
+
+    if (res) {
+      setDataArr(resObj.res?.data);
+    }
   };
 
   return (
@@ -157,19 +180,13 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
           <div className={styles.contentBody}>
             {dataArr && dataArr.length > 0 ? (
               <Fragment>
-                {dataArr.map(
-                  (
-                    item: {
-                      [key: string]: any;
-                    },
-                    index: number
-                  ) => (
-                    <CardTypeOne
-                      key={index}
-                      itemData={item}
-                      onClickFn={() => router.push(`/hotel/${item.slug}`)}
-                    />
-                  )
+                {dataArr.map((item, index) => (
+                  <CardTypeOne
+                    key={index}
+                    itemData={item}
+                    onClickFn={() => router.push(`/hotel/${item.slug}`)}
+                  />
+                )
                 )}
               </Fragment>
             ) : (
@@ -196,8 +213,8 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
             <GeolocateControl showAccuracyCircle />
             <AttributionControl customAttribution="Albergo" />
             <NavigationControl />
-            {dataArr && dataArr.length > 0 &&
-              dataArr.map((item: any, index: number) => (
+            {dataArr !== null && dataArr.length > 0 &&
+              dataArr.map((item, index) => (
                 <Marker
                   longitude={item.coordinates?.long}
                   latitude={item.coordinates?.lat}
@@ -240,22 +257,34 @@ export default Search;
 
 export const getStaticProps: GetStaticProps = async () => {
 
-  const res = await Promise.resolve(getHomePageResults());
+  const res = await getHomePageResults();
 
   let revalidateObj = {
     revalidate: 7200
   };
 
-  if (!res) revalidateObj = { ...revalidateObj, revalidate: 300 };
+  if (!res) revalidateObj.revalidate = 300;
 
-  const featuredHotels = res?.featuredHotels ?? [];
-  const topRatedHotels = res?.topRatedHotels ?? [];
+  const resData = res?.data ?? [];
 
-  const data = [...featuredHotels, ...topRatedHotels];
+  if (!resData.length) revalidateObj.revalidate = 300;
+
+  if (resData.length === 0) return {
+    props: {
+      data: []
+    },
+    ...revalidateObj
+  };
+
+  const returnData = [] as any[];
+
+  resData.forEach((category: any) => {
+    returnData.push(...category.data);
+  });
 
   return {
     props: {
-      data
+      data: returnData
     },
     ...revalidateObj
   };

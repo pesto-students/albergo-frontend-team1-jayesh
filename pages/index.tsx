@@ -6,19 +6,9 @@ import SectionTypeOne from '../Components/Home/Sections/SectionTypeOne';
 import Layout from '../Components/Layout/Layout';
 import Loading from '../Components/Loading/Loading';
 import { getHomePageResults } from '../Utils/db';
-
+import { IHotelDataOverview } from '../Utils/Helper';
 interface IHomeProps {
-  data?: {
-    featuredHotels: {
-      [key: string]: string;
-    }[];
-    topRatedHotels: {
-      [key: string]: string;
-    }[];
-    latestHotels: {
-      [key: string]: string;
-    }[];
-  };
+  data: IHotelDataOverview[] | null;
 }
 
 const Home: NextPage<IHomeProps> = ({ data }) => {
@@ -33,45 +23,38 @@ const Home: NextPage<IHomeProps> = ({ data }) => {
   });
 
   useEffect(() => {
-    if (!data || !pageState.loadingState.timeout) {
+    if (!data || pageState.loadingState.timeout) {
+
       Promise.resolve(getHomePageResults()).then(res => {
         if (!res) {
           setPageState(prevState => ({ ...prevState, loadingState: { ...prevState.loadingState, timeout: true, message: "Please try again later" } }));
           return;
         }
-        setPageState(prevState => ({ data: res, loadingState: { ...prevState.loadingState, state: false } }));
+
+        if (res.error) {
+          setPageState(prevState => ({ ...prevState, loadingState: { ...prevState.loadingState, timeout: true, message: res.error ?? "Please try again later" } }));
+        }
+
+        setPageState(prevState => ({ data: res?.data, loadingState: { ...prevState.loadingState, state: false } }));
       });
     }
   }, [data]);
+
 
   if (data || pageState.data) {
     return (
       <Fragment>
         <Banner />
         <Layout>
-          {pageState.data?.latestHotels && (
+          {pageState.data && pageState.data.map((category, index) => (
             <SectionTypeOne
-              title="Latest on the Hotel listing"
+              key={index}
+              title={category.category}
               viewMoreLink
-              dataArr={pageState.data?.latestHotels}
+              dataArr={category.data}
             />
-          )}
-          {pageState.data?.topRatedHotels && (
-            <SectionTypeOne
-              title="Top Rated Properties"
-              viewMoreLink
-              dataArr={pageState.data?.topRatedHotels}
-            />
-          )
-          }
+          ))}
           <SectionPartnerTypeOne title={'Partner with us'} />
-          {pageState.data?.featuredHotels && (
-            <SectionTypeOne
-              title="Featured Properties on our Listing"
-              flexWrap
-              dataArr={pageState.data?.featuredHotels}
-            />
-          )}
         </Layout>
       </Fragment>
     );
@@ -84,7 +67,7 @@ export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
 
-  const res = await Promise.resolve(getHomePageResults());
+  const res = await getHomePageResults();
 
   let revalidateObj = {
     revalidate: 7200
@@ -94,7 +77,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      data: res
+      data: res?.data ?? null
     },
     ...revalidateObj
   };

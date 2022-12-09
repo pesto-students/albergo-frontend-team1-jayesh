@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use "../variables" as *;
 
 .container {
   width: 100vw;
@@ -67,11 +67,11 @@
             border: 1px solid $fontBlack;
           }
 
-          &:not([type='password']):focus:invalid {
+          &:not([type="password"]):focus:invalid {
             border: 1px solid $toastErrorBg;
           }
 
-          &:not([type='password']):valid {
+          &:not([type="password"]):valid {
             border: 1px solid $toastSuccessBg;
             background: rgba($toastSuccessBg, 0.15);
           }
@@ -81,24 +81,24 @@
           resize: vertical;
         }
 
-        button {
-          @include border-radius(0.5rem);
-          @include font-variation(500);
-          @include transition(0.2s ease-in-out);
-          padding: 0.75rem 1rem;
-          background: $secondaryColor;
-          color: $fontWhite;
-          border: none;
-          cursor: pointer;
-          font-family: inherit;
-          text-transform: capitalize;
-          letter-spacing: 0.5px;
+        // button {
+        //   @include border-radius(0.5rem);
+        //   @include font-variation(500);
+        //   @include transition(0.2s ease-in-out);
+        //   padding: 0.75rem 1rem;
+        //   background: $secondaryColor;
+        //   color: $fontWhite;
+        //   border: none;
+        //   cursor: pointer;
+        //   font-family: inherit;
+        //   text-transform: capitalize;
+        //   letter-spacing: 0.5px;
 
-          &:disabled {
-            background: rgba($secondaryColor, 0.5);
-            cursor: not-allowed;
-          }
-        }
+        //   &:disabled {
+        //     background: rgba($secondaryColor, 0.5);
+        //     cursor: not-allowed;
+        //   }
+        // }
       }
     }
   }

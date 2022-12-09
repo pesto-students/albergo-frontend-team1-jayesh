@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { } from "../../../Utils/auth/authHelper";
+import { makeReq } from "../../../Utils/db";
 
 interface IResponseData {
   message?: string;
@@ -17,39 +18,22 @@ export default function handler(
   }
 
   return new Promise<void>(async (resolve) => {
-    const raw = JSON.stringify({
-      searchBy: req.body,
-    });
+    const raw = req.body;
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/hotel/search`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: raw,
-        }
-      );
+    const resObj = await makeReq(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/hotel/search`,
+      "POST",
+      raw,
+    );
 
-      if (!response.ok) {
-        res.status(400).json({
-          data: [],
-        });
-        resolve();
-        return;
-      }
-
-      const responseData = await response.json();
-
-      res.status(200).json({ data: responseData.data });
-      resolve();
-      return;
-    } catch (error) {
-      res.status(400).json({ error: "Please try again later" });
+    if (!resObj || resObj.error || !resObj.response) {
+      res.status(400).json({ error: resObj.error ?? "Please try again later" });
       resolve();
       return;
     }
+
+    res.status(resObj.response.status).json(resObj.res);
+    resolve();
+    return;
   });
 }

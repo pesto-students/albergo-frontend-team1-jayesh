@@ -1,7 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-
 import userReducer from './user/user.slice';
 import navModalReducer from './navModal/modal.slice';
+
 export function makeStore() {
   return configureStore({
     reducer: {

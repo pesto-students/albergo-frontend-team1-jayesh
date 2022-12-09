@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { } from "../../../Utils/auth/authHelper";
+import { makeReq } from "../../../Utils/db";
 
 interface IResponseData {
   message?: string;
@@ -16,36 +16,34 @@ export default function handler(
     return res.status(405).json({ message: "Method not allowed" });
   }
 
+  const { name, price, capacity, description } = req.body;
+
+  if (!name || !price || !capacity || !description) {
+    return res.status(400).json({
+      message: "All fields are required",
+    });
+  }
+
+  const token = req.headers.authorization;
+
   return new Promise<void>(async (resolve) => {
-    const raw = JSON.stringify(req.body);
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/rooms/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: raw,
-        }
-      );
+    const resObj = await makeReq(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/`,
+      "POST",
+      req.body,
+      token
+    );
 
-      if (!response.ok) {
-        res.status(400).json({
-          data: [],
-        });
-        resolve();
-      }
-
-      if (response.ok) {
-        const responseData = await response.json();
-
-        res.status(200).json({ data: responseData.data });
-      }
-    } catch (error) {
-      res.status(400).json({ error: "Please try again later" });
+    if (!resObj || resObj.error || !resObj.response) {
+      res.status(400).json({ error: resObj.error ?? "Please try again later" });
       resolve();
+      return;
     }
+
+    res.status(resObj.response.status).json(resObj.res);
+    resolve();
+    return;
+
   });
 }

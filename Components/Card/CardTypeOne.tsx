@@ -1,23 +1,22 @@
 import Image from 'next/image';
-import { Fragment, useEffect, useState } from 'react';
+import { FC, Fragment, useEffect, useState } from 'react';
 import styles from '../../styles/Components/Card/CardTypeOne.module.scss';
-import { MaterialIcon } from '../../Utils/Helper';
+import { IHotelData, MaterialIcon } from '../../Utils/Helper';
 
 interface ICardTypeOneProps {
-  itemData: {
-    [key: string]: string;
-  };
+  itemData: IHotelData;
   onClickFn: () => void;
   wide?: boolean;
 }
 
-const CardTypeOne = ({
+const CardTypeOne: FC<ICardTypeOneProps> = ({
   wide = false,
   itemData,
   onClickFn
-}: ICardTypeOneProps) => {
+}) => {
+
   const [hotelImages, setHotelImages] = useState({
-    list: itemData.images,
+    list: itemData.hotelImages,
     currentIndex: 0
   });
 
@@ -46,12 +45,14 @@ const CardTypeOne = ({
       id={`card-${itemData.slug}`}
     >
       <div className={styles.imageContainer}>
-        <Image
-          src={itemData.images[hotelImages.currentIndex]}
-          layout="fill"
-          objectFit="cover"
-          alt="image"
-        />
+        {/* {itemData.hotelImages.length > 1 ? (
+          <Image
+            src={itemData.hotelImages[hotelImages.currentIndex].link}
+            layout="fill"
+            objectFit="cover"
+            alt={`${itemData.name}-image`}
+          />
+        ) : null} */}
       </div>
       <div className={styles.cardContent}>
         <div className={styles.cardTopRow}>

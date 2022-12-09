@@ -1,13 +1,17 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { makeReq } from '../../../Utils/db';
 
-type Data = {
-  message: string;
-};
+interface IResponseData {
+  message?: string;
+  data?: unknown;
+  error?: unknown;
+}
+
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<IResponseData>
 ) {
   // only POST requests
   if (req.method !== 'POST') {
@@ -78,35 +82,25 @@ export default function handler(
     return res.status(400).json({ message: 'Invalid request body' });
   }
 
+  const token = req.headers.authorization;
+
   return new Promise<void>(async (resolve) => {
-    const raw = JSON.stringify(booking);
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/bookings`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: raw
-        }
-      );
+    const resObj = await makeReq(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/booking/`,
+      'POST',
+      booking,
+      token
+    );
 
-      if (response.ok) {
-        const data = await response.json();
-        res.status(200).json({ message: data.message });
-        resolve();
-      }
-
-      if (!response.ok) {
-        const data = await response.json();
-        res.status(400).json({ message: data.message });
-        resolve();
-      }
-    } catch (error) {
-      res.status(200).json({ message: 'Please try again later' });
+    if (!resObj || resObj.error || !resObj.response) {
+      res.status(400).json({ error: resObj.error ?? "Please try again later" });
       resolve();
+      return;
     }
+
+    res.status(resObj.response.status).json(resObj.res);
+    resolve();
+    return;
   });
 }

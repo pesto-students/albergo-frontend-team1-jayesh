@@ -4,6 +4,7 @@ import {
   isValidEmail,
   isValidPassword,
 } from "../../../Utils/auth/authHelper";
+import { makeReq } from "../../../Utils/db";
 import { inValidPasswordMsg } from "../../../Utils/Helper";
 
 interface IResponseData {
@@ -38,39 +39,22 @@ export default function handler(
   }
 
   return new Promise<void>(async (resolve) => {
-    const raw = JSON.stringify({
-      email,
-      password,
-    });
+    const resObj = await makeReq(`${NEXT_PUBLIC_API_URL}/api/auth/login`,
+      "POST",
+      {
+        email,
+        password,
+      },
+    );
 
-    try {
-      const response = await fetch(`${NEXT_PUBLIC_API_URL}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: raw,
-      });
-
-      if (!response.ok) {
-        const jsonResp = await response.json();
-
-        res.status(400).json({
-          message: jsonResp?.message ?? "Please try again later",
-        });
-        resolve();
-        return;
-      }
-
-      const jsonResp = await response.json();
-
-      res.status(200).json({ data: jsonResp });
-      resolve();
-      return;
-    } catch (error) {
-      res.status(200).json({ error: "Please try again later" });
+    if (!resObj || resObj.error || !resObj.response) {
+      res.status(400).json({ error: resObj.error ?? "Please try again later" });
       resolve();
       return;
     }
+
+    res.status(resObj.response.status).json(resObj.res);
+    resolve();
+    return;
   });
 }

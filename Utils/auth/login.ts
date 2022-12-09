@@ -1,64 +1,39 @@
-import { NextRouter} from 'next/router';
-import { Dispatch, SetStateAction } from 'react';
-import { IToast } from '../../Components/Toast/Toast';
+import { NextRouter } from 'next/router';
 import { toggleNavModal } from '../../redux/navModal/modal.slice';
 import store from '../../redux/store';
 import { setUserEncryptedToken } from '../../redux/user/user.slice';
+import { handleResponse, makeReq } from '../db';
+import { SnackbarType } from '../Helper';
 import { setTokenCookie } from './authHelper';
 
 interface ILoginFormObj {
-  email: string;
-  password: string;
+	email: string;
+	password: string;
 }
 
 const loginForm = async (
-  formObj: ILoginFormObj,
-  setToastState: Dispatch<SetStateAction<IToast>>,
-  router: NextRouter
+	formObj: ILoginFormObj,
+	enqueueSnackbar: SnackbarType,
+	router: NextRouter
 ) => {
-  try {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formObj)
-    });
 
-    if (response.status !== 200) {
-      const res = await response.json();
-      throw new Error(res.message ?? res.error ?? 'Something went wrong');
-    }
+	const resObj = await makeReq('/api/auth/login', 'POST', formObj);
 
-    if (response.status === 200) {
-      const res = await response.json();
-      if (res?.data?.status === 'fail') {
-        throw new Error(res.data.message);
-      }
+	const res = handleResponse(resObj, enqueueSnackbar);
 
-      if (res?.data?.status === 'success') {
-        const token = res?.data?.token;
-        setTokenCookie(token);
-        store.dispatch(setUserEncryptedToken(token));
-        setToastState({
-          message: 'Login successful',
-          type: 'success',
-          visible: true
-        });
-        store.dispatch(toggleNavModal());
-        router.push('/');
-      }
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      setToastState({
-        message: error.message ?? 'Something went wrong',
-        type: 'error',
-        visible: true
-      });
-    }
-  }
-  return;
+	if (res) {
+		const token = res?.token;
+		setTokenCookie(token);
+		store.dispatch(setUserEncryptedToken(token));
+		enqueueSnackbar("Signup successful", {
+			variant: "success"
+		});
+		store.dispatch(toggleNavModal());
+		router.push('/');
+		return;
+	}
+
+	return;
 };
 
 export { loginForm };

@@ -9,6 +9,7 @@ import {
   IPartnerSignupForm,
   IUserSignupForm,
 } from "../../../Utils/auth/signup";
+import { makeReq } from "../../../Utils/db";
 import { inValidPasswordMsg, UserRole } from "../../../Utils/Helper";
 
 interface IResponseData {
@@ -68,43 +69,24 @@ export default function handler(
     }
 
     return new Promise<void>(async (resolve) => {
-      const raw = JSON.stringify({
+      const raw = {
         name,
         phone,
         email,
-        password,
-        passwordConfirm: confirmPassword,
-      });
+        password
+      };
 
-      try {
-        const response = await fetch(
-          `${NEXT_PUBLIC_API_URL}/api/users/signup`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: raw,
-          }
-        );
+      const resObj = await makeReq(`${NEXT_PUBLIC_API_URL}/api/auth/signup`, "POST", raw);
 
-        if (!response.ok) {
-          const jsonResp = await response.json();
-          res.status(400).json({
-            message: jsonResp?.message ?? "Please try again later",
-          });
-          resolve();
-          return;
-        }
-
-        const jsonResp = await response.json();
-        res.status(200).json({ data: jsonResp });
-        resolve();
-      } catch (error) {
-        res.status(200).json({ error: "Please try again later" });
+      if (!resObj || resObj.error || (resObj && !resObj.response)) {
+        res.status(400).json({ error: "Please try again later" });
         resolve();
         return;
       }
+
+      res.status(resObj.response.status).json(resObj.res);
+      resolve();
+      return;
     });
   }
 
@@ -123,73 +105,57 @@ export default function handler(
     }
 
     //   check if email and password are valid
-    if (!isValidateName(formInp.hotelName)) {
+    if (!isValidateName(formInp.name)) {
       return res.status(400).json({ message: "Invalid name" });
     }
 
-    if (!isValidEmail(formInp.hotelEmail)) {
+    if (!isValidEmail(formInp.email)) {
       return res.status(400).json({ message: "Invalid email" });
     }
 
-    if (!isValidPassword(formInp.hotelPassword)) {
+    if (!isValidPassword(formInp.password)) {
       return res.status(400).json({ message: inValidPasswordMsg });
     }
 
-    if (formInp.hotelPassword !== formInp.hotelConfirmPassword) {
+    if (formInp.password !== formInp.confirmPassword) {
       return res.status(400).json({ message: "Password does not match" });
     }
 
-    if (formInp.hotelPhone.length < 10) {
+    if (formInp.phone.length < 10) {
       return res.status(400).json({ message: "Invalid phone number" });
     }
 
-    if (!formInp.hotelAddress || formInp.hotelAddress.trim().length < 1) {
+    if (!formInp.address || formInp.address.trim().length < 1) {
       return res.status(400).json({ message: "Invalid address" });
     }
 
     return new Promise<void>(async (resolve) => {
-      const raw = JSON.stringify({
-        name: formInp.hotelName,
-        hotelPhone: formInp.hotelPhone,
-        hotelEmail: formInp.hotelEmail,
-        hotelPassword: formInp.hotelPassword,
-        hotelAddress: formInp.hotelAddress,
-        hotelCity: formInp.hotelCity,
-        hotelState: formInp.hotelState,
-        hotelCountry: formInp.hotelCountry,
-      });
-
-      try {
-        const response = await fetch(
-          `${NEXT_PUBLIC_API_URL}/api/hotel/onboard`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: raw,
-          }
-        );
-
-        if (!response.ok) {
-          const jsonResp = await response.json();
-          res
-            .status(400)
-            .json({ message: jsonResp.message ?? "Please try again later" });
-          resolve();
-          return;
+      const raw = {
+        name: formInp.name,
+        phone: formInp.phone,
+        email: formInp.email,
+        password: formInp.password,
+        address: formInp.address,
+        city: formInp.city,
+        state: formInp.state,
+        country: formInp.country,
+        coordinates: {
+          long: formInp.long,
+          lat: formInp.lat,
         }
+      };
 
-        const data = await response.json();
+      const resObj = await makeReq(`${NEXT_PUBLIC_API_URL}/api/hotel/signup`, "POST", raw);
 
-        res.status(200).json({ data });
-        resolve();
-        return;
-      } catch (error) {
-        res.status(400).json({ error: "Please try again later" });
+      if (!resObj || resObj.error || !resObj.response) {
+        res.status(400).json({ error: resObj.error ?? "Please try again later" });
         resolve();
         return;
       }
+
+      res.status(resObj.response.status).json(resObj.res);
+      resolve();
+      return;
     });
   }
 }
