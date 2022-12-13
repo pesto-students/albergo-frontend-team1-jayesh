@@ -1122,7 +1122,6 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
       }
       return;
     } catch (err) {
-      console.log(err);
       enqueueSnackbar("Please try again later", { variant: "error" });
     }
   };
@@ -1399,7 +1398,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
         <div className={styles.sectionHeader}>
           <h5>Bookings</h5>
           <div className={styles.btnOptions}>
-            <button className="btn" onClick={() => router.push("/partner/bookings")}>
+            <button className="btn" onClick={() => router.push("/bookings")}>
               View
             </button>
           </div>

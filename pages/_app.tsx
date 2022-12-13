@@ -25,7 +25,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Fragment>
       <Provider store={store}>
-        <SnackbarProvider maxSnack={4} >
+        <SnackbarProvider maxSnack={6} >
           <Navbar />
           <Component {...pageProps} />
           <Newsletter />

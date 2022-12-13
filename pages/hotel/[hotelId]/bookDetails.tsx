@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import Script from "next/script";
+import { useSnackbar } from "notistack";
 import React, { Fragment, useEffect, useState } from "react";
 import { MUIDatePicker } from "../../../Components/DateRangePicker/DateRangePicker";
 import Layout from "../../../Components/Layout/Layout";
@@ -9,7 +11,7 @@ import Toast, { IToast } from "../../../Components/Toast/Toast";
 import { useAppSelector } from "../../../redux/hooks";
 import styles from "../../../styles/Hotel/bookDetails.module.scss";
 import { getTokenCookie, IParsedToken, parseJWT } from "../../../Utils/auth/authHelper";
-import { makeReq } from "../../../Utils/db";
+import { handleResponse, makeReq } from "../../../Utils/db";
 import { IFullHotelData, IRoomData, MaterialIcon, Rupee } from "../../../Utils/Helper";
 
 interface IBookDetailsProps {
@@ -19,7 +21,9 @@ interface IBookDetailsProps {
 
 const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 
-	const parsedToken = parseJWT(useAppSelector((state) => state.user.userEncryptedToken)) as IParsedToken;
+	const userToken = useAppSelector((state) => state.user.userEncryptedToken);
+
+	const parsedToken = parseJWT(userToken) as IParsedToken;
 
 	const [detailsState, setDetailsState] = useState({
 		hotel: {
@@ -51,11 +55,9 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 		},
 	});
 
-	const [toastState, setToastState] = useState<IToast>({
-		message: "",
-		type: "success",
-		visible: false,
-	});
+	const { enqueueSnackbar } = useSnackbar();
+
+	const router = useRouter();
 
 	// total days using dayjs
 	const totalDays =
@@ -144,10 +146,8 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 				},
 			}));
 		} else {
-			setToastState({
-				visible: true,
-				message: "Please select a valid date",
-				type: "error",
+			enqueueSnackbar("Please select a valid date", {
+				variant: "error",
 			});
 		}
 	};
@@ -162,10 +162,8 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 				},
 			}));
 		} else {
-			setToastState({
-				visible: true,
-				message: "Please select a valid date",
-				type: "error",
+			enqueueSnackbar("Please select a valid date", {
+				variant: "error",
 			});
 		}
 	};
@@ -203,114 +201,65 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 
 	const paymentHandler = async () => {
 		try {
-			const response = await fetch("/api/booking/createOrder", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					amount:
-						detailsState.room.price *
-						totalDays *
-						detailsState.customerDetails.roomQuantity,
-				}),
+			const createOrderResObj = await makeReq("/api/booking/createOrder", "POST", {
+				amount:
+					detailsState.room.price *
+					totalDays *
+					detailsState.customerDetails.roomQuantity,
 			});
 
-			const res = await response.json();
-			if (!response.ok) {
-				setToastState({
-					message: res.message,
-					type: "error",
-					visible: true,
-				});
-				return;
-			}
+			const createOrderRes = handleResponse(createOrderResObj, enqueueSnackbar);
 
 			const options = {
 				key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-				amount: res?.amount,
-				currency: res?.currency,
+				amount: createOrderRes?.amount,
+				currency: createOrderRes?.currency,
 				name: `Albergo - ${detailsState.hotel.name}`,
 				description: `${detailsState.room.type} for ${totalDays} days`,
 				image: window.location.origin + "/assets/images/logo/logo.png",
-				order_id: res?.id,
+				order_id: createOrderRes?.id,
 				handler: async function (razorpayResponse: any) {
-					const response = await fetch("/api/booking/verifyOrder", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({
-							razorpay_order_id: razorpayResponse.razorpay_order_id,
-							razorpay_payment_id: razorpayResponse.razorpay_payment_id,
-							razorpay_signature: razorpayResponse.razorpay_signature,
-						}),
+
+					const verifyOrderResObj = await makeReq("/api/booking/verifyOrder", "POST", {
+						razorpay_order_id: razorpayResponse.razorpay_order_id,
+						razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+						razorpay_signature: razorpayResponse.razorpay_signature,
 					});
 
-					const res = await response.json();
-					if (!response.ok) {
-						setToastState({
-							message: res.message,
-							type: "error",
-							visible: true,
-						});
-						return;
-					}
+					const verifyOrderRes = handleResponse(verifyOrderResObj, enqueueSnackbar);
 
-					const { signatureIsValid } = res;
-					if (signatureIsValid) {
-						try {
-							const dbResponse = await fetch("/api/booking/createBooking", {
-								method: "POST",
-								headers: {
-									"Content-Type": "application/json",
-								},
-								body: JSON.stringify({
-									...detailsState,
-									razorpay_order_id: razorpayResponse.razorpay_order_id,
-									razorpay_payment_id: razorpayResponse.razorpay_payment_id,
-									razorpay_signature: razorpayResponse.razorpay_signature,
-									amount:
-										detailsState.room.price *
-										totalDays *
-										detailsState.customerDetails.roomQuantity,
-								}),
+					if (verifyOrderRes.signatureIsValid) {
+
+						const createBookingResObj = await makeReq("/api/booking/createBooking", "POST", {
+							hotelSlug: detailsState.hotel.slug,
+							userUUID: parsedToken.uuid,
+							room: {
+								roomId: room.roomId,
+								quantity: detailsState.customerDetails.roomQuantity,
+							},
+							checkIn: detailsState.customerDetails.checkInDate.format("YYYY-MM-DD"),
+							checkOut: detailsState.customerDetails.checkOutDate.format("YYYY-MM-DD"),
+							guest: {
+								adults: detailsState.customerDetails.guest.adults,
+								children: detailsState.customerDetails.guest.children,
+							},
+							razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+							amount:
+								detailsState.room.price *
+								totalDays *
+								detailsState.customerDetails.roomQuantity,
+						}, userToken!);
+
+						const createBookingRes = handleResponse(createBookingResObj, enqueueSnackbar);
+
+						if (createBookingRes) {
+							enqueueSnackbar("Booking successful", {
+								variant: "success",
 							});
-
-							const dbRes = await dbResponse.json();
-
-							if (!dbResponse.ok) {
-								setToastState({
-									message: dbRes.message,
-									type: "error",
-									visible: true,
-								});
-								return;
-							}
-
-							setToastState({
-								message: "Payment successful",
-								type: "success",
-								visible: true,
-							});
-
-							// router.push('/hotel/booking/success');
-							return;
-						} catch (error) {
-							setToastState({
-								message: "Something went wrong",
-								type: "error",
-								visible: true,
-							});
+							router.push("/bookings");
 						}
-					} else {
-						setToastState({
-							message: "Payment stage 2 of 3 failed due to invalid signature",
-							type: "error",
-							visible: true,
-						});
-						return;
 					}
+
 				},
 				prefill: {
 					name: detailsState.customerDetails.name,
@@ -321,10 +270,8 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 				},
 				modal: {
 					ondismiss: function () {
-						setToastState({
-							message: "Payment cancelled",
-							type: "error",
-							visible: true,
+						enqueueSnackbar("Payment cancelled", {
+							variant: "error",
 						});
 					},
 					backdropclose: true,
@@ -345,18 +292,14 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 			rzp1.open();
 
 			rzp1.on("payment.failed", function (response: any) {
-				setToastState({
-					message: response.error.description ?? "Payment failed",
-					type: "error",
-					visible: true,
+				enqueueSnackbar("Payment failed", {
+					variant: "error",
 				});
 				return;
 			});
 		} catch (error) {
-			setToastState({
-				message: "Something went wrong",
-				type: "error",
-				visible: true,
+			enqueueSnackbar("Something went wrong", {
+				variant: "error",
 			});
 			return;
 		}
@@ -503,7 +446,6 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 					</div>
 				</div>
 			</Layout>
-			<Toast setToastState={setToastState} toastState={toastState} />
 		</Fragment>
 	);
 };

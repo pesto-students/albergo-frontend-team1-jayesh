@@ -94,6 +94,26 @@ export interface IUserData {
   profileImage: string;
 }
 
+export interface IBookingData {
+  bookingId: string;
+  hotelSlug: string;
+  userUUID: string;
+  guest: {
+    adults?: number | undefined;
+    children?: number | undefined;
+  };
+  amount: number;
+  razorpay_payment_id: string;
+  room: {
+    roomId?: string | undefined;
+    quantity?: number | undefined;
+  };
+  checkIn: string;
+  checkOut: string;
+  userName: string;
+  hotelName: string;
+}
+
 export const Rupee = () => <span >&#8377;</span>;
 
 export const MaterialIcon = ({ iconName }: { iconName: string; }) => {
@@ -215,147 +235,155 @@ export const hotelFacilities = [
   }
 ];
 
-export const roomAmenities = [
-  {
-    label: "Air Conditioning",
-    icon: "mode_cool"
-  },
-  {
-    label: "Balcony",
-    icon: "apartment"
-  },
-  {
-    label: "Bathroom",
-    icon: "bathtub"
-  },
-  {
-    label: "Breakfast",
-    icon: "breakfast_dining"
-  },
-  {
-    label: "Cable TV",
-    icon: "tv"
-  },
-  {
-    label: "Coffee Maker",
-    icon: "coffee_maker"
-  },
-  {
-    label: "Desk",
-    icon: "desk"
-  },
-  {
-    label: "Dining Area",
-    icon: "dining"
-  },
-  {
-    label: "Dishwasher",
-    icon: "dishwasher"
-  },
-  {
-    label: "Dryer",
-    icon: "dry"
-  },
-  {
-    label: "Electric Kettle",
-    icon: "electric_kettle"
-  },
-  {
-    label: "Fan",
-    icon: "fan"
-  },
-  {
-    label: "Fireplace",
-    icon: "fireplace"
-  },
-  {
-    label: "Free WiFi",
-    icon: "wifi"
-  },
-  {
-    label: "Hairdryer",
-    icon: "hair_dryer"
-  },
-  {
-    label: "Heating",
-    icon: "heating"
-  },
-  {
-    label: "Iron",
-    icon: "iron"
-  },
-  {
-    label: "Kitchen",
-    icon: "kitchen"
-  },
-  {
-    label: "Microwave",
-    icon: "microwave"
-  },
-  {
-    label: "Oven",
-    icon: "oven"
-  },
-  {
-    label: "Private Entrance",
-    icon: "private_entrance"
-  },
-  {
-    label: "Refrigerator",
-    icon: "refrigerator"
-  },
-  {
-    label: "Satellite TV",
-    icon: "satellite"
-  },
-  {
-    label: "Seating Area",
-    icon: "seating_area"
-  },
-  {
-    label: "Shower",
-    icon: "shower"
-  },
-  {
-    label: "Sofa",
-    icon: "sofa"
-  },
-  {
-    label: "Soundproofing",
-    icon: "soundproofing"
-  },
-  {
-    label: "Stovetop",
-    icon: "stovetop"
-  },
-  {
-    label: "Telephone",
-    icon: "phone"
-  },
-  {
-    label: "Toaster",
-    icon: "toaster"
-  },
-  {
-    label: "Toilet",
-    icon: "toilet"
-  },
-  {
-    label: "Towels",
-    icon: "towels"
-  },
-  {
-    label: "TV",
-    icon: "tv"
-  },
-  {
-    label: "Washing Machine",
-    icon: "washing_machine"
-  },
-  {
-    label: "Wardrobe",
-    icon: "wardrobe"
-  }
-];
+export const formatDate = (date: string) => {
+  const newDate = new Date(date);
+  const day = newDate.getDate();
+  const month = newDate.getMonth() + 1;
+  const year = newDate.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+// export const roomAmenities = [
+//   {
+//     label: "Air Conditioning",
+//     icon: "mode_cool"
+//   },
+//   {
+//     label: "Balcony",
+//     icon: "apartment"
+//   },
+//   {
+//     label: "Bathroom",
+//     icon: "bathtub"
+//   },
+//   {
+//     label: "Breakfast",
+//     icon: "breakfast_dining"
+//   },
+//   {
+//     label: "Cable TV",
+//     icon: "tv"
+//   },
+//   {
+//     label: "Coffee Maker",
+//     icon: "coffee_maker"
+//   },
+//   {
+//     label: "Desk",
+//     icon: "desk"
+//   },
+//   {
+//     label: "Dining Area",
+//     icon: "dining"
+//   },
+//   {
+//     label: "Dishwasher",
+//     icon: "dishwasher"
+//   },
+//   {
+//     label: "Dryer",
+//     icon: "dry"
+//   },
+//   {
+//     label: "Electric Kettle",
+//     icon: "electric_kettle"
+//   },
+//   {
+//     label: "Fan",
+//     icon: "fan"
+//   },
+//   {
+//     label: "Fireplace",
+//     icon: "fireplace"
+//   },
+//   {
+//     label: "Free WiFi",
+//     icon: "wifi"
+//   },
+//   {
+//     label: "Hairdryer",
+//     icon: "hair_dryer"
+//   },
+//   {
+//     label: "Heating",
+//     icon: "heating"
+//   },
+//   {
+//     label: "Iron",
+//     icon: "iron"
+//   },
+//   {
+//     label: "Kitchen",
+//     icon: "kitchen"
+//   },
+//   {
+//     label: "Microwave",
+//     icon: "microwave"
+//   },
+//   {
+//     label: "Oven",
+//     icon: "oven"
+//   },
+//   {
+//     label: "Private Entrance",
+//     icon: "private_entrance"
+//   },
+//   {
+//     label: "Refrigerator",
+//     icon: "refrigerator"
+//   },
+//   {
+//     label: "Satellite TV",
+//     icon: "satellite"
+//   },
+//   {
+//     label: "Seating Area",
+//     icon: "seating_area"
+//   },
+//   {
+//     label: "Shower",
+//     icon: "shower"
+//   },
+//   {
+//     label: "Sofa",
+//     icon: "sofa"
+//   },
+//   {
+//     label: "Soundproofing",
+//     icon: "soundproofing"
+//   },
+//   {
+//     label: "Stovetop",
+//     icon: "stovetop"
+//   },
+//   {
+//     label: "Telephone",
+//     icon: "phone"
+//   },
+//   {
+//     label: "Toaster",
+//     icon: "toaster"
+//   },
+//   {
+//     label: "Toilet",
+//     icon: "toilet"
+//   },
+//   {
+//     label: "Towels",
+//     icon: "towels"
+//   },
+//   {
+//     label: "TV",
+//     icon: "tv"
+//   },
+//   {
+//     label: "Washing Machine",
+//     icon: "washing_machine"
+//   },
+//   {
+//     label: "Wardrobe",
+//     icon: "wardrobe"
+//   }
+// ];
 
 

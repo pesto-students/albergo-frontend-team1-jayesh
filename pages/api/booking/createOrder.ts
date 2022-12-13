@@ -3,7 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import Razorpay from 'razorpay';
 
 type Data = {
-  message: string;
+  message?: string;
+  data?: any;
 };
 
 export default function handler(
@@ -41,6 +42,6 @@ export default function handler(
       return res.status(500).json({ message: err.message });
     }
 
-    return res.status(200).json(order);
+    return res.status(200).json({ data: order });
   });
 }

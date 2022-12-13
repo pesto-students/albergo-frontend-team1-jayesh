@@ -1,8 +1,8 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
-import Layout from '../../../Components/Layout/Layout';
-import styles from '../../../styles/Partner/bookingId.module.scss';
-import { MaterialIcon, Rupee } from '../../../Utils/Helper';
+import Layout from '../../Components/Layout/Layout';
+import styles from '../../styles/Partner/bookingId.module.scss';
+import { MaterialIcon, Rupee } from '../../Utils/Helper';
 
 const BookingId = () => {
   return (

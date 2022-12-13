@@ -104,9 +104,6 @@ const Search: NextPage<ISearchProps> = ({ data }) => {
 
     const resObj = await makeReq('/api/hotel/search', "POST", raw);
 
-    console.log(resObj);
-
-
     const res = handleResponse(resObj, enqueueSnackbar);
 
     if (res) {

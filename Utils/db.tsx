@@ -9,7 +9,7 @@ const makeReq = async (apiURL: string, method?: "POST" | "GET" | "PATCH" | "DELE
                 'Content-Type': 'application/json',
                 'Authorization': token ? `Bearer ${token}` : "",
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify(body) ?? undefined,
         });
 
         const res = await response.json();
@@ -75,8 +75,8 @@ const handleResponse = (
     }
 
     if (resObj.res.message) {
-        enqueueSnackbar(resObj.res.message.toString() ?? "Message : Please try again later", { variant: "warning" });
-        return null;
+        enqueueSnackbar(resObj.res.message.toString() ?? "Message : Please try again later", { variant: resObj.response?.status === 200 ? "success" : "warning" });
+        return resObj.res?.data ?? null;
     }
 
     if (resObj.response && resObj.response.ok) {

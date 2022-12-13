@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use "../variables" as *;
 
 $column-width: 14rem;
 $last-column-width: 6.25rem;
@@ -110,6 +110,10 @@ $last-column-width: 6.25rem;
           padding: 0.5rem 0;
           text-transform: capitalize;
           min-width: $column-width;
+
+          &:first-of-type {
+            text-transform: none;
+          }
 
           &:last-of-type {
             min-width: $last-column-width;
