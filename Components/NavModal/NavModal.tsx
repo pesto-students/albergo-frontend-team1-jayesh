@@ -7,8 +7,8 @@ import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { loginForm } from '../../Utils/auth/login';
 import { useRouter } from 'next/router';
-import Toast, { IToast } from '../Toast/Toast';
 import { signupForm } from '../../Utils/auth/signup';
+import { useSnackbar } from 'notistack';
 
 const NavModal = () => {
   const router = useRouter();
@@ -20,20 +20,14 @@ const NavModal = () => {
   });
 
   const [signupFormState, setSignupFormState] = useState({
-    name: 'Abcd One',
+    name: 'Pesto Project',
     phone: '1234567890',
-    email: 'abcd@one.com',
-    password: 'Abc@one123',
-    confirmPassword: 'Abc@one123',
+    email: 'pestoproject@demomail.com',
+    password: 'Pesto@project123',
+    confirmPassword: 'Pesto@project123',
     city: '',
     state: '',
     country: ''
-  });
-
-  const [toastState, setToastState] = useState<IToast>({
-    visible: false,
-    message: '',
-    type: 'info'
   });
 
   useEffect(() => {
@@ -61,18 +55,20 @@ const NavModal = () => {
     }
   }, [navModalState.type]);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   if (!navModalState.isNavModalOpen) return null;
 
   const submitLoginForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = loginFormState.inpEmail;
     const password = loginFormState.inpPassword;
-    loginForm({ email, password }, setToastState, router);
+    loginForm({ email, password }, enqueueSnackbar, router);
   };
 
   const submitSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signupForm(signupFormState, 'user', setToastState, router);
+    signupForm(signupFormState, 'user', enqueueSnackbar);
   };
 
   const disableSignupBtn = () => {
@@ -87,10 +83,17 @@ const NavModal = () => {
     else return true;
   };
 
+  const closeModal = (e: MouseEvent) => {
+    const elTarget = e.target as HTMLElement;
+    if (elTarget === document.getElementById("modalBackdrop")) {
+      store.dispatch(toggleNavModal());
+    }
+  };
+
   return (
     <Fragment>
-      <div className={styles.modalBackdrop}>
-        <div className={styles.modalContainer}>
+      <div className={styles.modalBackdrop} id="modalBackdrop" onClick={e => closeModal(e as any)}>
+        <div className={styles.modalContainer} id="modalContainer" >
           <div className={styles.modalHeader}>
             <h4>{navModalState.type}</h4>
             <button
@@ -250,7 +253,6 @@ const NavModal = () => {
           </div>
         </div>
       </div>
-      <Toast toastState={toastState} setToastState={setToastState} />
     </Fragment>
   );
 };

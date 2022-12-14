@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import styles from '../../../styles/Homescreen/SectionTypeOne.module.scss';
+import { IHotelData } from '../../../Utils/Helper';
 import CardTypeOne from '../../Card/CardTypeOne';
 
 const SectionTypeOne = ({
@@ -15,10 +16,7 @@ const SectionTypeOne = ({
   viewMoreLink?: boolean;
   showOnMapLink?: boolean;
   flexWrap?: boolean;
-  dataArr:
-    | {
-        [key: string]: string;
-      }[];
+  dataArr: IHotelData[];
 }) => {
   const router = useRouter();
   return (

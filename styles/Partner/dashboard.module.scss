@@ -30,69 +30,26 @@
     padding: 1rem;
 
     .descRowOne {
-      @include display-flex(unset, flex-start);
-      gap: 1rem;
-
-      .iconContainer {
-        @include border-radius(10px);
-        width: 50px;
-        aspect-ratio: 1/1;
-        background: #2e2e2e;
-        display: grid;
-        place-items: center;
-
-        span {
-          color: aliceblue;
-        }
+      h3 {
+        @include font-variation(600);
+        // margin: 0;
+        text-transform: capitalize;
+        letter-spacing: 1px;
       }
 
-      .descContent {
-        flex: 1;
+      .descDetailContainer {
+        @include display-flex(space-between, center);
 
-        .descHeader {
-          @include display-flex(unset, center);
-          gap: 1rem;
-          margin-bottom: 1rem;
-
-          h4 {
-            @include font-variation(500);
-            margin: 0;
-            text-transform: capitalize;
-            letter-spacing: 1px;
-          }
-
-          .chip {
+        .descDetails {
+          p {
             @include font-variation(600);
-            @include border-radius(1rem);
-            padding: 0.25rem 0.5rem;
-            text-transform: capitalize;
+            display: inline;
+            margin: 0;
+            color: rgba($fontGrey, 0.9);
           }
 
-          .openChip {
-            background: rgba(187, 248, 187, 0.677);
-            color: rgb(0, 132, 0);
-          }
-
-          .closeChip {
-            background: rgba(255, 122, 122, 0.377);
-            color: rgb(241, 0, 0);
-          }
-        }
-
-        .descDetailContainer {
-          @include display-flex(space-between, center);
-
-          .descDetails {
-            p {
-              @include font-variation(600);
-              display: inline;
-              margin: 0;
-              color: rgba($fontGrey, 0.9);
-            }
-
-            .fontDark {
-              color: $fontBlack;
-            }
+          .fontDark {
+            color: $fontBlack;
           }
         }
       }
@@ -131,6 +88,86 @@
             color: #008400;
           }
         }
+      }
+    }
+  }
+
+  .facilitiesContainer {
+    @include display-flex(unset, center);
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+
+    // cross browser scrollbar
+    &::-webkit-scrollbar {
+      height: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      @include border-radius(0.5rem);
+      background: rgba($fontGrey, 0.1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @include border-radius(0.5rem);
+      background: rgba($fontGrey, 0.5);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba($fontGrey, 0.7);
+    }
+
+    .facilityItem {
+      position: relative;
+      max-width: 150px;
+      flex: 0 0 150px;
+      aspect-ratio: 1/1;
+      background: rgba($fontGrey, 0.3);
+      @include border-radius(0.75rem);
+      @include display-flex(center, center);
+      flex-direction: column;
+      padding: 1rem;
+      cursor: pointer;
+
+      h1 {
+        span {
+          font-size: 1.6rem;
+        }
+      }
+
+      h5 {
+        width: 100%;
+        margin: 0;
+        text-align: center;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .selectFacility {
+        @include border-radius(50%);
+        @include transition(0.25s ease-in-out);
+        outline: none;
+        padding: 0.5rem;
+        display: grid;
+        place-items: center;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        opacity: 0;
+
+        span {
+          font-size: 1rem;
+        }
+
+        &.selected {
+          background: $btnSuccessBg;
+          opacity: 1;
+        }
+      }
+
+      &:hover .selectFacility {
+        opacity: 1;
       }
     }
   }
@@ -178,10 +215,15 @@
         padding: 0.5rem;
         display: grid;
         place-items: center;
+        opacity: 0;
 
         span {
           font-size: 1.15rem;
         }
+      }
+
+      &:hover button {
+        opacity: 1;
       }
     }
   }
@@ -215,7 +257,9 @@
       @include border-radius(0.75rem);
       flex: 0 0 200px;
       border: 0.5px solid rgba($fontGrey, 0.5);
-      padding: 1rem;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
 
       .roomImage {
         width: 100%;
@@ -224,9 +268,34 @@
         margin-bottom: 1rem;
       }
 
-      p {
-        @include font-variation(600);
-        margin: 0 0 0.25rem;
+      .roomDetails {
+        padding: 1rem;
+
+        p {
+          @include font-variation(600);
+          margin: 0 0 0.25rem;
+        }
+      }
+
+      button {
+        @include border-radius(50%);
+        @include transition(0.3s ease-in-out);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        outline: none;
+        padding: 0.5rem;
+        display: grid;
+        place-items: center;
+        opacity: 0;
+
+        span {
+          font-size: 1.15rem;
+        }
+      }
+
+      &:hover button {
+        opacity: 1;
       }
     }
   }
@@ -362,21 +431,16 @@
     h5 {
       margin: 0;
     }
-
-    // button{
-
-    // }
   }
 
   .fileModalFilesContainer {
-    @include display-flex(space-between, center);
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     padding: 1rem;
     gap: 1rem;
 
     .fileModalFile {
       @include border-radius(0.75rem);
-      flex: 0 0 200px;
 
       .fileImageContainer {
         width: 100%;
@@ -386,6 +450,7 @@
       }
 
       .fileContent {
+        margin-top: 1rem;
         small {
           @include font-variation(500);
           color: $fontGrey;
@@ -434,10 +499,8 @@
       }
     }
 
-    textarea {
-      width: 100%;
-      resize: vertical;
-      max-height: 50vh;
+    button {
+      margin-right: 1rem;
     }
   }
 
@@ -464,6 +527,119 @@
 
       &::-webkit-scrollbar-thumb:hover {
         background: rgba($fontGrey, 0.7);
+      }
+    }
+  }
+}
+
+.addFacilitiesModalBody {
+  width: 100%;
+
+  .header {
+    @include display-flex(space-between, center);
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+    input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      @include font-variation(500);
+      font-size: 1rem;
+      color: $fontGrey;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba($fontGrey, 0.5);
+    }
+  }
+
+  .body {
+    width: 100%;
+
+    .selectedFacilitiesContainer,
+    .searchedResultContainer {
+      width: 100%;
+      background: rgba($fontGrey, 0.1);
+      padding: 1rem;
+      @include border-radius(0.5rem);
+
+      label {
+        @include border-radius(0.5rem);
+        display: block;
+        width: 100%;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .collapsibleInput {
+        display: none;
+
+        &:not(:checked) ~ .facilities {
+          height: 0;
+          margin: 0;
+        }
+
+        &:checked ~ .facilities {
+          height: max-content;
+          margin: 1rem 0 0;
+        }
+      }
+    }
+
+    .searchedResultContainer {
+      margin-top: 1rem;
+    }
+
+    .facilities {
+      width: 100%;
+      margin: 1rem 0 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 0.5fr));
+      gap: 1rem;
+
+      .facility {
+        @include border-radius(0.5rem);
+        padding: 0.5rem;
+        background: linear-gradient(45deg, rgba($fontGrey, 0.1), rgba($fontGrey, 0.3));
+        @include display-flex(flex-start, center);
+        gap: 0.5rem;
+        cursor: pointer;
+        position: relative;
+
+        span {
+          font-size: 1.15rem;
+          color: $fontGrey;
+        }
+
+        p {
+          margin: 0;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          text-transform: capitalize;
+          width: 100%;
+        }
+
+        button {
+          @include border-radius(50%);
+          @include transition(0.3s ease-in-out);
+          outline: none;
+          padding: 0.5rem;
+          display: grid;
+          place-items: center;
+
+          span {
+            color: $fontWhite;
+            font-size: 1rem;
+          }
+        }
+
+        &:hover {
+          .facilityActions {
+            opacity: 1;
+          }
+        }
       }
     }
   }

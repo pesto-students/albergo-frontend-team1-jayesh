@@ -1,12 +1,14 @@
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { JSONContent } from '@tiptap/react';
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
+import TiptapEditor from '../../../Components/Editorjs/Editor';
 import Layout from '../../../Components/Layout/Layout';
 import styles from '../../../styles/Hotel/hotelHome.module.scss';
 import { makeReq } from '../../../Utils/db';
-import { MaterialIcon, ReadMore, Rupee } from '../../../Utils/Helper';
+import { IFullHotelData, MaterialIcon, Rupee, useImageCarousel } from '../../../Utils/Helper';
 
 interface IModalProps {
   modalHeader: string;
@@ -44,52 +46,6 @@ const Modal = ({ modalHeader, setModalState, children }: IModalProps) => {
   );
 };
 
-const arrObj = [
-  {
-    label: 'bedroom',
-    iconName: 'bed'
-  },
-  {
-    label: 'bathrooms',
-    iconName: 'bathtub'
-  },
-  {
-    label: 'parking',
-    iconName: 'directions_car'
-  },
-  {
-    label: 'pets allowed',
-    iconName: 'pets'
-  }
-];
-
-const facilitiesArr = [
-  {
-    label: 'kitchen',
-    iconName: 'cooking'
-  },
-  {
-    label: 'television',
-    iconName: 'tv'
-  },
-  {
-    label: 'Air conditioning',
-    iconName: 'ac_unit'
-  },
-  {
-    label: 'wifi',
-    iconName: 'wifi'
-  },
-  {
-    label: 'laundry',
-    iconName: 'local_laundry_service'
-  },
-  {
-    label: 'balcony',
-    iconName: 'balcony'
-  }
-];
-
 const safetyChecks = [
   'daily cleaning',
   'fire extinguishers',
@@ -97,7 +53,46 @@ const safetyChecks = [
   'smoke detectors'
 ];
 
-const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
+interface IHotelSLugHome {
+  data: IFullHotelData;
+}
+
+interface IRoom {
+  name: string;
+  roomId: string;
+  hotelSlug: string;
+  price: number;
+  capacity: number;
+  images: {
+    link: string;
+    ref: string;
+  }[];
+  description: JSONContent;
+}
+
+const getRoomDataOverview = (rooms: IRoom[]) => {
+  const roomDataOverview = rooms.map((room) => {
+    return {
+      name: room.name,
+      price: room.price,
+    };
+  });
+
+  // get lowest and highest price
+  const lowestPrice = Math.min(...roomDataOverview.map((room) => room.price));
+  const highestPrice = Math.max(...roomDataOverview.map((room) => room.price));
+
+  const roomDataOverviewWithPriceRange = {
+    roomOverviewArr: roomDataOverview,
+    lowestPrice,
+    highestPrice: lowestPrice === highestPrice ? undefined : highestPrice
+  };
+
+  return roomDataOverviewWithPriceRange;
+};
+
+const HotelSlugHome: NextPage<IHotelSLugHome> = ({ data }) => {
+
   const router = useRouter();
   const { hotelId } = router.query;
 
@@ -111,28 +106,7 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
     modalContent: <Fragment />
   });
 
-  const [hotelImageState, setHotelImageState] = useState({
-    list: hotelData.images,
-    currentIndex: 0
-  });
-
-  useEffect(() => {
-    const imagesInterval = setInterval(() => {
-      setHotelImageState((prevState) => {
-        return {
-          ...prevState,
-          currentIndex:
-            prevState.currentIndex === prevState.list.length - 1
-              ? 0
-              : prevState.currentIndex + 1
-        };
-      });
-    }, 3000);
-
-    return () => {
-      clearInterval(imagesInterval);
-    };
-  }, []);
+  const currImage = useImageCarousel(data.hotelImages, 3000);
 
   const ListModal = ({
     listArr,
@@ -140,7 +114,7 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
   }: {
     listArr:
     | {
-      iconName: string;
+      icon: string;
       label: string;
     }[]
     | string[];
@@ -152,7 +126,7 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
           <div className={styles.facilitiesItem} key={index}>
             {type === 'facilities' && listItem instanceof Object ? (
               <Fragment>
-                <MaterialIcon iconName={listItem.iconName} />
+                <MaterialIcon iconName={listItem.icon} />
                 <p>{listItem.label}</p>
               </Fragment>
             ) : (
@@ -167,27 +141,34 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
     );
   };
 
+  const roomDataOverview = getRoomDataOverview(data.rooms);
+
   return (
     <Fragment>
       <Head>
-        <title>Albergo - {hotelData.name}</title>
+        <title>Albergo - {data.name}</title>
       </Head>
       <div className={styles.galleryContainer}>
         <div className={styles.gelleryHero}>
-          <Image
-            src={hotelImageState.list[hotelImageState.currentIndex]}
-            layout="fill"
-            objectFit="cover"
-            alt="some"
-          />
+          {data.hotelImages.length > 0 ? (
+            <Image
+              src={currImage.link}
+              layout="fill"
+              objectFit="cover"
+              alt={`${data.name}-image`}
+            />
+          ) : (
+            <div className={styles.noImage}>
+              <p>No Image</p>
+            </div>
+          )}
         </div>
         <div className={styles.imagesContainer}>
-          {hotelImageState.list
-            .slice(0, 4)
-            .map((imageSrc: string, index: number) => (
+          {data.hotelImages.slice(0, 4)
+            .map((imageSrc, index) => (
               <div className={styles.image} key={index}>
                 <Image
-                  src={imageSrc}
+                  src={imageSrc.link}
                   layout="fill"
                   objectFit="cover"
                   alt="some"
@@ -201,17 +182,18 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
           <div className={styles.content}>
             <div className={styles.titleSection}>
               <div className={styles.infoSection}>
-                <h3>{hotelData.name}</h3>
+                <h3>{data.name}</h3>
                 <p>
-                  {hotelData.city}, {hotelData.state}, {hotelData.country}
+                  {data.city}, {data.state}, {data.country}
                 </p>
-                <small>{hotelData.address}</small>
+                <small>{data.address}</small>
                 <p>
-                  {Array(hotelData.ratingsAverage)
+                  {Array(data.ratingsAverage === 0 ? 1 : data.ratingsAverage)
                     .fill(0)
                     .map((_, index) => (
                       <MaterialIcon iconName="star" key={index} />
                     ))}
+                  {" "}ratings
                 </p>
               </div>
               <div className={styles.btnSection}>
@@ -223,7 +205,7 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
                     if (navigator.share) {
                       navigator
                         .share({
-                          title: `Albergo - ${hotelData.name}`,
+                          title: `Albergo - ${data.name}`,
                           text: 'Check out Albergo - Hotel',
                           url: window.location.href
                         })
@@ -237,26 +219,24 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
               </div>
             </div>
             <div className={styles.featureSection}>
-              {arrObj.map((obj, index) => (
+              {data.facilities.slice(0, 4).map((obj, index) => (
                 <div className={styles.feature} key={index}>
-                  <MaterialIcon iconName={obj.iconName} />
+                  <MaterialIcon iconName={obj.icon} />
                   <small>{obj.label}</small>
                 </div>
               ))}
             </div>
             <h5>Hotel Description</h5>
-            <p>
-              <ReadMore text={hotelData.description} maxLength={120} />
-            </p>
+            <TiptapEditor editable={false} initialData={data.description} />
             <div className={styles.facilitiesSection}>
               <h5>Offered Facilities</h5>
               <div className={styles.facilitiesContainer}>
-                {facilitiesArr
-                  .slice(0, Math.floor(facilitiesArr.length / 2))
-                  .map((amenity, index) => (
+                {data.facilities
+                  .slice(0, Math.floor(data.facilities.length / 2))
+                  .map((facility, index) => (
                     <div className={styles.amenity} key={index}>
-                      <MaterialIcon iconName={amenity.iconName} />
-                      <p>{amenity.label}</p>
+                      <MaterialIcon iconName={facility.icon} />
+                      <p>{facility.label}</p>
                     </div>
                   ))}
               </div>
@@ -268,12 +248,12 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
                     show: true,
                     modalHeader: 'Offered Facilities',
                     modalContent: (
-                      <ListModal listArr={facilitiesArr} type="facilities" />
+                      <ListModal listArr={data.facilities} type="facilities" />
                     )
                   }))
                 }
               >
-                Show all {facilitiesArr.length} Facilities
+                Show all {data.facilities.length} Facilities
               </button>
             </div>
             <div className={styles.safetySection}>
@@ -331,18 +311,19 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
           </div>
           <div className={styles.cardSection}>
             <h5>
-              <Rupee /> 1000 - <Rupee /> 2000
+              <Rupee /> {roomDataOverview.lowestPrice} {roomDataOverview.highestPrice !== undefined ?
+                (
+                  <Fragment>
+                    - <Rupee /> {roomDataOverview.highestPrice}
+                  </Fragment>
+                ) : null}
             </h5>
             <hr />
-            <p>
-              Regular room: <Rupee /> 1000
-            </p>
-            <p>
-              Deluxe room: <Rupee /> 2000
-            </p>
-            <p>
-              Premium room: <Rupee /> 2000
-            </p>
+            {roomDataOverview.roomOverviewArr.map((room, index) => (
+              <p key={index}>
+                {room.name} room: <Rupee /> {room.price}
+              </p>
+            ))}
             <button
               onClick={() => {
                 router.push({
@@ -354,11 +335,11 @@ const HotelSlugHome = ({ hotelData }: { hotelData: any; }) => {
               Book Now
             </button>
             <div className={styles.contactSection}>
-              <a href={`mailto:${hotelData.email}`}>
+              <a href={`mailto:${data.email}`}>
                 <MaterialIcon iconName="mail" />
                 Property inquiry
               </a>
-              <a href={`tel:${hotelData.phone}`}>
+              <a href={`tel:${data.phone}`}>
                 <MaterialIcon iconName="call" />
                 Contact host
               </a>
@@ -385,18 +366,23 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   const slug = ctx.params?.hotelId;
 
-  return Promise.resolve(makeReq(`${process.env.NEXT_PUBLIC_API_URL}/hotel/${slug}`, "GET")).then(res => {
-    if (!res) {
-      return {
-        notFound: true
-      };
-    }
-
+  if (!slug) {
     return {
-      props: {
-        hotelData: res.data
-      }
+      notFound: true
     };
   }
-  );
+
+  const resObj = await makeReq(`${process.env.NEXT_PUBLIC_API_URL}/api/hotel/${slug}`, "GET");
+
+  if (!resObj || !resObj.response || !resObj.response!.ok) {
+    return {
+      notFound: true
+    };
+  }
+
+  return {
+    props: {
+      data: resObj.res.data
+    }
+  };
 };

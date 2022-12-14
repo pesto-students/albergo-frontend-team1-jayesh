@@ -1,5 +1,5 @@
 // font Monsterrat
-$Montserrat: 'Montserrat', sans-serif;
+$Montserrat: "Montserrat", sans-serif;
 
 // color variables
 $primaryBg: #cfd7d7;
@@ -29,8 +29,8 @@ $btnPrimaryFocusBg: #4e5d5d;
 $btnPrimaryFocusBorderColor: $secondaryColor;
 $btnPrimaryFocusColor: $fontWhite;
 $btnPrimaryDisabledBg: #b3b3b3;
-$btnPrimaryDisabledBorderColor: #b3b3b3;
-$btnPrimaryDisabledColor: #b3b3b3;
+$btnPrimaryDisabledBorderColor: #474747;
+$btnPrimaryDisabledColor: #353333;
 $btnSecondaryColor: $secondaryColor;
 $btnSecondaryBg: $fontWhite;
 $btnSecondaryBorderColor: $secondaryColor;
@@ -88,9 +88,9 @@ $btnDangerHoverColor: $fontWhite;
 $btnDangerFocusBg: #c82333;
 $btnDangerFocusBorderColor: #dc3545;
 $btnDangerFocusColor: $fontWhite;
-$btnDangerDisabledBg: #b3b3b3;
-$btnDangerDisabledBorderColor: #b3b3b3;
-$btnDangerDisabledColor: #b3b3b3;
+$btnDangerDisabledBg: #efbdbd;
+$btnDangerDisabledBorderColor: #f68181;
+$btnDangerDisabledColor: #503333;
 $btnLightColor: $fontBlack;
 $btnLightBg: #f8f9fa;
 $btnLightBorderColor: #f8f9fa;
@@ -130,7 +130,7 @@ $btnLinkDisabledColor: #6c757d;
 
 // font-variation mixin
 @mixin font-variation($font-weight) {
-  font-variation-settings: 'wght' $font-weight;
+  font-variation-settings: "wght" $font-weight;
 }
 
 // display flex mixin
@@ -142,8 +142,7 @@ $btnLinkDisabledColor: #6c757d;
 
 // icon-variation mixin
 @mixin icon-variation($fill: 0, $weight: 400, $gradient: 0, $size: 48) {
-  font-variation-settings: 'FILL' $fill, 'wght' $weight, 'GRAD' $gradient,
-    'opsz' $size;
+  font-variation-settings: "FILL" $fill, "wght" $weight, "GRAD" $gradient, "opsz" $size;
 }
 
 // border-radius mixin

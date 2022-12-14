@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use "../variables" as *;
 
 .container {
   width: 100%;
@@ -32,7 +32,7 @@
 
       &::after {
         @include transition(all 0.3s ease-in-out);
-        content: '';
+        content: "";
         position: absolute;
         width: 100%;
         height: 2px;
@@ -55,7 +55,8 @@
     padding: 1rem 0;
     flex-wrap: wrap;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, 260px);
+    // justify-content: space-between;
     gap: 2rem 1rem;
   }
 }

@@ -1,34 +1,28 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import { FormEvent, useEffect, useState } from 'react';
-import Toast, { IToast } from '../../Components/Toast/Toast';
 import styles from '../../styles/Partner/signup.module.scss';
 import { getTokenCookie, parseJWT } from '../../Utils/auth/authHelper';
 import { signupForm } from '../../Utils/auth/signup';
 
 const Signup = () => {
-  const router = useRouter();
 
   const [formInp, setFormInp] = useState({
-    hotelName: 'Albergo HotelOne',
-    hotelEmail: 'albergoHotel@mail.com',
-    hotelPassword: 'Albergo@123',
-    hotelConfirmPassword: 'Albergo@123',
-    hotelPhone: '1234567890',
-    hotelAddress: 'Albergo Hotel One, Area, City, State, Country',
-    hotelCity: '',
-    hotelState: '',
-    hotelCountry: '',
+    name: 'goldfinch hotel delhi ncr',
+    email: 'goldfinchDemo@mail.com',
+    password: 'GoldfinchDemo@123',
+    confirmPassword: 'GoldfinchDemo@123',
+    phone: '9893474821',
+    address: 'Plot No. 1, Sector 18, Dwarka, New Delhi, Delhi 110075',
+    city: '',
+    state: '',
+    country: '',
     lat: 0,
     long: 0
   });
 
-  const [signupToast, setSignupToast] = useState<IToast>({
-    message: '',
-    type: 'info',
-    visible: false
-  });
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     // ask for location permission
@@ -55,11 +49,14 @@ const Signup = () => {
           });
         } else if (result.state === 'denied') {
           // if permission denied, show toast
-          setSignupToast({
-            message: 'Location permission denied',
-            type: 'error',
-            visible: true
+          enqueueSnackbar('Location permission denied', {
+            variant: "error"
           });
+          // setSignupToast({
+          //   message: 'Location permission denied',
+          //   type: 'error',
+          //   visible: true
+          // });
         }
         const ipAddr = await fetch('https://api.ipify.org/?format=json').then(
           (res) => res.json()
@@ -70,31 +67,34 @@ const Signup = () => {
         ).then((res) => res.json());
 
         if (location?.status === 'fail') {
-          setSignupToast({
-            message: location?.message ?? 'Location not found',
-            type: 'error',
-            visible: true
+          enqueueSnackbar(location?.message ?? 'Location not found', {
+            variant: "error"
           });
+          // setSignupToast({
+          //   message: location?.message ?? 'Location not found',
+          //   type: 'error',
+          //   visible: true
+          // });
           return;
         }
 
         setFormInp((prevFormInp) => ({
           ...prevFormInp,
-          hotelCountry: location?.country,
-          hotelState: location?.regionName,
-          hotelCity: location?.city
+          country: location?.country,
+          state: location?.regionName,
+          city: location?.city
         }));
       });
   }, []);
 
   const disableBtn = () => {
     if (
-      formInp.hotelName &&
-      formInp.hotelEmail &&
-      formInp.hotelPassword &&
-      formInp.hotelConfirmPassword &&
-      formInp.hotelPhone &&
-      formInp.hotelAddress
+      formInp.name &&
+      formInp.email &&
+      formInp.password &&
+      formInp.confirmPassword &&
+      formInp.phone &&
+      formInp.address
     )
       return false;
     else return true;
@@ -102,18 +102,18 @@ const Signup = () => {
 
   const formSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signupForm(formInp, 'partner', setSignupToast, router);
+    signupForm(formInp, 'partner', enqueueSnackbar);
   };
 
   const resetForm = () => {
     setFormInp((prevFormInp) => ({
       ...prevFormInp,
-      hotelName: '',
-      hotelEmail: '',
-      hotelPassword: '',
-      hotelConfirmPassword: '',
-      hotelPhone: '',
-      hotelAddress: ''
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      phone: '',
+      address: ''
     }));
   };
 
@@ -128,11 +128,11 @@ const Signup = () => {
               type="text"
               name="name"
               id="name"
-              value={formInp.hotelName}
+              value={formInp.name}
               onChange={(e) =>
                 setFormInp((prevFormInp) => ({
                   ...prevFormInp,
-                  hotelName: e.target.value
+                  name: e.target.value
                 }))
               }
               placeholder="Hotel Name"
@@ -144,11 +144,11 @@ const Signup = () => {
               type="email"
               name="email"
               id="email"
-              value={formInp.hotelEmail}
+              value={formInp.email}
               onChange={(e) =>
                 setFormInp((prevFormInp) => ({
                   ...prevFormInp,
-                  hotelEmail: e.target.value
+                  email: e.target.value
                 }))
               }
               placeholder="Email"
@@ -160,11 +160,11 @@ const Signup = () => {
               type="password"
               name="password"
               id="password"
-              value={formInp.hotelPassword}
+              value={formInp.password}
               onChange={(e) =>
                 setFormInp((prevFormInp) => ({
                   ...prevFormInp,
-                  hotelPassword: e.target.value
+                  password: e.target.value
                 }))
               }
               placeholder="Password"
@@ -178,11 +178,11 @@ const Signup = () => {
               type="password"
               name="confirmPassword"
               id="confirmPassword"
-              value={formInp.hotelConfirmPassword}
+              value={formInp.confirmPassword}
               onChange={(e) =>
                 setFormInp((prevFormInp) => ({
                   ...prevFormInp,
-                  hotelConfirmPassword: e.target.value
+                  confirmPassword: e.target.value
                 }))
               }
               placeholder="Confirm Password"
@@ -194,11 +194,11 @@ const Signup = () => {
               type="tel"
               name="phone"
               id="phone"
-              value={formInp.hotelPhone}
+              value={formInp.phone}
               onChange={(e) =>
                 setFormInp((prevFormInp) => ({
                   ...prevFormInp,
-                  hotelPhone: e.target.value
+                  phone: e.target.value
                 }))
               }
               placeholder="Phone"
@@ -209,11 +209,11 @@ const Signup = () => {
             <textarea
               name="address"
               id="address"
-              value={formInp.hotelAddress}
+              value={formInp.address}
               onChange={(e) =>
                 setFormInp((prevFormInp) => ({
                   ...prevFormInp,
-                  hotelAddress: e.target.value
+                  address: e.target.value
                 }))
               }
               placeholder="Address"
@@ -222,10 +222,10 @@ const Signup = () => {
             />
           </div>
           <div className={`${styles.formGroup} ${styles.btnGroup}`}>
-            <button type="reset" onClick={resetForm}>
+            <button type="reset" onClick={resetForm} className="btn" >
               Reset
             </button>
-            <button type="submit" disabled={disableBtn()}>
+            <button type="submit" disabled={disableBtn()} className="btn btn-primary" >
               submit
             </button>
           </div>
@@ -240,7 +240,8 @@ const Signup = () => {
           priority
         />
       </div>
-      <Toast setToastState={setSignupToast} toastState={signupToast} />
+      {/* <MUIToast alertState={alertState} setAlertState={setAlertState} /> */}
+      {/* <Toast setToastState={setSignupToast} toastState={signupToast} /> */}
     </div>
   );
 };
@@ -253,7 +254,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const token = getTokenCookie(ctx);
   const userToken = parseJWT(token);
 
-  if (userToken && userToken.role === 'Hotel') {
+  if (userToken && userToken.role === 'HOTEL') {
     return {
       redirect: {
         destination: '/partner/dashboard',

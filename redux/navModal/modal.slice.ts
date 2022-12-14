@@ -20,6 +20,7 @@ export const navModalSlice = createSlice({
     },
     setNavModalType: (state, action: PayloadAction<'login' | 'signup'>) => {
       state.type = action.payload;
+      state.isNavModalOpen = true;
     }
   }
 });

@@ -28,7 +28,7 @@ const HotelPartnerHome = () => {
             lorem.
           </p>
           <Link href="/partner/signup">
-            <a>Let&apos;s Get Started</a>
+            <a className='btn btn-secondary' >Let&apos;s Get Started</a>
           </Link>
         </div>
       </div>
@@ -58,6 +58,9 @@ const HotelPartnerHome = () => {
               lacinia, nunc nisl aliquam nisl, quis aliquam nisl nisl sit amet
               lorem.
             </p>
+            <Link href="/partner/signup">
+              <a className='btn' >Let&apos;s Get Started</a>
+            </Link>
           </div>
         </div>
         <BlogSection title="Hosting tips &amp; guides" />
@@ -74,7 +77,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const token = getTokenCookie(ctx);
   const userToken = parseJWT(token);
 
-  if (userToken && userToken.role === 'Hotel') {
+  if (userToken && userToken.role === 'HOTEL') {
     return {
       redirect: {
         destination: '/partner/dashboard',

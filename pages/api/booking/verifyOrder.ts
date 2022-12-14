@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 type Data = {
   message?: string;
-  signatureIsValid?: string;
+  data?: unknown;
 };
 
 export default function handler(
@@ -38,5 +38,5 @@ export default function handler(
   if (expectedSignature === req.body.razorpay_signature)
     response = { signatureIsValid: 'true' };
 
-  return res.status(200).json(response);
+  return res.status(200).json({ data: response });
 }

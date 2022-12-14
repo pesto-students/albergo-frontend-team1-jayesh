@@ -1,43 +1,20 @@
 import Image from 'next/image';
-import { Fragment, useEffect, useState } from 'react';
+import { FC, Fragment, useEffect, useState } from 'react';
 import styles from '../../styles/Components/Card/CardTypeOne.module.scss';
-import { MaterialIcon } from '../../Utils/Helper';
+import { IHotelData, MaterialIcon, useImageCarousel } from '../../Utils/Helper';
 
 interface ICardTypeOneProps {
-  itemData: {
-    [key: string]: string;
-  };
+  itemData: IHotelData;
   onClickFn: () => void;
   wide?: boolean;
 }
 
-const CardTypeOne = ({
+const CardTypeOne: FC<ICardTypeOneProps> = ({
   wide = false,
   itemData,
   onClickFn
-}: ICardTypeOneProps) => {
-  const [hotelImages, setHotelImages] = useState({
-    list: itemData.images,
-    currentIndex: 0
-  });
-
-  useEffect(() => {
-    const imagesInterval = setInterval(() => {
-      setHotelImages((prevState) => {
-        return {
-          ...prevState,
-          currentIndex:
-            prevState.currentIndex === prevState.list.length - 1
-              ? 0
-              : prevState.currentIndex + 1
-        };
-      });
-    }, 5000);
-
-    return () => {
-      clearInterval(imagesInterval);
-    };
-  }, []);
+}) => {
+  const currImage = useImageCarousel(itemData.hotelImages, 3000);
 
   return (
     <div
@@ -46,12 +23,14 @@ const CardTypeOne = ({
       id={`card-${itemData.slug}`}
     >
       <div className={styles.imageContainer}>
-        <Image
-          src={itemData.images[hotelImages.currentIndex]}
-          layout="fill"
-          objectFit="cover"
-          alt="image"
-        />
+        {itemData.hotelImages.length > 1 ? (
+          <Image
+            src={currImage.link}
+            layout="fill"
+            objectFit="cover"
+            alt={`${itemData.name}-image`}
+          />
+        ) : null}
       </div>
       <div className={styles.cardContent}>
         <div className={styles.cardTopRow}>

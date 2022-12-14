@@ -1,17 +1,29 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useAppSelector } from '../../redux/hooks';
-import {
-  setNavModalType,
-  toggleNavModal
-} from '../../redux/navModal/modal.slice';
+import { setNavModalType } from '../../redux/navModal/modal.slice';
 import store from '../../redux/store';
 import styles from '../../styles/Components/Navbar/Navbar.module.scss';
 import { logout, parseJWT } from '../../Utils/auth/authHelper';
 import { MaterialIcon } from '../../Utils/Helper';
 
 const Navbar = () => {
+
+  useEffect(() => {
+    const closeMenu = (e: MouseEvent) => {
+      const el = e.target as HTMLElement;
+      const optionMenu = document.getElementById("optionMenu") as HTMLInputElement;
+      if (optionMenu.checked! && el.id !== ("optionMenu" || "authBtns")) {
+        optionMenu.checked = false;
+      }
+    };
+
+    document.addEventListener("click", closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, []);
+
   const router = useRouter();
 
   const userToken = parseJWT(
@@ -32,13 +44,13 @@ const Navbar = () => {
         <li>
           <Link
             href={
-              userToken && userToken.role === 'User'
+              userToken && userToken.role === 'USER'
                 ? '/user'
                 : '/partner/dashboard'
             }
           >
             <a>
-              {userToken && userToken.role === 'User'
+              {userToken && userToken.role === 'USER'
                 ? 'profile'
                 : 'dashboard'}
             </a>
@@ -87,7 +99,6 @@ const Navbar = () => {
                 <button
                   onClick={() => {
                     store.dispatch(setNavModalType('signup'));
-                    store.dispatch(toggleNavModal());
                   }}
                 >
                   Sign up
@@ -97,7 +108,6 @@ const Navbar = () => {
                 <button
                   onClick={() => {
                     store.dispatch(setNavModalType('login'));
-                    store.dispatch(toggleNavModal());
                   }}
                 >
                   Login
@@ -116,7 +126,7 @@ const Navbar = () => {
           ))}
         </ul>
         <ul>
-          {userToken && userToken.role === 'User' && (
+          {!userToken && (
             <li>
               <Link href="/partner">
                 <a className={styles.partnerBtn}>Become a partner</a>
@@ -130,45 +140,43 @@ const Navbar = () => {
                 <MaterialIcon iconName="menu" />
                 <MaterialIcon iconName="account_circle" />
               </label>
-              <ul className={styles.optionMenuList}>
+              <ul className={styles.optionMenuList} id="optionMenu" >
                 {userToken ? (
                   <Fragment>
-                    <li>
+                    <li id='authBtns'>
                       <Link
                         href={
-                          userToken && userToken.role === 'User'
+                          userToken && userToken.role === 'USER'
                             ? '/user'
                             : '/partner/dashboard'
                         }
                       >
                         <a>
-                          {userToken && userToken.role === 'User'
+                          {userToken && userToken.role === 'USER'
                             ? 'profile'
                             : 'dashboard'}
                         </a>
                       </Link>
                     </li>
-                    <li>
+                    <li id='authBtns' >
                       <button onClick={() => logout(router)}>Logout</button>
                     </li>
                   </Fragment>
                 ) : (
                   <Fragment>
-                    <li>
+                    <li id='authBtns'>
                       <button
                         onClick={() => {
                           store.dispatch(setNavModalType('signup'));
-                          store.dispatch(toggleNavModal());
                         }}
                       >
                         Sign up
                       </button>
                     </li>
-                    <li>
+                    <li id='authBtns'>
                       <button
                         onClick={() => {
                           store.dispatch(setNavModalType('login'));
-                          store.dispatch(toggleNavModal());
                         }}
                       >
                         Login

@@ -10,7 +10,7 @@ const JWT_TOKEN_NAME = process.env.NEXT_PUBLIC_JWT_TOKEN_NAME ?? 'token';
 
 const isValidateName = (name: string) => {
   name = name.toLowerCase().trim();
-  const re = /^[a-zA-Z ]+$/;
+  const re = /([a-zA-Z ])\w+/g;
   return re.test(String(name));
 };
 
@@ -30,14 +30,15 @@ const checkPassword = (password: string, confirmPassword: string) => {
   return password === confirmPassword;
 };
 
-interface IParsedToken {
-  id?: string;
+export interface IParsedToken {
+  uuid?: string;
   slug?: string;
   email: string;
   name: string;
   iat: number;
   exp: number;
-  role: 'User' | 'Hotel';
+  phone: string;
+  role: 'USER' | 'HOTEL';
 }
 
 const parseJWT = (token: string | null) => {
@@ -49,14 +50,14 @@ const parseJWT = (token: string | null) => {
 };
 
 export const validateJWT = (token: IParsedToken | null) => {
-  if (!token) return false
+  if (!token) return false;
   const tokenexp = new Date(0);
   tokenexp.setUTCSeconds(token.exp);
   if (Date.now() <= +tokenexp) {
-    return true
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 const setTokenCookie = (token: string) => {
   nookies.set(null, JWT_TOKEN_NAME, token, {
@@ -88,9 +89,13 @@ const destroyTokenCookie = () => {
   return;
 };
 
-const logout = (router: NextRouter) => {
+const removeToken = () => {
   destroyTokenCookie();
   localStorage.removeItem(JWT_TOKEN_NAME);
+};
+
+const logout = (router: NextRouter) => {
+  removeToken();
   store.dispatch(removeEncryptedToken());
   router.push('/');
 };
@@ -104,6 +109,7 @@ export {
   parseJWT,
   setTokenCookie,
   getTokenCookie,
+  removeToken,
   destroyTokenCookie,
   logout
 };

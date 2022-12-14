@@ -4,6 +4,7 @@
   h3 {
     @include font-variation(400);
     margin: 0;
+    text-transform: capitalize;
   }
 }
 
