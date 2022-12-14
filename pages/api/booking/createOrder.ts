@@ -4,7 +4,7 @@ import Razorpay from 'razorpay';
 
 type Data = {
   message?: string;
-  data?: any;
+  data?: unknown;
 };
 
 export default function handler(
@@ -37,9 +37,10 @@ export default function handler(
     currency: 'INR'
   };
 
-  return rzpInstance.orders.create(options, (err: any, order: any) => {
+  return rzpInstance.orders.create(options, (err: unknown, order: unknown) => {
+    const error = err as Error;
     if (err) {
-      return res.status(500).json({ message: err.message });
+      return res.status(500).json({ message: error.message });
     }
 
     return res.status(200).json({ data: order });

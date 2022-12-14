@@ -25,7 +25,7 @@ const loginForm = async (
 		const token = res?.token;
 		setTokenCookie(token);
 		store.dispatch(setUserEncryptedToken(token));
-		enqueueSnackbar("Signup successful", {
+		enqueueSnackbar("Login successful", {
 			variant: "success"
 		});
 		store.dispatch(toggleNavModal());

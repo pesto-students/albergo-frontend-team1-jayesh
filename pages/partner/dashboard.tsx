@@ -5,7 +5,7 @@ import Layout from "../../Components/Layout/Layout";
 import styles from "../../styles/Partner/dashboard.module.scss";
 import { getTokenCookie, parseJWT } from "../../Utils/auth/authHelper";
 import { createRef, storage, uploadFile } from "../../Utils/firebase/firebase";
-import { generateUID, hotelFacilities, IFullHotelData, IRoomData, MaterialIcon, Rupee, SnackbarType } from "../../Utils/Helper";
+import { generateUID, hotelFacilities, IFullHotelData, IRoomData, MaterialIcon, Rupee, SnackbarType, useImageCarousel } from "../../Utils/Helper";
 import { handleResponse, makeReq } from "../../Utils/db";
 import { OptionsObject as SnackbarOptions, SnackbarKey, SnackbarMessage, useSnackbar } from "notistack";
 import { useAppSelector } from "../../redux/hooks";
@@ -109,7 +109,7 @@ const AddFacilities: FC<IAddFacilitiesProps> = ({ dashboardData, setDashboardDat
   const saveFacilities = async () => {
     const resObj = await makeReq("/api/hotel/addFacilities", "POST", {
       facilities: facilities.selected,
-    }, userToken!);
+    }, userToken ?? "");
 
     const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -119,7 +119,7 @@ const AddFacilities: FC<IAddFacilitiesProps> = ({ dashboardData, setDashboardDat
       });
       setDashboardData((prevState) => ({
         ...prevState,
-        facilities: [...prevState.facilities!, ...facilities.selected]
+        facilities: [...prevState.facilities, ...facilities.selected]
       }));
       setModalState((prevModalState) => ({
         ...prevModalState,
@@ -197,7 +197,10 @@ const AddNewHotelImage: FC<INewHotelImageProps> = ({ hotelName, setDashboardData
 
   const uploadImages = async () => {
     try {
-      const firebaseImageURLs: any[] = [];
+      const firebaseImageURLs: {
+        ref: string;
+        link: string;
+      }[] = [];
       for await (const image of imagesState) {
         const firebaseImageFileRef = createRef(`${hotelName}/images/${generateUID(image.name, image.size.toString())}`);
         const firebaseImageURL = await uploadFile(firebaseImageFileRef, image.file);
@@ -209,7 +212,7 @@ const AddNewHotelImage: FC<INewHotelImageProps> = ({ hotelName, setDashboardData
 
       const resObj = await makeReq("/api/hotel/addPhoto", "POST", {
         photos: firebaseImageURLs,
-      }, userToken!);
+      }, userToken ?? "");
 
       const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -272,7 +275,7 @@ const AddNewHotelImage: FC<INewHotelImageProps> = ({ hotelName, setDashboardData
         style={{ display: "none" }}
         onChange={(e) => {
           const files = e.target.files;
-          fileUploadHandler(files!);
+          if (files) fileUploadHandler(files);
           e.target.value = "";
         }}
       />
@@ -493,7 +496,7 @@ const AddNewRoom: FC<IAddNewRoomProps> = ({ hotelName, setModalState, userToken,
       const resObj = await makeReq("/api/hotel/deleteRoomImage", "DELETE", {
         imageRef,
         roomId: roomState.readOnlyData?.roomId,
-      }, userToken!);
+      }, userToken ?? "");
 
       const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -560,7 +563,7 @@ const AddNewRoom: FC<IAddNewRoomProps> = ({ hotelName, setModalState, userToken,
         quantity: newRoomState.quantity,
       };
 
-      const resObj = await makeReq("/api/hotel/addRoom", "POST", raw, userToken!);
+      const resObj = await makeReq("/api/hotel/addRoom", "POST", raw, userToken ?? "");
 
       const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -625,7 +628,7 @@ const AddNewRoom: FC<IAddNewRoomProps> = ({ hotelName, setModalState, userToken,
         quantity: editRoomState.quantity === roomState.readOnlyData?.quantity.toString() ? undefined : +editRoomState.quantity,
       };
 
-      const resObj = await makeReq('/api/hotel/editRoom/', "PATCH", raw, userToken!);
+      const resObj = await makeReq('/api/hotel/editRoom/', "PATCH", raw, userToken ?? "");
 
       const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -944,35 +947,15 @@ interface IRoomCard {
 }
 
 const RoomCard: FC<IRoomCard> = ({ roomData, onDelete, onClick }) => {
-  const [roomImages, setRoomImages] = useState({
-    list: roomData.images,
-    currentIndex: 0
-  });
 
-  useEffect(() => {
-    const imagesInterval = setInterval(() => {
-      setRoomImages((prevState) => {
-        return {
-          ...prevState,
-          currentIndex:
-            prevState.currentIndex === prevState.list.length - 1
-              ? 0
-              : prevState.currentIndex + 1
-        };
-      });
-    }, 5000);
-
-    return () => {
-      clearInterval(imagesInterval);
-    };
-  }, []);
+  const currRoomImage = useImageCarousel(roomData.images, 3000);
 
   return (
     <div className={styles.roomCard}  >
       <div className={styles.roomImage} onClick={onClick}>
         {roomData.images && roomData.images.length > 0 ? (
           <Image
-            src={roomData.images[roomImages.currentIndex].link}
+            src={currRoomImage.link}
             layout="fill"
             objectFit="cover"
             alt={`${roomData.name}-image`}
@@ -1049,7 +1032,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
 
     const resObj = await makeReq("/api/hotel/updateDesc", "PATCH", {
       description: hotelDesc.data,
-    }, userToken!);
+    }, userToken ?? "");
 
     const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -1070,7 +1053,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
       modalHeader: "Add Facilities",
       show: true,
       modalContent: (
-        <AddFacilities dashboardData={dashboardData} setDashboardData={setDashboardData} userToken={userToken!} enqueueSnackbar={enqueueSnackbar} setModalState={setModalState} />
+        <AddFacilities dashboardData={dashboardData} setDashboardData={setDashboardData} userToken={userToken ?? ""} enqueueSnackbar={enqueueSnackbar} setModalState={setModalState} />
       ),
     });
   };
@@ -1104,7 +1087,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
     try {
       const resObj = await makeReq("/api/hotel/deleteFacility", "DELETE", {
         facilities: dashboardData.selectedFacilities,
-      }, userToken!);
+      }, userToken ?? "");
 
       const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -1130,7 +1113,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
     try {
       const resObj = await makeReq("/api/hotel/deletePhoto", "DELETE", {
         imageRef,
-      }, userToken!);
+      }, userToken ?? "");
 
       const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -1165,7 +1148,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
     try {
       const resObj = await makeReq("/api/hotel/deleteRoom", "DELETE", {
         roomId,
-      }, userToken!);
+      }, userToken ?? "");
 
       const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -1324,7 +1307,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
                   modalHeader: "Add Photos",
                   show: true,
                   modalContent: (
-                    <AddNewHotelImage hotelName={data.name} setDashboardData={setDashboardData} userToken={userToken!} enqueueSnackbar={enqueueSnackbar} setModalState={setModalState} />
+                    <AddNewHotelImage hotelName={data.name} setDashboardData={setDashboardData} userToken={userToken ?? ""} enqueueSnackbar={enqueueSnackbar} setModalState={setModalState} />
                   ),
                 });
               }}
@@ -1369,7 +1352,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
                   modalHeader: "Add new room",
                   show: true,
                   modalContent: (
-                    <AddNewRoom hotelName={data.name} setModalState={setModalState} userToken={userToken!} enqueueSnackbar={enqueueSnackbar} setDashboardData={setDashboardData} />
+                    <AddNewRoom hotelName={data.name} setModalState={setModalState} userToken={userToken ?? ""} enqueueSnackbar={enqueueSnackbar} setDashboardData={setDashboardData} />
                   ),
                 });
               }}
@@ -1389,7 +1372,7 @@ const Dashboard: NextPage<IDashboardProps> = ({ data }) => {
                   modalHeader: "View or Edit room",
                   show: true,
                   modalContent: (
-                    <AddNewRoom hotelName={data.name} setModalState={setModalState} userToken={userToken!} enqueueSnackbar={enqueueSnackbar} roomData={roomData} setDashboardData={setDashboardData} />
+                    <AddNewRoom hotelName={data.name} setModalState={setModalState} userToken={userToken ?? ""} enqueueSnackbar={enqueueSnackbar} roomData={roomData} setDashboardData={setDashboardData} />
                   ),
                 });
               }} />

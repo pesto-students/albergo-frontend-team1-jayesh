@@ -1,7 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   MonthPicker,
   YearPicker
@@ -46,6 +46,7 @@ const Bookings: NextPage<IBookingProps> = ({ data }) => {
     checkIn: '',
     checkOut: '',
     amount: '',
+    roomName: '',
   });
 
   const router = useRouter();
@@ -101,7 +102,7 @@ const Bookings: NextPage<IBookingProps> = ({ data }) => {
   };
 
   const paginationChange = async (page: number) => {
-    const resObj = await makeReq(`${process.env.NEXT_PUBLIC_API_URL}/api/booking?page=${page}`, "GET", undefined, userToken!);
+    const resObj = await makeReq(`${process.env.NEXT_PUBLIC_API_URL}/api/booking?page=${page}`, "GET", undefined, userToken ?? "");
 
     const res = handleResponse(resObj, enqueueSnackbar);
 
@@ -144,7 +145,7 @@ const Bookings: NextPage<IBookingProps> = ({ data }) => {
               <div className={styles.tableHeading}>
                 <YearPicker
                   onChange={(val) => {
-                    // console.log(val);
+                    console.log(val);
                   }}
                 />
               </div>
@@ -227,6 +228,24 @@ const Bookings: NextPage<IBookingProps> = ({ data }) => {
               <div className={styles.tableHeading}>
                 <input
                   type="text"
+                  placeholder="room type"
+                  value={searchState.roomName}
+                  onChange={(e) => {
+                    setSearchState((prevDetailsState) => {
+                      return {
+                        ...prevDetailsState,
+                        roomName: e.target.value,
+                      };
+                    });
+                    filterData("roomName", e.target.value);
+                  }}
+                  pattern="\d{4}-\d{2}-\d{2}"
+                  name="checkIn"
+                />
+              </div>
+              <div className={styles.tableHeading}>
+                <input
+                  type="text"
                   placeholder="📅Check In Date"
                   value={searchState.checkIn}
                   onChange={(e) => {
@@ -277,7 +296,6 @@ const Bookings: NextPage<IBookingProps> = ({ data }) => {
                   name="amount"
                 />
               </div>
-              <div className={styles.tableHeading}>Details</div>
             </div>
           </div>
           <div className={styles.tableBody}>
@@ -289,29 +307,23 @@ const Bookings: NextPage<IBookingProps> = ({ data }) => {
               </div>
             ) : (
               listData.dataArr.map((listItem, index) => (
-                <div className={styles.tableRow} key={index}>
+                <div className={`${styles.tableRow} ${styles.tableRowHover}`} key={index} onClick={() => {
+                  router.push({
+                    pathname: '/bookings/[id]',
+                    query: { id: listItem.bookingId }
+                  }, "/bookings/" + listItem.bookingId);
+                }} >
                   <div className={styles.tableCol}>{listItem.bookingId}</div>
                   {parsedToken?.role === "HOTEL" ? (
                     <div className={styles.tableCol}>{listItem.userName}</div>
                   ) : (
                     <div className={styles.tableCol}>{listItem.hotelName}</div>
                   )}
+                  <div className={styles.tableCol}>{listItem.room?.roomName}</div>
                   <div className={styles.tableCol}>{formatDate(listItem.checkIn)}</div>
                   <div className={styles.tableCol}>{formatDate(listItem.checkOut)}</div>
                   <div className={styles.tableCol}>
                     {listItem.amount}
-                  </div>
-                  <div className={styles.tableCol}>
-                    <button
-                      onClick={() => {
-                        router.push({
-                          pathname: '/bookings/[id]',
-                          query: { id: listItem.bookingId }
-                        }, "/bookings/" + listItem.bookingId);
-                      }}
-                    >
-                      View
-                    </button>
                   </div>
                 </div>
               ))

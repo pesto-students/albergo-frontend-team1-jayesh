@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use "../variables" as *;
 
 .container {
   width: 100%;
@@ -57,7 +57,7 @@
     }
 
     .details {
-      @include display-flex(space-between, flex-start);
+      @include display-flex(flex-start, flex-start);
       flex-wrap: wrap;
       gap: 1rem;
       padding: 2rem 1rem;

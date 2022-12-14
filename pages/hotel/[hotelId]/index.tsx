@@ -3,12 +3,12 @@ import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import TiptapEditor from '../../../Components/Editorjs/Editor';
 import Layout from '../../../Components/Layout/Layout';
 import styles from '../../../styles/Hotel/hotelHome.module.scss';
 import { makeReq } from '../../../Utils/db';
-import { IFullHotelData, MaterialIcon, ReadMore, Rupee } from '../../../Utils/Helper';
+import { IFullHotelData, MaterialIcon, Rupee, useImageCarousel } from '../../../Utils/Helper';
 
 interface IModalProps {
   modalHeader: string;
@@ -45,52 +45,6 @@ const Modal = ({ modalHeader, setModalState, children }: IModalProps) => {
     </div>
   );
 };
-
-const arrObj = [
-  {
-    label: 'bedroom',
-    iconName: 'bed'
-  },
-  {
-    label: 'bathrooms',
-    iconName: 'bathtub'
-  },
-  {
-    label: 'parking',
-    iconName: 'directions_car'
-  },
-  {
-    label: 'pets allowed',
-    iconName: 'pets'
-  }
-];
-
-const facilitiesArr = [
-  {
-    label: 'kitchen',
-    iconName: 'cooking'
-  },
-  {
-    label: 'television',
-    iconName: 'tv'
-  },
-  {
-    label: 'Air conditioning',
-    iconName: 'ac_unit'
-  },
-  {
-    label: 'wifi',
-    iconName: 'wifi'
-  },
-  {
-    label: 'laundry',
-    iconName: 'local_laundry_service'
-  },
-  {
-    label: 'balcony',
-    iconName: 'balcony'
-  }
-];
 
 const safetyChecks = [
   'daily cleaning',
@@ -152,27 +106,7 @@ const HotelSlugHome: NextPage<IHotelSLugHome> = ({ data }) => {
     modalContent: <Fragment />
   });
 
-  const [hotelImagesView, setHotelImagesView] = useState({
-    list: data.hotelImages,
-    currentIndex: 0
-  });
-
-  useEffect(() => {
-    const imagesInterval = setInterval(() => {
-      setHotelImagesView((prevHotelBannerImageRef) => ({
-        ...prevHotelBannerImageRef,
-        currentIndex:
-          prevHotelBannerImageRef.currentIndex + 1 ===
-            prevHotelBannerImageRef.list.length
-            ? 0
-            : prevHotelBannerImageRef.currentIndex + 1
-      }));
-    }, 5000);
-
-    return () => {
-      clearInterval(imagesInterval);
-    };
-  }, []);
+  const currImage = useImageCarousel(data.hotelImages, 3000);
 
   const ListModal = ({
     listArr,
@@ -218,7 +152,7 @@ const HotelSlugHome: NextPage<IHotelSLugHome> = ({ data }) => {
         <div className={styles.gelleryHero}>
           {data.hotelImages.length > 0 ? (
             <Image
-              src={data.hotelImages[hotelImagesView.currentIndex].link}
+              src={currImage.link}
               layout="fill"
               objectFit="cover"
               alt={`${data.name}-image`}
@@ -432,9 +366,15 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   const slug = ctx.params?.hotelId;
 
+  if (!slug) {
+    return {
+      notFound: true
+    };
+  }
+
   const resObj = await makeReq(`${process.env.NEXT_PUBLIC_API_URL}/api/hotel/${slug}`, "GET");
 
-  if (!resObj || !resObj.response!.ok) {
+  if (!resObj || !resObj.response || !resObj.response!.ok) {
     return {
       notFound: true
     };

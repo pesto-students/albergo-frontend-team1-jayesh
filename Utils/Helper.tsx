@@ -1,6 +1,6 @@
 import { AlertColor } from '@mui/material';
 import { JSONContent } from '@tiptap/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { SnackbarMessage, OptionsObject as SnackbarOptions, SnackbarKey } from "notistack";
 
 export interface AlertStateType {
@@ -92,6 +92,7 @@ export interface IUserData {
   uuid: string;
   wishlist: string[];
   profileImage: string;
+  phone: string;
 }
 
 export interface IBookingData {
@@ -99,12 +100,13 @@ export interface IBookingData {
   hotelSlug: string;
   userUUID: string;
   guest: {
-    adults?: number | undefined;
-    children?: number | undefined;
+    adults: number;
+    children: number;
   };
   amount: number;
   razorpay_payment_id: string;
   room: {
+    roomName?: string | undefined;
     roomId?: string | undefined;
     quantity?: number | undefined;
   };
@@ -243,147 +245,22 @@ export const formatDate = (date: string) => {
   return `${day}-${month}-${year}`;
 };
 
-// export const roomAmenities = [
-//   {
-//     label: "Air Conditioning",
-//     icon: "mode_cool"
-//   },
-//   {
-//     label: "Balcony",
-//     icon: "apartment"
-//   },
-//   {
-//     label: "Bathroom",
-//     icon: "bathtub"
-//   },
-//   {
-//     label: "Breakfast",
-//     icon: "breakfast_dining"
-//   },
-//   {
-//     label: "Cable TV",
-//     icon: "tv"
-//   },
-//   {
-//     label: "Coffee Maker",
-//     icon: "coffee_maker"
-//   },
-//   {
-//     label: "Desk",
-//     icon: "desk"
-//   },
-//   {
-//     label: "Dining Area",
-//     icon: "dining"
-//   },
-//   {
-//     label: "Dishwasher",
-//     icon: "dishwasher"
-//   },
-//   {
-//     label: "Dryer",
-//     icon: "dry"
-//   },
-//   {
-//     label: "Electric Kettle",
-//     icon: "electric_kettle"
-//   },
-//   {
-//     label: "Fan",
-//     icon: "fan"
-//   },
-//   {
-//     label: "Fireplace",
-//     icon: "fireplace"
-//   },
-//   {
-//     label: "Free WiFi",
-//     icon: "wifi"
-//   },
-//   {
-//     label: "Hairdryer",
-//     icon: "hair_dryer"
-//   },
-//   {
-//     label: "Heating",
-//     icon: "heating"
-//   },
-//   {
-//     label: "Iron",
-//     icon: "iron"
-//   },
-//   {
-//     label: "Kitchen",
-//     icon: "kitchen"
-//   },
-//   {
-//     label: "Microwave",
-//     icon: "microwave"
-//   },
-//   {
-//     label: "Oven",
-//     icon: "oven"
-//   },
-//   {
-//     label: "Private Entrance",
-//     icon: "private_entrance"
-//   },
-//   {
-//     label: "Refrigerator",
-//     icon: "refrigerator"
-//   },
-//   {
-//     label: "Satellite TV",
-//     icon: "satellite"
-//   },
-//   {
-//     label: "Seating Area",
-//     icon: "seating_area"
-//   },
-//   {
-//     label: "Shower",
-//     icon: "shower"
-//   },
-//   {
-//     label: "Sofa",
-//     icon: "sofa"
-//   },
-//   {
-//     label: "Soundproofing",
-//     icon: "soundproofing"
-//   },
-//   {
-//     label: "Stovetop",
-//     icon: "stovetop"
-//   },
-//   {
-//     label: "Telephone",
-//     icon: "phone"
-//   },
-//   {
-//     label: "Toaster",
-//     icon: "toaster"
-//   },
-//   {
-//     label: "Toilet",
-//     icon: "toilet"
-//   },
-//   {
-//     label: "Towels",
-//     icon: "towels"
-//   },
-//   {
-//     label: "TV",
-//     icon: "tv"
-//   },
-//   {
-//     label: "Washing Machine",
-//     icon: "washing_machine"
-//   },
-//   {
-//     label: "Wardrobe",
-//     icon: "wardrobe"
-//   }
-// ];
+export const useImageCarousel = (images: { link: string; ref: string; }[], interval: number) => {
 
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const removeInterval = setInterval(() => {
+      if (index === images.length - 1) {
+        setIndex(0);
+      }
+      else {
+        setIndex(index + 1);
+      }
+    }, interval);
+    return () => clearInterval(removeInterval);
+  }, [index]);
+
+  return images[index];
+};
 

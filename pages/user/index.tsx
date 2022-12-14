@@ -38,7 +38,7 @@ const UserHome: NextPage<IUserHomeProps> = ({ data }) => {
       const resObj = await makeReq("/api/user/changeProfilePic", "POST", {
         uuid: data.uuid,
         profileImage: firebaseImageURL,
-      }, userToken!);
+      }, userToken ?? "");
 
       const res = handleResponse(resObj, enqueueSnackbar);
 

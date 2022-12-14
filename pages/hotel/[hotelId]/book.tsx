@@ -7,98 +7,13 @@ import TiptapEditor from '../../../Components/Editorjs/Editor';
 import Layout from '../../../Components/Layout/Layout';
 import styles from '../../../styles/Hotel/book.module.scss';
 import { makeReq } from '../../../Utils/db';
-import { IHotelData, IRoomData, MaterialIcon, Rupee } from '../../../Utils/Helper';
-
-const roomArr = [
-	{
-		id: 1,
-		name: 'Standard Room',
-		price: 2000,
-		description:
-			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nisl, eget aliquam nisl nisl sit amet nisl. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nisl, eget aliquam nisl nisl sit amet nisl.',
-		photos: [
-			'https://images.unsplash.com/photo-1609949279531-cf48d64bed89?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80',
-			'https://images.unsplash.com/photo-1608198399988-341f712c3711?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-			'https://images.unsplash.com/photo-1601565415267-724db0e9fbdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1460&q=80'
-		],
-		capacity: 2
-	},
-	{
-		id: 2,
-		name: 'Deluxe Room',
-		price: 2500,
-		description:
-			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nisl, eget aliquam nisl nisl sit amet nisl. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nisl, eget aliquam nisl nisl sit amet nisl.',
-		photos: [
-			'https://images.unsplash.com/photo-1609949279531-cf48d64bed89?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80',
-			'https://images.unsplash.com/photo-1608198399988-341f712c3711?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-			'https://images.unsplash.com/photo-1601565415267-724db0e9fbdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1460&q=80'
-		],
-		capacity: 4
-	},
-	{
-		id: 3,
-		name: 'Suite Room',
-		price: 3000,
-		description:
-			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nisl, eget aliquam nisl nisl sit amet nisl. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nisl, eget aliquam nisl nisl sit amet nisl.',
-		photos: [
-			'https://images.unsplash.com/photo-1609949279531-cf48d64bed89?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80',
-			'https://images.unsplash.com/photo-1608198399988-341f712c3711?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-			'https://images.unsplash.com/photo-1601565415267-724db0e9fbdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1460&q=80'
-		],
-		capacity: 6
-	}
-];
+import { IHotelData, IRoomData, MaterialIcon, Rupee, useImageCarousel } from '../../../Utils/Helper';
 
 const RoomItem: FC<{ room: IRoomData; }> = ({ room }) => {
 	const router = useRouter();
 	const { hotelId } = router.query;
 
-	const [roomImageState, setRoomImageState] = useState({
-		list: room.images,
-		activeIndex: 0
-	});
-
-	useEffect(() => {
-		const imageInterval = setInterval(() => {
-			setRoomImageState((prevRoomImageState) => {
-				const nextIndex =
-					prevRoomImageState.activeIndex + 1 === prevRoomImageState.list.length
-						? 0
-						: prevRoomImageState.activeIndex + 1;
-				return {
-					...prevRoomImageState,
-					activeIndex: nextIndex
-				};
-			});
-		}, 3500);
-
-		return () => {
-			clearInterval(imageInterval);
-		};
-	}, []);
-
-	const prevImage = () => {
-		setRoomImageState((prevRoomImageState) => ({
-			...prevRoomImageState,
-			activeIndex:
-				prevRoomImageState.activeIndex === 0
-					? 0
-					: prevRoomImageState.activeIndex - 1
-		}));
-	};
-
-	const nextImage = () => {
-		setRoomImageState((prevRoomImageState) => ({
-			...prevRoomImageState,
-			activeIndex:
-				prevRoomImageState.activeIndex + 1 ===
-					prevRoomImageState.list.length
-					? 0
-					: prevRoomImageState.activeIndex + 1
-		}));
-	};
+	const currRoomImage = useImageCarousel(room.images, 3000);
 
 	const selectRoom = (roomId: string) => {
 		router.push(
@@ -117,24 +32,12 @@ const RoomItem: FC<{ room: IRoomData; }> = ({ room }) => {
 			<div className={styles.tableRowItem}>
 				<h5>{room.name}</h5>
 				<div className={styles.imageContainer}>
-					<button
-						className={`${styles.controls} ${styles.controlLeft}`}
-						onClick={prevImage}
-					>
-						<MaterialIcon iconName="chevron_left" />
-					</button>
 					<Image
-						src={roomImageState.list[roomImageState.activeIndex].link}
+						src={currRoomImage.link}
 						layout="fill"
 						objectFit="cover"
 						alt="roomImage"
 					/>
-					<button
-						className={`${styles.controls} ${styles.controlRight}`}
-						onClick={nextImage}
-					>
-						<MaterialIcon iconName="chevron_right" />
-					</button>
 				</div>
 			</div>
 			<div className={styles.tableRowItem}>
@@ -213,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
 	const resObj = await makeReq(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/hotel/${slug}`, "GET");
 
-	if (!resObj || !resObj.response!.ok) {
+	if (!resObj || !resObj.response || !resObj.response.ok) {
 		return {
 			notFound: true
 		};

@@ -1,19 +1,40 @@
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import Image from 'next/image';
+import dayjs from 'dayjs';
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
+import Link from 'next/link';
 import Layout from '../../Components/Layout/Layout';
 import styles from '../../styles/Partner/bookingId.module.scss';
-import { MaterialIcon, Rupee } from '../../Utils/Helper';
+import { getTokenCookie, parseJWT } from '../../Utils/auth/authHelper';
+import { makeReq } from '../../Utils/db';
+import { IBookingData, IUserData, MaterialIcon, Rupee } from '../../Utils/Helper';
 
-const BookingId = () => {
+interface IBookingIdProps {
+  data: {
+    bookingDoc: IBookingData;
+    userDoc: IUserData;
+  };
+
+}
+
+const BookingId: NextPage<IBookingIdProps> = ({ data }) => {
+
+  const dateToFormattedString = (date: string) => {
+    return dayjs(date).format("ddd, DD MMM YYYY");
+  };
+
+  const numberOfDays = (checkIn: string, checkOut: string) => {
+    const checkInDate = dayjs(checkIn);
+    const checkOutDate = dayjs(checkOut);
+    return checkOutDate.diff(checkInDate, "day");
+  };
+
   return (
     <Layout>
       <div className={styles.container}>
         <div className={styles.header}>
           <div className={styles.info}>
-            <h4>John Doe</h4>
+            <h4>{data.userDoc.name}</h4>
             <p>
-              Booked <span>Deluxe room</span> from <span>25 Aug 2022</span> till{' '}
-              <span>31 Aug 2022</span>
+              Booked <span>{data.bookingDoc.room.roomName}</span> from <span>{dateToFormattedString(data.bookingDoc.checkIn)}</span> till <span>{dateToFormattedString(data.bookingDoc.checkOut)}</span>
             </p>
           </div>
         </div>
@@ -21,20 +42,20 @@ const BookingId = () => {
           <div className={styles.detailsHeader}>
             <h4>Booking Details</h4>
             <p>
-              Booking ID: <span>123456789</span>
+              Booking ID: <span>{data.bookingDoc.bookingId}</span>
             </p>
           </div>
           <div className={styles.details}>
             <div className={styles.detailsItem}>
               <p>Customer Name</p>
-              <p>John Doe</p>
+              <p>{data.userDoc.name}</p>
             </div>
             <div className={styles.detailsItem}>
               <p>
                 <MaterialIcon iconName="email" /> Customer Email
               </p>
               <p>
-                <a href="mailto:john@doe.com">john@doe.com</a>
+                <a href={`mailto:${data.userDoc.email}`}>{data.userDoc.email}</a>
               </p>
             </div>
             <div className={styles.detailsItem}>
@@ -42,50 +63,46 @@ const BookingId = () => {
                 <MaterialIcon iconName="phone" /> Customer Phone
               </p>
               <p>
-                <a href="tel:+123456789">+123456789</a>
+                <a href={`tel:${data.userDoc.phone}`}>{data.userDoc.phone}</a>
               </p>
+            </div>
+            <div className={styles.detailsItem}>
+              <p>Hotel name</p>
+              <Link href={`/hotel/${data.bookingDoc.hotelSlug}`}>
+                <a>
+                  <p>{data.bookingDoc.hotelName}</p>
+                </a>
+              </Link>
             </div>
             <div className={styles.detailsItem}>
               <p>Room Type</p>
-              <p>Deluxe room</p>
+              <p>{data.bookingDoc.room.roomName}</p>
             </div>
             <div className={styles.detailsItem}>
               <p>Check In</p>
-              <p>25 Aug 2022</p>
+              <p>{dateToFormattedString(data.bookingDoc.checkIn)}</p>
             </div>
             <div className={styles.detailsItem}>
               <p>Check Out</p>
-              <p>31 Aug 2022</p>
+              <p>{dateToFormattedString(data.bookingDoc.checkOut)}</p>
             </div>
             <div className={styles.detailsItem}>
               <p>Number of Guests</p>
-              <p>2</p>
+              <p>{data.bookingDoc.guest.adults + data.bookingDoc.guest.children}</p>
             </div>
             <div className={styles.detailsItem}>
               <p>Number of Rooms</p>
-              <p>1</p>
+              <p>{data.bookingDoc.room.quantity}</p>
             </div>
             <div className={styles.detailsItem}>
-              <p>Number of Nights</p>
-              <p>6</p>
+              <p>Number of Days</p>
+              <p>{numberOfDays(data.bookingDoc.checkIn, data.bookingDoc.checkOut)}</p>
             </div>
             <div className={styles.detailsItem}>
-              <p>Booking Date</p>
-              <p>25 Aug 2021</p>
-            </div>
-            <div className={styles.detailsItem}>
-              <p>Booking Status</p>
-              <p>Confirmed</p>
-            </div>
-            <div className={styles.detailsItem}>
-              <p>Booking Amount</p>
+              <p>Amount</p>
               <p>
-                <Rupee /> 1000
+                <Rupee /> {data.bookingDoc.amount}
               </p>
-            </div>
-            <div className={styles.detailsItem}>
-              <p>Payment Method</p>
-              <p>paypal</p>
             </div>
           </div>
         </div>
@@ -95,3 +112,42 @@ const BookingId = () => {
 };
 
 export default BookingId;
+
+export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
+
+  const token = getTokenCookie(ctx);
+  const userToken = parseJWT(token);
+
+  if (!userToken) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  const bookingId = ctx.params?.id;
+
+  console.log(bookingId);
+
+  if (!bookingId) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const resObj = await makeReq(`${process.env.NEXT_PUBLIC_API_URL}/api/booking/${bookingId}`, "GET", undefined, token);
+
+  if (!resObj || resObj.error || (resObj.response && !resObj.response.ok)) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      data: resObj.res?.data
+    }
+  };
+};

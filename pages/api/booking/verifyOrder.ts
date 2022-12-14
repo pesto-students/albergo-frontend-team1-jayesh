@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 type Data = {
   message?: string;
-  data?: any;
+  data?: unknown;
 };
 
 export default function handler(

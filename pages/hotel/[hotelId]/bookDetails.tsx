@@ -7,7 +7,6 @@ import { useSnackbar } from "notistack";
 import React, { Fragment, useEffect, useState } from "react";
 import { MUIDatePicker } from "../../../Components/DateRangePicker/DateRangePicker";
 import Layout from "../../../Components/Layout/Layout";
-import Toast, { IToast } from "../../../Components/Toast/Toast";
 import { useAppSelector } from "../../../redux/hooks";
 import styles from "../../../styles/Hotel/bookDetails.module.scss";
 import { getTokenCookie, IParsedToken, parseJWT } from "../../../Utils/auth/authHelper";
@@ -234,6 +233,7 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 							hotelSlug: detailsState.hotel.slug,
 							userUUID: parsedToken.uuid,
 							room: {
+								roomName: detailsState.room.type,
 								roomId: room.roomId,
 								quantity: detailsState.customerDetails.roomQuantity,
 							},
@@ -248,7 +248,7 @@ const BookDetails: NextPage<IBookDetailsProps> = ({ hotel, room }) => {
 								detailsState.room.price *
 								totalDays *
 								detailsState.customerDetails.roomQuantity,
-						}, userToken!);
+						}, userToken ?? "");
 
 						const createBookingRes = handleResponse(createBookingResObj, enqueueSnackbar);
 
@@ -498,13 +498,13 @@ export const getServerSideProps: GetServerSideProps = async (
 	const resObjHotel = responses[0];
 	const resObjRoom = responses[1];
 
-	if (!resObjHotel || !resObjHotel.response!.ok) {
+	if (!resObjHotel || !resObjHotel.response || !resObjHotel.response!.ok) {
 		return {
 			notFound: true,
 		};
 	}
 
-	if (!resObjRoom || !resObjRoom.response!.ok) {
+	if (!resObjRoom || !resObjHotel.response || !resObjRoom.response!.ok) {
 		return {
 			notFound: true,
 		};
