@@ -1,6 +1,6 @@
 # Albergo
 
-This is an online platform that allows people to rent short term accommodation/stays. This ranges from regular people with a hotel rooms, to property management firms who lease multiple rooms for short term. 
+This is an online platform that allows people to rent short term accommodation/stays. This ranges from regular people with a hotel rooms, to property management firms who lease multiple rooms for short term.
 
 # Table of Contents
 
@@ -14,7 +14,7 @@ This is an online platform that allows people to rent short term accommodation/s
 
 # Demo
 
-[Live Demo](https://albergo-frontend-team1-jayesh-26xv-9pbv8n00f-albergo.vercel.app/)
+[Live Demo](https://albergo-frontend-team1-jayesh-26xv.vercel.app/)
 
 <br/>
 
@@ -27,17 +27,17 @@ Please Note:
 <br/>
 Test Credentials:
 
-- User   
+- User
 
-    email : pestoproject@demoMail.com
+  email : pestoproject@demomail.com
 
-    password: Pesto@project123
-    
+  password: Pesto@project123
+
 - Partner
 
-    email : goldfinch@mail.com
-    
-    password : Goldfinch@123
+  email : hotelprestige@demogmail.com
+
+  password : Hotelprestige@123
 
 <br/>
 

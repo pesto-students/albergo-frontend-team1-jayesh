@@ -15,8 +15,8 @@ const NavModal = () => {
   const navModalState = useAppSelector((state) => state.navModal);
 
   const [loginFormState, setLoginFormState] = useState({
-    inpEmail: '',
-    inpPassword: ''
+    inpEmail: 'pestoproject@demomail.com',
+    inpPassword: 'Pesto@project123'
   });
 
   const [signupFormState, setSignupFormState] = useState({
