@@ -1,0 +1,95 @@
+@use "../variables" as *;
+
+.filterSection {
+  @include display-flex(space-between, center);
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+
+  .contentSection {
+    width: 60%;
+    // @include display-flex(space-between, flex-start);
+    // flex-wrap: wrap;
+    // gap: 3vw;
+
+    .contentHeader {
+      @include display-flex(unset, center);
+      @include border-radius(0.5rem);
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: sticky;
+      top: 10px;
+      background: $fontWhite;
+      padding: 0.5rem 1rem;
+      border: 1px solid $fontGrey;
+      z-index: 1;
+
+      input {
+        @include transition(0.3s ease-in-out);
+        flex: 1 1 48%;
+        outline: none;
+        border: none;
+        border-bottom: 1px solid $fontGrey;
+        padding: 0.5rem 0;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: $fontGrey;
+        background-color: transparent;
+
+        &:focus {
+          border-bottom: 1px solid $primaryBg;
+        }
+
+        &::placeholder {
+          color: $fontGrey;
+        }
+
+        @media screen and (max-width: 768px) {
+          flex: 0 0 100%;
+        }
+      }
+    }
+
+    .contentBody {
+      padding: 1rem 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem 1rem;
+    }
+  }
+
+  .mapSection {
+    width: 40%;
+    height: 90vh;
+    aspect-ratio: 1/1;
+    position: sticky;
+    top: 1rem;
+
+    .markerLabel {
+      @include display-flex(center, center);
+      @include border-radius(15px);
+      gap: 0.25rem;
+      background-color: $fontWhite;
+      color: $fontBlack;
+      padding: 0.05rem;
+      border: 1px solid $fontBlack;
+
+      small {
+        max-width: 5vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: 0.1rem;
+      }
+
+      .iconContainer {
+        position: relative;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,148 @@
+@use "../variables" as *;
+
+$column-width: 14rem;
+$last-column-width: 6.25rem;
+
+.container {
+  h4 {
+    @include font-variation(500);
+  }
+
+  .bookingsTable {
+    @include border-radius(1rem);
+    width: 100%;
+    border: 0.5px solid rgba($fontGrey, 0.5);
+    padding: 1rem;
+    overflow-x: auto;
+
+    .tableHeader {
+      margin-bottom: 1rem;
+
+      .tableRow {
+        @include display-flex(unset, baseline);
+        gap: 1rem;
+
+        &:nth-of-type(2) {
+          @include display-flex(space-between, baseline);
+          margin-top: 1rem;
+
+          .tableHeading {
+            &:last-of-type {
+              min-width: $last-column-width;
+            }
+          }
+        }
+
+        .tableHeading {
+          @include font-variation(600);
+          text-align: left;
+          min-width: $column-width;
+
+          p {
+            width: max-content;
+            margin: 0;
+          }
+
+          input {
+            width: 100%;
+            outline: none;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-family: inherit;
+          }
+
+          .controls {
+            @include display-flex(space-between, center);
+            gap: 1rem;
+
+            button {
+              @include transition(0.3s ease-in-out);
+              @include border-radius(50%);
+              background: rgba($primaryBg, 0.5);
+              border: none;
+              outline: none;
+              cursor: pointer;
+              display: grid;
+              place-items: center;
+              padding: 0.25rem;
+
+              &:disabled {
+                background: rgba($fontGrey, 0.25);
+                cursor: not-allowed;
+              }
+
+              &:not(:disabled):hover {
+                background: rgba($primaryBg, 0.75);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .tableBody {
+      width: 100%;
+
+      .tableRow {
+        @include border-radius(0.5rem);
+        @include display-flex(space-between, baseline);
+        gap: 1rem;
+        width: auto;
+
+        &:hover {
+          background: rgba($primaryBg, 0.5);
+          cursor: pointer;
+        }
+
+        &:not(:last-of-type) {
+          @include box-shadow(0 1px 0 rgba($fontGrey, 0.25));
+        }
+
+        &:has(.noData) {
+          display: grid;
+          place-items: center;
+          justify-content: unset;
+        }
+
+        &.noData {
+          @include font-variation(400);
+          color: $fontGrey;
+          text-align: center;
+        }
+
+        .tableCol {
+          @include font-variation(600);
+          padding: 0.5rem 0;
+          text-transform: capitalize;
+          min-width: $column-width;
+
+          &:first-of-type {
+            text-transform: none;
+          }
+
+          &:last-of-type {
+            min-width: $last-column-width;
+          }
+
+          button {
+            @include border-radius(0.5rem);
+            @include font-variation(500);
+            outline: none;
+            border: 0.5px solid rgba($fontGrey, 0.7);
+            background: inherit;
+            padding: 0.25rem 0.5rem;
+            font-family: inherit;
+            font-size: 0.8rem;
+            color: $fontGrey;
+            cursor: pointer;
+
+            &:hover {
+              @include box-shadow(0 1px 0 rgba($fontGrey, 0.5));
+            }
+          }
+        }
+      }
+    }
+  }
+}

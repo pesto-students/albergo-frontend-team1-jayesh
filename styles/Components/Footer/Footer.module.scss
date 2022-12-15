@@ -1,0 +1,58 @@
+@use '../../variables' as *;
+
+.footerLayout {
+  width: 100vw;
+  max-width: 100%;
+  padding: 2rem 5vw;
+  background: $primaryBg;
+
+  & > p {
+    @include font-variation(700);
+    margin-top: 2rem;
+  }
+
+  .content {
+    @include display-flex(space-between, center);
+    gap: 2rem;
+
+    .col1 {
+      width: 40%;
+
+      h2 {
+        @include font-variation(600);
+        margin: 0;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .col2,
+    .col3,
+    .col4 {
+      flex: 1 1 30%;
+
+      ul {
+        list-style: none;
+
+        li {
+          h5 {
+            @include font-variation(600);
+            margin: 0;
+            margin-bottom: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .footerLayout {
+    .content {
+      flex-wrap: wrap;
+      gap: 1rem;
+      .col1 {
+        width: 100%;
+      }
+    }
+  }
+}

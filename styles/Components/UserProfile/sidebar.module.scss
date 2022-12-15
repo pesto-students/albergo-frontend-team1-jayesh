@@ -1,0 +1,45 @@
+@use '../../variables';
+
+.sidebar {
+  @include variables.border-radius(1rem);
+  width: 20%;
+  padding: 1rem;
+  background: rgba(variables.$primaryBg, 0.5);
+  position: sticky;
+  top: 1rem;
+  padding: 1rem;
+
+  .userLogoContainer {
+    @include variables.border-radius(50%);
+    width: 60%;
+    padding-bottom: 60%;
+    margin: 0 auto 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button {
+    @include variables.font-variation(500);
+    @include variables.border-radius(0.5rem);
+    display: block;
+    padding: 0;
+    border: none;
+    background: variables.$secondaryColor;
+    color: variables.$fontWhite;
+    font-family: inherit;
+    font-size: 0.9rem;
+    margin: 0 auto;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+  }
+
+  h5 {
+    margin: 1rem 0;
+  }
+
+  a {
+    display: block;
+    text-transform: capitalize;
+    margin: 1rem 0;
+  }
+}

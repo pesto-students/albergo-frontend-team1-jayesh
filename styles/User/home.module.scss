@@ -1,0 +1,199 @@
+@use "../variables" as *;
+
+.section {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(150px, 25%) 1fr;
+
+  .sidebar {
+    width: 100%;
+    @include border-radius(1rem);
+    padding: 1rem;
+    background: rgba($primaryBg, 0.5);
+    padding: 1rem;
+
+    .profileImageContainer {
+      width: 100%;
+      margin: 1rem 0;
+      @include display-flex(unset, center);
+      flex-direction: column;
+      gap: 1rem;
+
+      .userLogoContainer {
+        @include border-radius(50%);
+        width: 60%;
+        aspect-ratio: 1/1;
+        padding-bottom: 60%;
+        margin: 0 auto 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+    }
+
+    h5 {
+      @include font-variation(600);
+      text-decoration: underline;
+    }
+  }
+
+  .content {
+    width: 100%;
+    padding: 1rem;
+
+    .row {
+      @include display-flex(space-between, center);
+      gap: 1rem;
+    }
+  }
+}
+
+// .container {
+//   @include display-flex(space-between, flex-start);
+//   width: 100%;
+//   gap: 3rem;
+//   padding: 1rem 0;
+
+//   .sidebar {
+//     @include border-radius(1rem);
+//     width: 20%;
+//     padding: 1rem;
+//     background: rgba($primaryBg, 0.5);
+//     position: sticky;
+//     top: 1rem;
+//     padding: 1rem;
+
+//     .userLogoContainer {
+//       @include border-radius(50%);
+//       width: 60%;
+//       padding-bottom: 60%;
+//       margin: 0 auto 1rem;
+//       position: relative;
+//       overflow: hidden;
+//     }
+
+//     button {
+//       @include font-variation(500);
+//       @include border-radius(0.5rem);
+//       display: block;
+//       padding: 0;
+//       border: none;
+//       background: $secondaryColor;
+//       color: $fontWhite;
+//       font-family: inherit;
+//       font-size: 0.9rem;
+//       margin: 0 auto;
+//       padding: 0.5rem 0.75rem;
+//       cursor: pointer;
+//     }
+
+//     h5 {
+//       margin: 1rem 0;
+//     }
+
+//     a {
+//       display: block;
+//       text-transform: capitalize;
+//       margin: 1rem 0;
+//     }
+//   }
+
+//   .content {
+//     width: 80%;
+
+//     h3 {
+//       margin: 0 0 0.25rem;
+//     }
+
+//     small {
+//       margin: 0;
+//     }
+
+//     .editLink {
+//       @include border-radius(0.5rem);
+//       @include font-variation(600);
+//       padding: 0.5rem 0.75rem;
+//       background: inherit;
+//       font-family: inherit;
+//       border: 1.5px solid rgba($fontGrey, 1);
+//       letter-spacing: 0.5px;
+//       cursor: pointer;
+//       margin: 1rem 0;
+//       display: block;
+//       width: max-content;
+//       font-size: 0.8rem;
+//       cursor: pointer;
+//     }
+
+//     h5 {
+//       @include display-flex(unset, center);
+//       gap: 0.5rem;
+//       margin: 0 0 1rem;
+
+//       span {
+//         @include icon-variation($fill: 1);
+//       }
+//     }
+
+//     hr {
+//       margin: 1rem 0;
+//       @include border-radius(0.5rem);
+//       background: rgba($fontGrey, 0.5);
+//       border-color: rgba($fontGrey, 0.5);
+//     }
+
+//     .cardContainer {
+//       @include display-flex(space-between, flex-start);
+//       gap: 1.5rem;
+//       flex-wrap: wrap;
+
+//       .hotelCard {
+//         @include display-flex(unset, flex-start);
+//         @include border-radius(1rem);
+//         @include box-shadow(0 0 0.5rem rgba($fontGrey, 0.5));
+//         @include transition(0.3s);
+//         flex: 1 0.3 25%;
+//         gap: 1rem;
+//         padding: 0.5rem;
+//         background: rgba($primaryBg, 0.5);
+//         cursor: pointer;
+
+//         &:hover {
+//           @include transform(translateY(-0.5rem));
+//         }
+
+//         .hotelImageContainer {
+//           @include border-radius(1rem);
+//           width: 30%;
+//           padding-bottom: 30%;
+//           position: relative;
+//           overflow: hidden;
+//         }
+
+//         .hotelDetails {
+//           width: 70%;
+
+//           & > h5,
+//           small,
+//           p {
+//             margin: 0 0 0.5rem;
+//           }
+
+//           p {
+//             @include display-flex(unset, center);
+//             gap: 0.5rem;
+//           }
+
+//           small {
+//             &:nth-of-type(2) {
+//               width: 200px;
+//               overflow: hidden;
+//               text-overflow: ellipsis;
+//               white-space: nowrap;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

@@ -1,0 +1,71 @@
+@use "../variables" as *;
+
+.container {
+  min-height: 80vh;
+  width: 100vw;
+  max-width: 100%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+
+  .imageContainer {
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  form {
+    @include border-radius(10px);
+    @include display-flex(center, center);
+    flex-wrap: wrap;
+    max-width: 90%;
+    gap: 1.5rem;
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    background: rgba($color: $fontWhite, $alpha: 0.75);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+
+    & > input {
+      @include border-radius(5px);
+      flex: 1;
+      padding: 1rem;
+      background: $fontWhite;
+      border: none;
+      color: $secondaryColor;
+      font-size: 1rem;
+      font-weight: 500;
+      outline: none;
+    }
+
+    input {
+      background: $fontWhite;
+      color: $secondaryColor;
+    }
+
+    & > button {
+      flex: 1;
+      @include border-radius(5px);
+      outline: none;
+      border: none;
+      background: $secondaryColor;
+      color: $fontWhite;
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    min-height: 60vh;
+  }
+}

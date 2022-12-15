@@ -1,0 +1,132 @@
+@use '../../variables' as *;
+
+.dateInput {
+  outline: none;
+  border: none;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.backdrop {
+  position: fixed;
+  left: 50%;
+  width: 100vw;
+  height: 150vh;
+  z-index: 1;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+}
+
+.calendar {
+  @include border-radius(0.75rem);
+  @include box-shadow(0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.1));
+  padding: 0.5rem 1rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  background: $fontWhite;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  border: 0.5px solid $fontGrey;
+
+  .calendarTop {
+    @include display-flex(space-between, center);
+    gap: 0.5rem;
+
+    button {
+      @include border-radius(3rem);
+      @include transition(0.3s ease-in-out);
+      font-family: inherit;
+      background: none;
+      border: 1px solid transparent;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      width: 2.5rem;
+      height: 2.5rem;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.1);
+        border: 1px solid $fontGrey;
+      }
+
+      span {
+        font-size: 1rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-30%, -50%);
+        -webkit-transform: translate(-30%, -50%);
+        -moz-transform: translate(-30%, -50%);
+        -ms-transform: translate(-30%, -50%);
+        -o-transform: translate(-30%, -50%);
+        color: $fontGrey;
+
+        &.rightIcon {
+          transform: translate(-40%, -50%);
+          -webkit-transform: translate(-40%, -50%);
+          -moz-transform: translate(-40%, -50%);
+          -ms-transform: translate(-40%, -50%);
+          -o-transform: translate(-40%, -50%);
+        }
+      }
+    }
+
+    span {
+      display: block;
+      text-align: center;
+      h3,
+      p {
+        margin: 0;
+        text-transform: capitalize;
+      }
+    }
+  }
+
+  .calendarBody {
+    width: 100%;
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+    align-items: baseline;
+
+    small {
+      font-size: .85rem;
+
+      text-transform: capitalize;
+      aspect-ratio: 1/1;
+      display:grid;
+      place-items: center;
+    }
+
+    .days {
+      @include border-radius(50%);
+      cursor: pointer;
+
+      &.currentMonth {
+        background: rgba($color: $fontBlack, $alpha: 0.15);
+      }
+
+      &.valid {
+        @include font-variation(600);
+        @include transition(0.2s ease-in-out);
+        color: $fontWhite;
+        cursor: pointer;
+        background: rgba($color: $fontBlack, $alpha: 0.5);
+
+        &:hover {
+          background: rgba($color: $secondaryColor, $alpha: 0.7);
+        }
+      }
+    }
+  }
+}

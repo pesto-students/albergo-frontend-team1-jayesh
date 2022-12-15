@@ -1,0 +1,123 @@
+@use '../variables' as *;
+
+.container {
+  width: 100%;
+  height: 60vh;
+  padding: 1rem 0;
+
+  .innerContainer {
+    @include border-radius(1rem);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+
+    .content {
+      @include display-flex(center, flex-start);
+      flex-direction: column;
+      width: 40%;
+      height: 100%;
+      padding: 2rem;
+      color: $fontWhite;
+      background: rgba($color: $secondaryColor, $alpha: 0.75);
+      backdrop-filter: blur(5px);
+
+      h2 {
+        @include font-variation(600);
+        text-transform: capitalize;
+        letter-spacing: 0.5px;
+      }
+
+      p {
+        @include font-variation(600);
+        font-size: 1.125rem;
+      }
+
+      a {
+        @include border-radius(2rem);
+        padding: 0.5rem 1.25rem;
+        background: $fontGrey;
+        color: $fontWhite;
+      }
+    }
+
+    .imageContainer {
+      width: 60%;
+      height: 100%;
+      z-index: -1;
+    }
+  }
+}
+
+// Laptop, Desktops
+@media only screen and (max-width: 1024px) {
+  .container {
+    .innerContainer {
+      .content {
+        width: 50%;
+      }
+    }
+  }
+}
+
+// Laptop, Desktops
+@media only screen and (max-width: 900px) {
+  .container {
+    height: auto;
+    .innerContainer {
+      flex-direction: column-reverse;
+
+      .content,
+      .imageContainer {
+        width: 100%;
+      }
+
+      .content {
+        padding: 1rem;
+
+        a {
+          padding: 0.5rem 0.75rem;
+        }
+      }
+
+      .imageContainer {
+        height: 40vh;
+        min-height: 30vh;
+        max-height: 50vh;
+      }
+    }
+  }
+}
+
+// ipads and tablets
+@media only screen and (max-width: 768px) {
+  .container {
+    & > h3 {
+      width: 45%;
+    }
+
+    .cardContainer {
+      flex-wrap: wrap;
+      .cardStyle {
+        width: 45%;
+      }
+    }
+  }
+}
+
+// Mobiles
+@media only screen and (max-width: 480px) {
+  .container {
+    & > h3 {
+      width: auto;
+    }
+
+    .cardContainer {
+      flex-wrap: wrap;
+      .cardStyle {
+        width: 100%;
+      }
+    }
+  }
+}

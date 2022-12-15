@@ -1,0 +1,182 @@
+// font Monsterrat
+$Montserrat: "Montserrat", sans-serif;
+
+// color variables
+$primaryBg: #cfd7d7;
+$secondaryColor: #5a7171;
+$fontGrey: #484848;
+$fontWhite: #ffffff;
+$fontBlack: #303030;
+
+// Toast variables
+$toastErrorColor: #f8d7da;
+$toastErrorBg: #ee3648;
+$toastSuccessColor: #d4edda;
+$toastSuccessBg: #155724;
+$toastWarningColor: #fff3cd;
+$toastWarningBg: #856404;
+$toastInfoColor: #d1ecf1;
+$toastInfoBg: #0c5460;
+
+// button variables with the help of color variables and toast variables
+$btnPrimaryColor: $fontWhite;
+$btnPrimaryBg: $secondaryColor;
+$btnPrimaryBorderColor: $secondaryColor;
+$btnPrimaryHoverBg: #4e5d5d;
+$btnPrimaryHoverBorderColor: $secondaryColor;
+$btnPrimaryHoverColor: $fontWhite;
+$btnPrimaryFocusBg: #4e5d5d;
+$btnPrimaryFocusBorderColor: $secondaryColor;
+$btnPrimaryFocusColor: $fontWhite;
+$btnPrimaryDisabledBg: #b3b3b3;
+$btnPrimaryDisabledBorderColor: #474747;
+$btnPrimaryDisabledColor: #353333;
+$btnSecondaryColor: $secondaryColor;
+$btnSecondaryBg: $fontWhite;
+$btnSecondaryBorderColor: $secondaryColor;
+$btnSecondaryHoverBg: #e6e6e6;
+$btnSecondaryHoverBorderColor: $secondaryColor;
+$btnSecondaryHoverColor: $secondaryColor;
+$btnSecondaryFocusBg: #e6e6e6;
+$btnSecondaryFocusBorderColor: $secondaryColor;
+$btnSecondaryFocusColor: $secondaryColor;
+$btnSecondaryDisabledBg: #b3b3b3;
+$btnSecondaryDisabledBorderColor: #b3b3b3;
+$btnSecondaryDisabledColor: #b3b3b3;
+$btnSuccessColor: $fontWhite;
+$btnSuccessBg: #28a745;
+$btnSuccessHoverBg: #218838;
+$btnSuccessBorderColor: #28a745;
+$btnSuccessHoverBorderColor: #28a745;
+$btnSuccessHoverColor: $fontWhite;
+$btnSuccessFocusBg: #218838;
+$btnSuccessFocusBorderColor: #28a745;
+$btnSuccessFocusColor: $fontWhite;
+$btnSuccessDisabledBg: #b3b3b3;
+$btnSuccessDisabledBorderColor: #b3b3b3;
+$btnSuccessDisabledColor: #b3b3b3;
+$btnInfoColor: $fontWhite;
+$btnInfoBg: #17a2b8;
+$btnInfoBorderColor: #17a2b8;
+$btnInfoHoverBg: #138496;
+$btnInfoHoverBorderColor: #17a2b8;
+$btnInfoHoverColor: $fontWhite;
+$btnInfoFocusBg: #138496;
+$btnInfoFocusBorderColor: #17a2b8;
+$btnInfoFocusColor: $fontWhite;
+$btnInfoDisabledBg: #b3b3b3;
+$btnInfoDisabledBorderColor: #b3b3b3;
+$btnInfoDisabledColor: #b3b3b3;
+$btnWarningColor: $fontWhite;
+$btnWarningBg: #ffc107;
+$btnWarningBorderColor: #ffc107;
+$btnWarningHoverBg: #e0a800;
+$btnWarningHoverBorderColor: #ffc107;
+$btnWarningHoverColor: $fontWhite;
+$btnWarningFocusBg: #e0a800;
+$btnWarningFocusBorderColor: #ffc107;
+$btnWarningFocusColor: $fontWhite;
+$btnWarningDisabledBg: #b3b3b3;
+$btnWarningDisabledBorderColor: #b3b3b3;
+$btnWarningDisabledColor: #b3b3b3;
+$btnDangerColor: $fontWhite;
+$btnDangerBg: #dc3545;
+$btnDangerBorderColor: #dc3545;
+$btnDangerHoverBg: #c82333;
+$btnDangerHoverBorderColor: #dc3545;
+$btnDangerHoverColor: $fontWhite;
+$btnDangerFocusBg: #c82333;
+$btnDangerFocusBorderColor: #dc3545;
+$btnDangerFocusColor: $fontWhite;
+$btnDangerDisabledBg: #efbdbd;
+$btnDangerDisabledBorderColor: #f68181;
+$btnDangerDisabledColor: #503333;
+$btnLightColor: $fontBlack;
+$btnLightBg: #f8f9fa;
+$btnLightBorderColor: #f8f9fa;
+$btnLightHoverBg: #e2e6ea;
+$btnLightHoverBorderColor: #f8f9fa;
+$btnLightHoverColor: $fontBlack;
+$btnLightFocusBg: #e2e6ea;
+$btnLightFocusBorderColor: #f8f9fa;
+$btnLightFocusColor: $fontBlack;
+$btnLightDisabledBg: #b3b3b3;
+$btnLightDisabledBorderColor: #b3b3b3;
+$btnLightDisabledColor: #b3b3b3;
+$btnDarkColor: $fontWhite;
+$btnDarkBg: #343a40;
+$btnDarkHoverBg: #23272b;
+$btnDarkBorderColor: #343a40;
+$btnDarkHoverBorderColor: #343a40;
+$btnDarkHoverColor: $fontWhite;
+$btnDarkFocusBg: #23272b;
+$btnDarkFocusBorderColor: #343a40;
+$btnDarkFocusColor: $fontWhite;
+$btnDarkDisabledBg: #b3b3b3;
+$btnDarkDisabledBorderColor: #b3b3b3;
+$btnDarkDisabledColor: #b3b3b3;
+$btnLinkColor: #007bff;
+$btnLinkBg: transparent;
+$btnLinkBorderColor: transparent;
+$btnLinkHoverBg: transparent;
+$btnLinkHoverBorderColor: transparent;
+$btnLinkHoverColor: #0056b3;
+$btnLinkFocusBg: transparent;
+$btnLinkFocusBorderColor: transparent;
+$btnLinkFocusColor: #0056b3;
+$btnLinkDisabledBg: transparent;
+$btnLinkDisabledBorderColor: transparent;
+$btnLinkDisabledColor: #6c757d;
+
+// font-variation mixin
+@mixin font-variation($font-weight) {
+  font-variation-settings: "wght" $font-weight;
+}
+
+// display flex mixin
+@mixin display-flex($justify-content, $align-items) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+}
+
+// icon-variation mixin
+@mixin icon-variation($fill: 0, $weight: 400, $gradient: 0, $size: 48) {
+  font-variation-settings: "FILL" $fill, "wght" $weight, "GRAD" $gradient, "opsz" $size;
+}
+
+// border-radius mixin
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+}
+
+// box-shadow mixin
+@mixin box-shadow($shadow) {
+  box-shadow: $shadow;
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  -ms-box-shadow: $shadow;
+  -o-box-shadow: $shadow;
+}
+
+// transition mixin
+@mixin transition($transition) {
+  transition: $transition;
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -ms-transition: $transition;
+  -o-transition: $transition;
+}
+
+// transform mixin
+@mixin transform($transform) {
+  transform: $transform;
+  -webkit-transform: $transform;
+  -moz-transform: $transform;
+  -ms-transform: $transform;
+  -o-transform: $transform;
+}
